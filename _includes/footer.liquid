@@ -11,6 +11,21 @@
   {% endif %}
 {% endcapture %}
 
+{% if site.easter_egg %}
+  <!-- Hidden starfield layer (always present) -->
+  <div id="starfield" aria-hidden="true"></div>
+
+  <!-- Tiny toggle button -->
+  <a href="#" title="Toggle starfield" onclick="toggleStarfield(); return false;">🌌</a>
+
+  <!-- Assets -->
+  <link rel="stylesheet" href="{{ '/assets/css/space.css' | relative_url }}">
+  <script src="{{ '/assets/js/space.js' | relative_url }}"></script>
+{% endif %}
+
+{% include extras.html %}
+
+
 {% if site.footer_fixed %}
   <footer class="fixed-bottom" role="contentinfo">
     <div class="container mt-0">
@@ -26,5 +41,11 @@
     <div class="container">
       {{ footer_contents }}
     </div>
+
+    {% if site.easter_egg %}
+      {% include scripts/starfield.html %}
+    {% endif %}
+    <a href="#" title="Toggle starfield" onclick="toggleStarfield(); return false;">🌌</a>
+
   </footer>
 {% endif %}

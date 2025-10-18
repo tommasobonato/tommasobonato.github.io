@@ -1,0 +1,123 @@
+{% assign bits = site.rack_leds_bits | default: 6 %}
+{% assign zero_red = site.rack_zero_red | default: false %}
+
+<div id="agg-wrapper" class="agg-wrapper">
+
+  <!-- Controls -->
+  <div id="sim-controls" class="sim-controls">
+    <div class="ctrl">
+      <label for="sim-rate">Send rate</label>
+      <input id="sim-rate" type="range" min="0" max="100" value="50" />
+      <span class="badge" id="sim-rate-val">50%</span>
+    </div>
+    <div class="ctrl">
+      <label for="sim-qmax">Max queue (packets)</label>
+      <input id="sim-qmax" type="range" min="50" max="2000" value="400" />
+      <span class="badge" id="sim-qmax-val">400</span>
+    </div>
+    <div class="ctrl">
+      <label for="sim-rdrop">Random drops</label>
+      <!-- percent slider 0..1% with 0.001% step; default 0.001% -->
+      <input id="sim-rdrop" type="range" min="0" max="1" step="0.001" value="0.001" />
+      <span class="badge" id="sim-rdrop-val">0.001%</span>
+    </div>
+    <div class="ctrl">
+      <label for="sim-bp">Backpressure</label>
+      <input id="sim-bp" type="checkbox" />
+    </div>
+  </div>
+
+  <div class="agg-label">Aggregation Switch</div>
+
+  <!-- Aggregation rack -->
+  <div id="agg-rack" class="tb-rack tb-switch"
+       data-bits="{{ bits }}" data-zero-red="{{ zero_red }}">
+    <div class="tb-row">
+      <span class="tb-label">Queue Size</span>
+      <div class="tb-bank tb-q"></div>
+      <code class="tb-bits tb-q-bits">000000</code>
+      <span class="tb-dec tb-q-dec">0</span>
+    </div>
+    <div class="tb-row">
+      <span class="tb-label">Throughput</span>
+      <div class="tb-bank tb-t"></div>
+      <code class="tb-bits tb-t-bits">000000</code>
+      <span class="tb-dec tb-t-dec">0</span>
+    </div>
+    <div class="tb-row">
+      <span class="tb-label">Packet Drops</span>
+      <div class="tb-bank tb-dr"></div>
+      <code class="tb-bits tb-dr-bits">000000</code>
+      <span class="tb-dec tb-dr-dec">0</span>
+    </div>
+  </div>
+
+  <!-- (rest of file unchanged: SVG links, ToR racks, leaves) -->
+  {% comment %} keep the rest of your switches.html as you have it {% endcomment %}
+</div>
+
+
+  <!-- Top fanout (agg -> ToRs) -->
+  <svg id="agg-svg" xmlns="http://www.w3.org/2000/svg"
+       width="100%" height="100" viewBox="0 0 1000 100"
+       preserveAspectRatio="none" aria-hidden="true">
+    <path id="agg-left"  class="agg-link" d="M 500,8 C 500,50 250,50 250,96"></path>
+    <path id="agg-right" class="agg-link" d="M 500,8 C 500,50 750,50 750,96"></path>
+  </svg>
+
+  <div id="tb-switches" class="tb-switches under-bio">
+    <!-- LEFT ToR -->
+    <div class="tor" id="tor-left">
+      <div class="tor-title">ToR Switch 1</div>
+      <div id="torL-rack" class="tb-rack tb-switch"
+           data-bits="{{ bits }}" data-zero-red="{{ zero_red }}">
+        <div class="tb-row"><span class="tb-label">Queue Size</span><div class="tb-bank tb-q"></div><code class="tb-bits tb-q-bits">000000</code><span class="tb-dec tb-q-dec">0</span></div>
+        <div class="tb-row"><span class="tb-label">Throughput</span><div class="tb-bank tb-t"></div><code class="tb-bits tb-t-bits">000000</code><span class="tb-dec tb-t-dec">0</span></div>
+        <div class="tb-row"><span class="tb-label">Packet Drops</span><div class="tb-bank tb-dr"></div><code class="tb-bits tb-dr-bits">000000</code><span class="tb-dec tb-dr-dec">0</span></div>
+      </div>
+
+      <!-- Fanout (ToR-left -> 4 leaves) -->
+      <svg id="torL-svg" class="tor-svg" xmlns="http://www.w3.org/2000/svg"
+           width="100%" height="80" viewBox="0 0 600 80" preserveAspectRatio="none" aria-hidden="true">
+        <path id="leafL0" class="agg-link" d="M 300,8 C 300,44 120,44 120,76"></path>
+        <path id="leafL1" class="agg-link" d="M 300,8 C 300,44 220,44 220,76"></path>
+        <path id="leafL2" class="agg-link" d="M 300,8 C 300,44 380,44 380,76"></path>
+        <path id="leafL3" class="agg-link" d="M 300,8 C 300,44 480,44 480,76"></path>
+      </svg>
+
+      <div class="leaf-row" id="torL-leaves">
+        <a class="leaf" title="Twitter"  href="#" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
+        <a class="leaf" title="GitHub"   href="#" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+        <a class="leaf" title="LinkedIn" href="#" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+        <a class="leaf" title="Scholar"  href="#" target="_blank" rel="noopener"><i class="ai ai-google-scholar"></i></a>
+      </div>
+    </div>
+
+    <!-- RIGHT ToR -->
+    <div class="tor" id="tor-right">
+      <div class="tor-title">ToR Switch 2</div>
+      <div id="torR-rack" class="tb-rack tb-switch"
+           data-bits="{{ bits }}" data-zero-red="{{ zero_red }}">
+        <div class="tb-row"><span class="tb-label">Queue Size</span><div class="tb-bank tb-q"></div><code class="tb-bits tb-q-bits">000000</code><span class="tb-dec tb-q-dec">0</span></div>
+        <div class="tb-row"><span class="tb-label">Throughput</span><div class="tb-bank tb-t"></div><code class="tb-bits tb-t-bits">000000</code><span class="tb-dec tb-t-dec">0</span></div>
+        <div class="tb-row"><span class="tb-label">Packet Drops</span><div class="tb-bank tb-dr"></div><code class="tb-bits tb-dr-bits">000000</code><span class="tb-dec tb-dr-dec">0</span></div>
+      </div>
+
+      <!-- Fanout (ToR-right -> 4 leaves) -->
+      <svg id="torR-svg" class="tor-svg" xmlns="http://www.w3.org/2000/svg"
+           width="100%" height="80" viewBox="0 0 600 80" preserveAspectRatio="none" aria-hidden="true">
+        <path id="leafR0" class="agg-link" d="M 300,8 C 300,44 120,44 120,76"></path>
+        <path id="leafR1" class="agg-link" d="M 300,8 C 300,44 220,44 220,76"></path>
+        <path id="leafR2" class="agg-link" d="M 300,8 C 300,44 380,44 380,76"></path>
+        <path id="leafR3" class="agg-link" d="M 300,8 C 300,44 480,44 480,76"></path>
+      </svg>
+
+      <div class="leaf-row" id="torR-leaves">
+        <a class="leaf" title="Twitter"  href="#" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
+        <a class="leaf" title="GitHub"   href="#" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+        <a class="leaf" title="LinkedIn" href="#" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+        <a class="leaf" title="Scholar"  href="#" target="_blank" rel="noopener"><i class="ai ai-google-scholar"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
