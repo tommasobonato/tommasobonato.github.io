@@ -1,0 +1,1 @@
+!function(){window.toggleStarfield=function(){document.body.classList.toggle("space-on")};const o=["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];let r=0;window.addEventListener("keydown",(t=>{r=t.key===o[r]?r+1:0,r===o.length&&(window.toggleStarfield(),r=0)}))}();
