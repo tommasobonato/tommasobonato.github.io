@@ -647,17 +647,17 @@ rocket_scroll: true
 
 # Latency widget
 latency_meter: true
-latency_meter_always: true      # always show on load
-latency_meter_seconds: 10       # auto-hide after N seconds or on ✕
-latency_meter_position: left    # 'left' or 'right'
+latency_meter_always: true # always show on load
+latency_meter_seconds: 10 # auto-hide after N seconds or on ✕
+latency_meter_position: left # 'left' or 'right'
 
 # Switch panels (under biography)
 time_switch: true
 date_switch: true
-rack_leds_bits: 6               # uniform LEDs for H/M/S/D/M/Y
-rack_style: switch              # 'switch' faceplate or 'panel'
-rack_zero_red: false            # true => 0-bits dim red (playful). false => OFF (accurate)
+rack_leds_bits: 6 # uniform LEDs for H/M/S/D/M/Y
+rack_style: switch # 'switch' faceplate or 'panel'
+rack_zero_red: false # true => 0-bits dim red (playful). false => OFF (accurate)
 
 # Fabric overlay
 fabric_demo: true
-fabric_packets: true            # animate tiny packets along links
+fabric_packets: true # animate tiny packets along links

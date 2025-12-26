@@ -2,8 +2,8 @@
  * LEO Mesh Routing Easter Egg
  * Interactive satellite constellation routing visualization
  */
-(function() {
-  'use strict';
+(function () {
+  "use strict";
 
   // === Configuration ===
   const NUM_PLANES = 3;
@@ -20,30 +20,30 @@
 
   // City coordinates (angle on the rim, roughly matching real positions)
   const CITIES = {
-    'Zurich': { angle: -Math.PI / 6, lat: 47.37, lon: 8.54 },
-    'Canberra': { angle: Math.PI * 0.75, lat: -35.28, lon: 149.13 },
-    'New York': { angle: -Math.PI * 0.4, lat: 40.71, lon: -74.01 },
-    'Tokyo': { angle: Math.PI * 0.55, lat: 35.68, lon: 139.69 },
-    'London': { angle: -Math.PI * 0.15, lat: 51.51, lon: -0.13 },
-    'Sydney': { angle: Math.PI * 0.7, lat: -33.87, lon: 151.21 },
-    'Singapore': { angle: Math.PI * 0.45, lat: 1.35, lon: 103.82 },
-    'Dubai': { angle: Math.PI * 0.2, lat: 25.20, lon: 55.27 },
-    'San Francisco': { angle: -Math.PI * 0.55, lat: 37.77, lon: -122.42 },
-    'São Paulo': { angle: -Math.PI * 0.65, lat: -23.55, lon: -46.63 },
-    'Mumbai': { angle: Math.PI * 0.25, lat: 19.08, lon: 72.88 },
-    'Beijing': { angle: Math.PI * 0.5, lat: 39.90, lon: 116.41 },
-    'Paris': { angle: -Math.PI * 0.12, lat: 48.86, lon: 2.35 },
-    'Berlin': { angle: -Math.PI * 0.08, lat: 52.52, lon: 13.41 },
-    'Moscow': { angle: Math.PI * 0.1, lat: 55.76, lon: 37.62 },
-    'Los Angeles': { angle: -Math.PI * 0.5, lat: 34.05, lon: -118.24 },
-    'Chicago': { angle: -Math.PI * 0.45, lat: 41.88, lon: -87.63 },
-    'Toronto': { angle: -Math.PI * 0.38, lat: 43.65, lon: -79.38 },
-    'Seoul': { angle: Math.PI * 0.52, lat: 37.57, lon: 126.98 },
-    'Hong Kong': { angle: Math.PI * 0.48, lat: 22.32, lon: 114.17 },
-    'Bangkok': { angle: Math.PI * 0.42, lat: 13.76, lon: 100.50 },
-    'Cape Town': { angle: Math.PI * 0.35, lat: -33.93, lon: 18.42 },
-    'Cairo': { angle: Math.PI * 0.15, lat: 30.04, lon: 31.24 },
-    'Amsterdam': { angle: -Math.PI * 0.1, lat: 52.37, lon: 4.90 }
+    Zurich: { angle: -Math.PI / 6, lat: 47.37, lon: 8.54 },
+    Canberra: { angle: Math.PI * 0.75, lat: -35.28, lon: 149.13 },
+    "New York": { angle: -Math.PI * 0.4, lat: 40.71, lon: -74.01 },
+    Tokyo: { angle: Math.PI * 0.55, lat: 35.68, lon: 139.69 },
+    London: { angle: -Math.PI * 0.15, lat: 51.51, lon: -0.13 },
+    Sydney: { angle: Math.PI * 0.7, lat: -33.87, lon: 151.21 },
+    Singapore: { angle: Math.PI * 0.45, lat: 1.35, lon: 103.82 },
+    Dubai: { angle: Math.PI * 0.2, lat: 25.2, lon: 55.27 },
+    "San Francisco": { angle: -Math.PI * 0.55, lat: 37.77, lon: -122.42 },
+    "São Paulo": { angle: -Math.PI * 0.65, lat: -23.55, lon: -46.63 },
+    Mumbai: { angle: Math.PI * 0.25, lat: 19.08, lon: 72.88 },
+    Beijing: { angle: Math.PI * 0.5, lat: 39.9, lon: 116.41 },
+    Paris: { angle: -Math.PI * 0.12, lat: 48.86, lon: 2.35 },
+    Berlin: { angle: -Math.PI * 0.08, lat: 52.52, lon: 13.41 },
+    Moscow: { angle: Math.PI * 0.1, lat: 55.76, lon: 37.62 },
+    "Los Angeles": { angle: -Math.PI * 0.5, lat: 34.05, lon: -118.24 },
+    Chicago: { angle: -Math.PI * 0.45, lat: 41.88, lon: -87.63 },
+    Toronto: { angle: -Math.PI * 0.38, lat: 43.65, lon: -79.38 },
+    Seoul: { angle: Math.PI * 0.52, lat: 37.57, lon: 126.98 },
+    "Hong Kong": { angle: Math.PI * 0.48, lat: 22.32, lon: 114.17 },
+    Bangkok: { angle: Math.PI * 0.42, lat: 13.76, lon: 100.5 },
+    "Cape Town": { angle: Math.PI * 0.35, lat: -33.93, lon: 18.42 },
+    Cairo: { angle: Math.PI * 0.15, lat: 30.04, lon: 31.24 },
+    Amsterdam: { angle: -Math.PI * 0.1, lat: 52.37, lon: 4.9 },
   };
 
   // === State ===
@@ -63,10 +63,10 @@
   let nerdMode = false;
 
   // Ground stations
-  let userCity = 'New York'; // Default fallback
+  let userCity = "New York"; // Default fallback
   const groundStations = [
-    { name: 'Zurich', angle: CITIES['Zurich'].angle, color: '#60a5fa' },
-    { name: userCity, angle: CITIES[userCity]?.angle || 0, color: '#f472b6' }
+    { name: "Zurich", angle: CITIES["Zurich"].angle, color: "#60a5fa" },
+    { name: userCity, angle: CITIES[userCity]?.angle || 0, color: "#f472b6" },
   ];
 
   // Satellite state arrays (reused)
@@ -78,17 +78,16 @@
   let handoverTimeout = null;
 
   // Reduced motion
-  const prefersReducedMotion = () =>
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // === Geolocation ===
   async function detectUserCity() {
     try {
       // Using free IP geolocation API
-      const response = await fetch('https://ipapi.co/json/', { timeout: 3000 });
-      if (!response.ok) throw new Error('Geo lookup failed');
+      const response = await fetch("https://ipapi.co/json/", { timeout: 3000 });
+      if (!response.ok) throw new Error("Geo lookup failed");
       const data = await response.json();
-      
+
       if (data.city) {
         // Try exact match first
         if (CITIES[data.city]) {
@@ -100,13 +99,13 @@
         }
       }
     } catch (e) {
-      console.log('Geo detection failed, using default');
+      console.log("Geo detection failed, using default");
     }
-    return 'New York';
+    return "New York";
   }
 
   function findClosestCity(lat, lon) {
-    let closest = 'New York';
+    let closest = "New York";
     let minDist = Infinity;
     for (const [city, coords] of Object.entries(CITIES)) {
       const d = Math.sqrt(Math.pow(coords.lat - lat, 2) + Math.pow(coords.lon - lon, 2));
@@ -137,7 +136,9 @@
   function getCitySuggestions(query) {
     if (!query) return [];
     const q = query.toLowerCase();
-    return Object.keys(CITIES).filter(c => c.toLowerCase().includes(q)).slice(0, 5);
+    return Object.keys(CITIES)
+      .filter((c) => c.toLowerCase().includes(q))
+      .slice(0, 5);
   }
 
   // === Satellite Initialization ===
@@ -155,7 +156,7 @@
           angularVel: baseAngularVel,
           orbitRadius: orbitRadius,
           x: 0,
-          y: 0
+          y: 0,
         });
       }
     }
@@ -179,7 +180,7 @@
     const rimRadius = ORBIT_RADII[NUM_PLANES - 1] + 20;
     return {
       x: cx + Math.cos(gs.angle) * rimRadius,
-      y: cy + Math.sin(gs.angle) * rimRadius
+      y: cy + Math.sin(gs.angle) * rimRadius,
     };
   }
 
@@ -248,7 +249,8 @@
 
     const prevEdges = new Set();
     for (let i = 0; i < prevPath.length - 1; i++) {
-      const a = prevPath[i], b = prevPath[i + 1];
+      const a = prevPath[i],
+        b = prevPath[i + 1];
       prevEdges.add(`${Math.min(a, b)}-${Math.max(a, b)}`);
     }
 
@@ -295,8 +297,7 @@
     const newPath = dijkstra(adj, NUM_SATS, NUM_SATS + 1, previousPath);
 
     if (previousPath.length > 0 && newPath.length > 0) {
-      const pathChanged = newPath.length !== previousPath.length ||
-        newPath.some((n, i) => n !== previousPath[i]);
+      const pathChanged = newPath.length !== previousPath.length || newPath.some((n, i) => n !== previousPath[i]);
       if (pathChanged) {
         showHandover();
       }
@@ -308,11 +309,11 @@
 
   function showHandover() {
     if (!handoverLabel) return;
-    handoverLabel.textContent = '⚡ handover';
-    handoverLabel.style.opacity = '1';
+    handoverLabel.textContent = "⚡ handover";
+    handoverLabel.style.opacity = "1";
     if (handoverTimeout) clearTimeout(handoverTimeout);
     handoverTimeout = setTimeout(() => {
-      handoverLabel.style.opacity = '0';
+      handoverLabel.style.opacity = "0";
     }, 800);
   }
 
@@ -328,13 +329,13 @@
     ctx.beginPath();
     ctx.arc(cx, cy, EARTH_RADIUS, 0, Math.PI * 2);
     const earthGrad = ctx.createRadialGradient(cx - 10, cy - 10, 5, cx, cy, EARTH_RADIUS);
-    earthGrad.addColorStop(0, '#3b82f6');
-    earthGrad.addColorStop(1, '#1e3a5f');
+    earthGrad.addColorStop(0, "#3b82f6");
+    earthGrad.addColorStop(1, "#1e3a5f");
     ctx.fillStyle = earthGrad;
     ctx.fill();
 
     // Draw orbit rings
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.strokeStyle = "rgba(255,255,255,0.08)";
     ctx.lineWidth = 1;
     for (const r of ORBIT_RADII) {
       ctx.beginPath();
@@ -345,7 +346,7 @@
     const { nodes, adj } = buildGraph();
 
     // Draw inter-satellite links
-    ctx.strokeStyle = 'rgba(100, 200, 255, 0.25)';
+    ctx.strokeStyle = "rgba(100, 200, 255, 0.25)";
     ctx.lineWidth = 1;
     const drawnLinks = new Set();
     for (let i = 0; i < NUM_SATS; i++) {
@@ -362,7 +363,7 @@
     }
 
     // Draw ground station links
-    ctx.strokeStyle = 'rgba(255, 200, 100, 0.3)';
+    ctx.strokeStyle = "rgba(255, 200, 100, 0.3)";
     for (let g = 0; g < 2; g++) {
       const gIdx = NUM_SATS + g;
       for (const edge of adj[gIdx]) {
@@ -375,9 +376,9 @@
 
     // Draw route path
     if (currentPath.length > 1) {
-      ctx.strokeStyle = '#fcd34d';
+      ctx.strokeStyle = "#fcd34d";
       ctx.lineWidth = 3;
-      ctx.shadowColor = 'rgba(252, 211, 77, 0.6)';
+      ctx.shadowColor = "rgba(252, 211, 77, 0.6)";
       ctx.shadowBlur = 8;
       ctx.beginPath();
       ctx.moveTo(nodes[currentPath[0]].x, nodes[currentPath[0]].y);
@@ -394,7 +395,7 @@
       const onPath = currentPath.includes(i);
       ctx.beginPath();
       ctx.arc(sat.x, sat.y, onPath ? 5 : 3, 0, Math.PI * 2);
-      ctx.fillStyle = onPath ? '#fcd34d' : 'rgba(200, 220, 255, 0.8)';
+      ctx.fillStyle = onPath ? "#fcd34d" : "rgba(200, 220, 255, 0.8)";
       ctx.fill();
     }
 
@@ -406,23 +407,23 @@
       ctx.arc(pos.x, pos.y, 7, 0, Math.PI * 2);
       ctx.fillStyle = gs.color;
       ctx.fill();
-      ctx.strokeStyle = '#fff';
+      ctx.strokeStyle = "#fff";
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      ctx.font = '10px system-ui, sans-serif';
-      ctx.fillStyle = '#e5e7eb';
-      ctx.textAlign = 'center';
+      ctx.font = "10px system-ui, sans-serif";
+      ctx.fillStyle = "#e5e7eb";
+      ctx.textAlign = "center";
       ctx.fillText(gs.name, pos.x, pos.y + 18);
     }
 
     // Nerd mode stats
     if (nerdMode) {
-      ctx.font = '9px monospace';
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      ctx.textAlign = 'left';
+      ctx.font = "9px monospace";
+      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.textAlign = "left";
       ctx.fillText(`Satellites: ${NUM_SATS}`, 8, 14);
-      ctx.fillText(`Path hops: ${currentPath.length > 0 ? currentPath.length - 1 : '-'}`, 8, 26);
+      ctx.fillText(`Path hops: ${currentPath.length > 0 ? currentPath.length - 1 : "-"}`, 8, 26);
       ctx.fillText(`Links: ${drawnLinks.size}`, 8, 38);
       ctx.fillText(`Route: Zurich → ${userCity}`, 8, 50);
     }
@@ -471,18 +472,18 @@
   // === UI Creation ===
   function createUI() {
     // Toggle button
-    toggleBtn = document.createElement('button');
-    toggleBtn.id = 'leo-mesh-toggle';
-    toggleBtn.className = 'leo-mesh-toggle';
+    toggleBtn = document.createElement("button");
+    toggleBtn.id = "leo-mesh-toggle";
+    toggleBtn.className = "leo-mesh-toggle";
     toggleBtn.innerHTML = '🛰️<span class="toggle-indicator off">OFF</span>';
-    toggleBtn.title = 'LEO Mesh Routing';
-    toggleBtn.addEventListener('click', toggleOverlay);
+    toggleBtn.title = "LEO Mesh Routing";
+    toggleBtn.addEventListener("click", toggleOverlay);
     document.body.appendChild(toggleBtn);
 
     // Overlay
-    overlay = document.createElement('div');
-    overlay.id = 'leo-mesh-overlay';
-    overlay.className = 'leo-mesh-overlay';
+    overlay = document.createElement("div");
+    overlay.id = "leo-mesh-overlay";
+    overlay.className = "leo-mesh-overlay";
     overlay.innerHTML = `
       <div class="leo-mesh-header">
         <span class="leo-mesh-title">🛰️ LEO Mesh Routing</span>
@@ -507,50 +508,50 @@
     document.body.appendChild(overlay);
 
     // Get references
-    canvas = document.getElementById('leo-mesh-canvas');
-    ctx = canvas.getContext('2d');
-    nerdModeCheckbox = document.getElementById('leo-mesh-nerd-checkbox');
-    stepBtn = document.getElementById('leo-mesh-step');
-    handoverLabel = document.getElementById('leo-mesh-handover');
-    destInput = document.getElementById('leo-mesh-dest-input');
-    destCurrentLabel = document.getElementById('leo-mesh-dest-current');
+    canvas = document.getElementById("leo-mesh-canvas");
+    ctx = canvas.getContext("2d");
+    nerdModeCheckbox = document.getElementById("leo-mesh-nerd-checkbox");
+    stepBtn = document.getElementById("leo-mesh-step");
+    handoverLabel = document.getElementById("leo-mesh-handover");
+    destInput = document.getElementById("leo-mesh-dest-input");
+    destCurrentLabel = document.getElementById("leo-mesh-dest-current");
 
     // Populate datalist with cities
-    const datalist = document.getElementById('leo-mesh-cities');
+    const datalist = document.getElementById("leo-mesh-cities");
     for (const city of Object.keys(CITIES).sort()) {
-      const opt = document.createElement('option');
+      const opt = document.createElement("option");
       opt.value = city;
       datalist.appendChild(opt);
     }
 
     // Event listeners
-    overlay.querySelector('.leo-mesh-close').addEventListener('click', closeOverlay);
-    nerdModeCheckbox.addEventListener('change', (e) => {
+    overlay.querySelector(".leo-mesh-close").addEventListener("click", closeOverlay);
+    nerdModeCheckbox.addEventListener("change", (e) => {
       nerdMode = e.target.checked;
       render();
     });
-    stepBtn.addEventListener('click', stepOnce);
+    stepBtn.addEventListener("click", stepOnce);
 
-    destInput.addEventListener('change', (e) => {
+    destInput.addEventListener("change", (e) => {
       const city = e.target.value.trim();
       if (CITIES[city]) {
         setDestinationCity(city);
-        destInput.value = '';
+        destInput.value = "";
       }
     });
 
-    destInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
+    destInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
         const city = destInput.value.trim();
         if (CITIES[city]) {
           setDestinationCity(city);
-          destInput.value = '';
+          destInput.value = "";
         }
       }
     });
 
     if (prefersReducedMotion()) {
-      stepBtn.style.display = 'inline-block';
+      stepBtn.style.display = "inline-block";
     }
   }
 
@@ -566,17 +567,17 @@
     // Close other overlays first (mutually exclusive, except stars)
     if (window.closeMissionTerminal) window.closeMissionTerminal();
     if (window.closeBirbaGallery) window.closeBirbaGallery();
-    
+
     isOpen = true;
-    overlay.classList.add('open');
-    toggleBtn.classList.add('active');
+    overlay.classList.add("open");
+    toggleBtn.classList.add("active");
     toggleBtn.innerHTML = '🛰️<span class="toggle-indicator on">ON</span>';
     initSatellites();
     previousPath = [];
     currentPath = [];
 
     // Detect user location if not already set
-    if (destCurrentLabel.textContent === 'Loading...') {
+    if (destCurrentLabel.textContent === "Loading...") {
       const detectedCity = await detectUserCity();
       setDestinationCity(detectedCity);
     }
@@ -591,8 +592,8 @@
 
   function closeOverlay() {
     isOpen = false;
-    overlay.classList.remove('open');
-    toggleBtn.classList.remove('active');
+    overlay.classList.remove("open");
+    toggleBtn.classList.remove("active");
     toggleBtn.innerHTML = '🛰️<span class="toggle-indicator off">OFF</span>';
     stopAnimation();
   }
@@ -605,8 +606,8 @@
     createUI();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
   } else {
     init();
   }

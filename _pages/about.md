@@ -60,6 +60,7 @@ latest_posts:
     <a href="https://www.aboutamazon.com/about-us" target="_blank" rel="noopener">Amazon</a>.
   </p>
 
-  Outside of research, I enjoy reading about space and space exploration, watching sci-fi movies, skiing,
-  making (and cooking) pizza, and visiting theme parks.
+Outside of research, I enjoy reading about space and space exploration, watching sci-fi movies, skiing,
+making (and cooking) pizza, and visiting theme parks.
+
 </div>

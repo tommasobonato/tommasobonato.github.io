@@ -8,7 +8,9 @@
         <strong>{{ paper.title }}</strong>
         {% if paper.venue %} ({{ paper.venue }}){% endif %}
         {% if paper.year %} — {{ paper.year }}{% endif %}
-        {% if paper.link %} — <a href="{{ paper.link }}" target="_blank" rel="noopener">paper</a>{% endif %}
+        {% if paper.link %}
+          — <a href="{{ paper.link }}" target="_blank" rel="noopener">paper</a>
+        {%- endif %}
         {% if paper.note %} — {{ paper.note }}{% endif %}
       </li>
     {% endfor %}
