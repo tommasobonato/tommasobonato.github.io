@@ -866,3 +866,12 @@
   padding: 40px 20px;
   text-align: center;
 }
+
+// Hide overlays on small screens to avoid overlap with buttons
+@media (max-width: 600px) {
+  .leo-mesh-overlay,
+  .mission-term-overlay,
+  .birba-gallery-overlay {
+    display: none !important;
+  }
+}
