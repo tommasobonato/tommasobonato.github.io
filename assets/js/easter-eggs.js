@@ -2,8 +2,8 @@
  * Packet Rocket Easter Egg
  * Hover over the site name for 600ms to launch a packet rocket to Publications
  */
-(function() {
-  'use strict';
+(function () {
+  "use strict";
 
   const HOVER_DELAY = 600;
   const FLIGHT_DURATION = 900;
@@ -13,8 +13,7 @@
   let rocketInFlight = false;
 
   // Check for reduced motion preference
-  const prefersReducedMotion = () =>
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Cubic Bezier interpolation for smooth curve
   function cubicBezier(t, p0, p1, p2, p3) {
@@ -24,7 +23,7 @@
 
   // Get the Publications nav link
   function getPublicationsLink() {
-    const byId = document.getElementById('nav-publications');
+    const byId = document.getElementById("nav-publications");
     if (byId) return byId;
     // Fallback: find link containing /publications
     return document.querySelector('a.nav-link[href*="/publications"]');
@@ -32,27 +31,27 @@
 
   // Show reduced-motion tooltip
   function showReducedMotionTooltip(anchorEl) {
-    const tooltip = document.createElement('div');
-    tooltip.className = 'packet-tooltip';
-    tooltip.textContent = '📦 packet delivered';
+    const tooltip = document.createElement("div");
+    tooltip.className = "packet-tooltip";
+    tooltip.textContent = "📦 packet delivered";
     document.body.appendChild(tooltip);
 
     const rect = anchorEl.getBoundingClientRect();
     tooltip.style.left = `${rect.left + rect.width / 2}px`;
     tooltip.style.top = `${rect.bottom + 8}px`;
 
-    requestAnimationFrame(() => tooltip.classList.add('visible'));
+    requestAnimationFrame(() => tooltip.classList.add("visible"));
 
     setTimeout(() => {
-      tooltip.classList.remove('visible');
+      tooltip.classList.remove("visible");
       setTimeout(() => tooltip.remove(), 200);
     }, 1000);
 
     // Still pulse the target
     const pubLink = getPublicationsLink();
     if (pubLink) {
-      pubLink.classList.add('packet-pulse');
-      setTimeout(() => pubLink.classList.remove('packet-pulse'), PULSE_DURATION);
+      pubLink.classList.add("packet-pulse");
+      setTimeout(() => pubLink.classList.remove("packet-pulse"), PULSE_DURATION);
     }
   }
 
@@ -89,8 +88,8 @@
     const cp2y = Math.min(startY, endY) - arcHeight * 1.2;
 
     // Create rocket element
-    const rocket = document.createElement('div');
-    rocket.className = 'packet-rocket';
+    const rocket = document.createElement("div");
+    rocket.className = "packet-rocket";
     rocket.innerHTML = '<span class="rocket-icon">📦</span><span class="rocket-trail"></span>';
     rocket.style.left = `${startX}px`;
     rocket.style.top = `${startY}px`;
@@ -122,12 +121,12 @@
         requestAnimationFrame(animate);
       } else {
         // Arrival: remove rocket and pulse target
-        rocket.classList.add('arrived');
+        rocket.classList.add("arrived");
         setTimeout(() => rocket.remove(), 150);
 
-        pubLink.classList.add('packet-pulse');
+        pubLink.classList.add("packet-pulse");
         setTimeout(() => {
-          pubLink.classList.remove('packet-pulse');
+          pubLink.classList.remove("packet-pulse");
           rocketInFlight = false;
         }, PULSE_DURATION);
       }
@@ -138,15 +137,15 @@
 
   // Initialize
   function init() {
-    const hoverName = document.getElementById('hover-name');
+    const hoverName = document.getElementById("hover-name");
     if (!hoverName) return;
 
-    hoverName.addEventListener('mouseenter', () => {
+    hoverName.addEventListener("mouseenter", () => {
       if (rocketInFlight) return;
       hoverTimer = setTimeout(() => launchRocket(hoverName), HOVER_DELAY);
     });
 
-    siteName.addEventListener('mouseleave', () => {
+    siteName.addEventListener("mouseleave", () => {
       if (hoverTimer) {
         clearTimeout(hoverTimer);
         hoverTimer = null;
@@ -154,8 +153,8 @@
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
   } else {
     init();
   }

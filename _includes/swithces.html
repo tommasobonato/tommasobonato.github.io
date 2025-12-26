@@ -1,37 +1,61 @@
-{% assign bits = site.rack_leds_bits | default: 6 %}
-{% assign zero_red = site.rack_zero_red | default: false %}
+{% assign bits = site.rack_leds_bits | default: 6 %} {% assign zero_red = site.rack_zero_red | default: false %}
 
-<div id="agg-wrapper" class="agg-wrapper" style="max-width:none !important; width:100% !important;">
-
+<div id="agg-wrapper" class="agg-wrapper" style="max-width: none !important; width: 100% !important">
   <div class="agg-row">
-    <div id="agg-body" class="agg-body" style="width:100% !important;">
-      <div id="tb-switches" class="tb-switches under-bio" style="max-width:none !important; width:100% !important;">
-        <div class="tor" id="tor-left" style="width:100% !important;">
-          <div class="tor-title-row" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+    <div id="agg-body" class="agg-body" style="width: 100% !important">
+      <div id="tb-switches" class="tb-switches under-bio" style="max-width: none !important; width: 100% !important">
+        <div class="tor" id="tor-left" style="width: 100% !important">
+          <div class="tor-title-row" style="display: flex; align-items: center; justify-content: center; gap: 8px">
             <span class="tor-title">ToR Switch</span>
-            <span class="tor-info-icon" data-tooltip="This is a simplified fat-tree network, similar to the ones I often use in my research. The animation routes packets to my social links; increase the send rate to create congestion, or add a drop rate to simulate loss. The digits next to each indicator show the binary representation of the current value.">ℹ️</span>
+            <span
+              class="tor-info-icon"
+              data-tooltip="This is a simplified fat-tree network, similar to the ones I often use in my research. The animation routes packets to my social links; increase the send rate to create congestion, or add a drop rate to simulate loss. The digits next to each indicator show the binary representation of the current value."
+              >ℹ️</span
+            >
           </div>
-          <div id="torL-rack" class="tb-rack tb-switch"
-               data-bits="{{ bits }}" data-zero-red="{{ zero_red }}">
-            <div class="tb-row"><span class="tb-label">Queue Size</span><div class="tb-bank tb-q"></div><code class="tb-bits tb-q-bits">000000</code><span class="tb-dec tb-q-dec">0</span></div>
-            <div class="tb-row"><span class="tb-label">Throughput</span><div class="tb-bank tb-t"></div><code class="tb-bits tb-t-bits">000000</code><span class="tb-dec tb-t-dec">0</span></div>
-            <div class="tb-row"><span class="tb-label">Packet Drops</span><div class="tb-bank tb-dr"></div><code class="tb-bits tb-dr-bits">000000</code><span class="tb-dec tb-dr-dec">0</span></div>
+          <div id="torL-rack" class="tb-rack tb-switch" data-bits="{{ bits }}" data-zero-red="{{ zero_red }}">
+            <div class="tb-row">
+              <span class="tb-label">Queue Size</span>
+              <div class="tb-bank tb-q"></div>
+              <code class="tb-bits tb-q-bits">000000</code><span class="tb-dec tb-q-dec">0</span>
+            </div>
+            <div class="tb-row">
+              <span class="tb-label">Throughput</span>
+              <div class="tb-bank tb-t"></div>
+              <code class="tb-bits tb-t-bits">000000</code><span class="tb-dec tb-t-dec">0</span>
+            </div>
+            <div class="tb-row">
+              <span class="tb-label">Packet Drops</span>
+              <div class="tb-bank tb-dr"></div>
+              <code class="tb-bits tb-dr-bits">000000</code><span class="tb-dec tb-dr-dec">0</span>
+            </div>
           </div>
 
-          <svg id="torL-svg" class="tor-svg" xmlns="http://www.w3.org/2000/svg"
-            style="width:100% !important; height:140px !important; max-width:none !important;"
-            height="140" viewBox="0 0 1200 140" preserveAspectRatio="none" aria-hidden="true">
+          <svg
+            id="torL-svg"
+            class="tor-svg"
+            xmlns="http://www.w3.org/2000/svg"
+            style="width: 100% !important; height: 140px !important; max-width: none !important"
+            height="140"
+            viewBox="0 0 1200 140"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
             <path id="leafL0" class="agg-link" d="M 600,10 C 600,80 20,80 20,130"></path>
             <path id="leafL1" class="agg-link" d="M 600,10 C 600,80 420,80 420,130"></path>
             <path id="leafL2" class="agg-link" d="M 600,10 C 600,80 780,80 780,130"></path>
             <path id="leafL3" class="agg-link" d="M 600,10 C 600,80 1180,80 1180,130"></path>
           </svg>
 
-          <div class="leaf-row" id="torL-leaves" style="max-width:900px !important; width:95% !important;">
-            <a class="leaf" title="Email"  href="mailto:tommaso.bonato@inf.ethz.ch" target="_blank" rel="noopener"><i class="fas fa-envelope"></i></a>
-            <a class="leaf" title="GitHub"   href="https://github.com/tommasobo" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
-            <a class="leaf" title="LinkedIn" href="https://www.linkedin.com/in/tommaso-bonato-ba937462/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
-            <a class="leaf" title="Scholar"  href="https://scholar.google.com/citations?user=j9lY7FAAAAAJ&hl=it" target="_blank" rel="noopener"><i class="ai ai-google-scholar"></i></a>
+          <div class="leaf-row" id="torL-leaves" style="max-width: 900px !important; width: 95% !important">
+            <a class="leaf" title="Email" href="mailto:tommaso.bonato@inf.ethz.ch" target="_blank" rel="noopener"><i class="fas fa-envelope"></i></a>
+            <a class="leaf" title="GitHub" href="https://github.com/tommasobo" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+            <a class="leaf" title="LinkedIn" href="https://www.linkedin.com/in/tommaso-bonato-ba937462/" target="_blank" rel="noopener"
+              ><i class="fab fa-linkedin"></i
+            ></a>
+            <a class="leaf" title="Scholar" href="https://scholar.google.com/citations?user=j9lY7FAAAAAJ&hl=it" target="_blank" rel="noopener"
+              ><i class="ai ai-google-scholar"></i
+            ></a>
           </div>
         </div>
       </div>

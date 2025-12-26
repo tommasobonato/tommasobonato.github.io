@@ -10,42 +10,46 @@
       {% if page.permalink != '/' %}
         <a class="navbar-brand title font-weight-lighter" href="{{ site.baseurl }}/">
           <span id="site-name">
-          {% if site.title == 'blank' %}
-            {% if site.first_name %}
-              <span class="font-weight-bold">
-                {{- site.first_name -}}
-              </span>
+            {% if site.title == 'blank' %}
+              {% if site.first_name %}
+                <span class="font-weight-bold">
+                  {{- site.first_name -}}
+                </span>
+              {% endif %}
+              {% if site.middle_name %}
+                {{- site.middle_name -}}
+              {% endif %}
+              {% if site.last_name %}
+                {{- site.last_name -}}
+              {% endif %}
+            {% else %}
+              {{- site.title -}}
             {% endif %}
-            {% if site.middle_name %}
-              {{- site.middle_name -}}
-            {% endif %}
-            {% if site.last_name %}
-              {{- site.last_name -}}
-            {% endif %}
-          {% else %}
-            {{- site.title -}}
-          {% endif %}
           </span>
         </a>
       {% else %}
         <!-- Homepage: Show brand on scroll -->
-        <a class="navbar-brand title font-weight-lighter home-navbar-brand" href="{{ site.baseurl }}/" style="opacity:0; pointer-events:none; transition: opacity 0.2s ease;">
+        <a
+          class="navbar-brand title font-weight-lighter home-navbar-brand"
+          href="{{ site.baseurl }}/"
+          style="opacity:0; pointer-events:none; transition: opacity 0.2s ease;"
+        >
           <span id="site-name-home">
-          {% if site.title == 'blank' %}
-            {% if site.first_name %}
-              <span class="font-weight-bold">
-                {{- site.first_name -}}
-              </span>
+            {% if site.title == 'blank' %}
+              {% if site.first_name %}
+                <span class="font-weight-bold">
+                  {{- site.first_name -}}
+                </span>
+              {% endif %}
+              {% if site.middle_name %}
+                {{- site.middle_name -}}
+              {% endif %}
+              {% if site.last_name %}
+                {{- site.last_name -}}
+              {% endif %}
+            {% else %}
+              {{- site.title -}}
             {% endif %}
-            {% if site.middle_name %}
-              {{- site.middle_name -}}
-            {% endif %}
-            {% if site.last_name %}
-              {{- site.last_name -}}
-            {% endif %}
-          {% else %}
-            {{- site.title -}}
-          {% endif %}
           </span>
         </a>
         {% if site.enable_navbar_social %}
@@ -88,7 +92,14 @@
           <!-- Other pages -->
           {% assign sorted_pages = site.pages | sort: 'nav_order' %}
           {% for p in sorted_pages %}
-            {% if p.nav and p.autogen == null and p.title != 'people' and p.title != 'projects' and p.title != 'repositories' and p.title != 'blog' and p.dropdown != true %}
+            {% if p.nav
+              and p.autogen == null
+              and p.title != 'people'
+              and p.title != 'projects'
+              and p.title != 'repositories'
+              and p.title != 'blog'
+              and p.dropdown != true
+            %}
               {% assign parent_link = p.permalink | remove: 'index.html' %}
               <li class="nav-item {% if page.url contains parent_link %}active{% endif %}">
                 {%- if p.permalink contains '://' -%}
@@ -98,7 +109,13 @@
                 {%- else -%}
                   {%- assign url = p.url -%}
                 {%- endif %}
-                <a class="nav-link"{% if p.title == 'publications' %} id="nav-publications"{% endif %} href="{{ url | relative_url }}">
+                <a
+                  class="nav-link"
+                  {% if p.title == 'publications' %}
+                    id="nav-publications"
+                  {% endif %}
+                  href="{{ url | relative_url }}"
+                >
                   {%- if p.title == 'cv' -%}Resume{%- else -%}{{ p.title | capitalize }}{%- endif -%}
                   {% if page.url contains p.url %}
                     <span class="sr-only">(current)</span>
@@ -134,28 +151,32 @@
 
 <!-- Homepage scroll-to-show navbar brand -->
 {% if page.permalink == '/' %}
-<script>
-(function() {
-  const brand = document.querySelector('.home-navbar-brand');
-  if (!brand) return;
-  const threshold = 150; // pixels scrolled before showing
-  let ticking = false;
-  
-  function updateBrand() {
-    const scrolled = window.scrollY > threshold;
-    brand.style.opacity = scrolled ? '1' : '0';
-    brand.style.pointerEvents = scrolled ? 'auto' : 'none';
-    ticking = false;
-  }
-  
-  window.addEventListener('scroll', function() {
-    if (!ticking) {
-      requestAnimationFrame(updateBrand);
-      ticking = true;
-    }
-  }, { passive: true });
-  
-  updateBrand();
-})();
-</script>
+  <script>
+    (function () {
+      const brand = document.querySelector('.home-navbar-brand');
+      if (!brand) return;
+      const threshold = 150; // pixels scrolled before showing
+      let ticking = false;
+
+      function updateBrand() {
+        const scrolled = window.scrollY > threshold;
+        brand.style.opacity = scrolled ? '1' : '0';
+        brand.style.pointerEvents = scrolled ? 'auto' : 'none';
+        ticking = false;
+      }
+
+      window.addEventListener(
+        'scroll',
+        function () {
+          if (!ticking) {
+            requestAnimationFrame(updateBrand);
+            ticking = true;
+          }
+        },
+        { passive: true }
+      );
+
+      updateBrand();
+    })();
+  </script>
 {% endif %}
