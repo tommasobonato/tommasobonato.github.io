@@ -325,3 +325,16 @@
 {% if site.newsletter.enabled %}
   <script defer src="{{ '/assets/js/newsletter.js' | relative_url | bust_file_cache }}"></script>
 {% endif %}
+
+<!-- Packet Rocket Easter Egg -->
+<script defer src="{{ '/assets/js/easter-eggs.js' | relative_url | bust_file_cache }}"></script>
+
+<!-- LEO Mesh Routing Easter Egg -->
+<script defer src="{{ '/assets/js/leo-mesh-easter-egg.js' | relative_url | bust_file_cache }}"></script>
+
+<!-- Mission Terminal Easter Egg -->
+<script defer src="{{ '/assets/js/mission-terminal.js' | relative_url | bust_file_cache }}"></script>
+
+<!-- Birba Gallery Easter Egg -->
+{% include birba_images.liquid %}
+<script defer src="{{ '/assets/js/birba-gallery.js' | relative_url | bust_file_cache }}"></script>

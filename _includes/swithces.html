@@ -1,122 +1,54 @@
 {% assign bits = site.rack_leds_bits | default: 6 %}
 {% assign zero_red = site.rack_zero_red | default: false %}
 
-<div id="agg-wrapper" class="agg-wrapper">
+<div id="agg-wrapper" class="agg-wrapper" style="max-width:none !important; width:100% !important;">
 
-  <!-- Controls -->
-  <div id="sim-controls" class="sim-controls">
-    <div class="ctrl">
-      <label for="sim-rate">Send rate</label>
-      <input id="sim-rate" type="range" min="0" max="100" value="50" />
-      <span class="badge" id="sim-rate-val">50%</span>
-    </div>
-    <div class="ctrl">
-      <label for="sim-qmax">Max queue (packets)</label>
-      <input id="sim-qmax" type="range" min="50" max="2000" value="400" />
-      <span class="badge" id="sim-qmax-val">400</span>
-    </div>
-    <div class="ctrl">
-      <label for="sim-rdrop">Random drops</label>
-      <!-- percent slider 0..1% with 0.001% step; default 0.001% -->
-      <input id="sim-rdrop" type="range" min="0" max="1" step="0.001" value="0.001" />
-      <span class="badge" id="sim-rdrop-val">0.001%</span>
-    </div>
-    <div class="ctrl">
-      <label for="sim-bp">Backpressure</label>
-      <input id="sim-bp" type="checkbox" />
-    </div>
-  </div>
+  <div class="agg-row">
+    <div id="agg-body" class="agg-body" style="width:100% !important;">
+      <div id="tb-switches" class="tb-switches under-bio" style="max-width:none !important; width:100% !important;">
+        <div class="tor" id="tor-left" style="width:100% !important;">
+          <div class="tor-title-row" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+            <span class="tor-title">ToR Switch</span>
+            <span class="tor-info-icon" data-tooltip="This is a simplified fat-tree network, similar to the ones I often use in my research. The animation routes packets to my social links; increase the send rate to create congestion, or add a drop rate to simulate loss. The digits next to each indicator show the binary representation of the current value.">ℹ️</span>
+          </div>
+          <div id="torL-rack" class="tb-rack tb-switch"
+               data-bits="{{ bits }}" data-zero-red="{{ zero_red }}">
+            <div class="tb-row"><span class="tb-label">Queue Size</span><div class="tb-bank tb-q"></div><code class="tb-bits tb-q-bits">000000</code><span class="tb-dec tb-q-dec">0</span></div>
+            <div class="tb-row"><span class="tb-label">Throughput</span><div class="tb-bank tb-t"></div><code class="tb-bits tb-t-bits">000000</code><span class="tb-dec tb-t-dec">0</span></div>
+            <div class="tb-row"><span class="tb-label">Packet Drops</span><div class="tb-bank tb-dr"></div><code class="tb-bits tb-dr-bits">000000</code><span class="tb-dec tb-dr-dec">0</span></div>
+          </div>
 
-  <div class="agg-label">Aggregation Switch</div>
+          <svg id="torL-svg" class="tor-svg" xmlns="http://www.w3.org/2000/svg"
+            style="width:100% !important; height:140px !important; max-width:none !important;"
+            height="140" viewBox="0 0 1200 140" preserveAspectRatio="none" aria-hidden="true">
+            <path id="leafL0" class="agg-link" d="M 600,10 C 600,80 20,80 20,130"></path>
+            <path id="leafL1" class="agg-link" d="M 600,10 C 600,80 420,80 420,130"></path>
+            <path id="leafL2" class="agg-link" d="M 600,10 C 600,80 780,80 780,130"></path>
+            <path id="leafL3" class="agg-link" d="M 600,10 C 600,80 1180,80 1180,130"></path>
+          </svg>
 
-  <!-- Aggregation rack -->
-  <div id="agg-rack" class="tb-rack tb-switch"
-       data-bits="{{ bits }}" data-zero-red="{{ zero_red }}">
-    <div class="tb-row">
-      <span class="tb-label">Queue Size</span>
-      <div class="tb-bank tb-q"></div>
-      <code class="tb-bits tb-q-bits">000000</code>
-      <span class="tb-dec tb-q-dec">0</span>
-    </div>
-    <div class="tb-row">
-      <span class="tb-label">Throughput</span>
-      <div class="tb-bank tb-t"></div>
-      <code class="tb-bits tb-t-bits">000000</code>
-      <span class="tb-dec tb-t-dec">0</span>
-    </div>
-    <div class="tb-row">
-      <span class="tb-label">Packet Drops</span>
-      <div class="tb-bank tb-dr"></div>
-      <code class="tb-bits tb-dr-bits">000000</code>
-      <span class="tb-dec tb-dr-dec">0</span>
-    </div>
-  </div>
-
-  <!-- (rest of file unchanged: SVG links, ToR racks, leaves) -->
-  {% comment %} keep the rest of your switches.html as you have it {% endcomment %}
-</div>
-
-
-  <!-- Top fanout (agg -> ToRs) -->
-  <svg id="agg-svg" xmlns="http://www.w3.org/2000/svg"
-       width="100%" height="100" viewBox="0 0 1000 100"
-       preserveAspectRatio="none" aria-hidden="true">
-    <path id="agg-left"  class="agg-link" d="M 500,8 C 500,50 250,50 250,96"></path>
-    <path id="agg-right" class="agg-link" d="M 500,8 C 500,50 750,50 750,96"></path>
-  </svg>
-
-  <div id="tb-switches" class="tb-switches under-bio">
-    <!-- LEFT ToR -->
-    <div class="tor" id="tor-left">
-      <div class="tor-title">ToR Switch 1</div>
-      <div id="torL-rack" class="tb-rack tb-switch"
-           data-bits="{{ bits }}" data-zero-red="{{ zero_red }}">
-        <div class="tb-row"><span class="tb-label">Queue Size</span><div class="tb-bank tb-q"></div><code class="tb-bits tb-q-bits">000000</code><span class="tb-dec tb-q-dec">0</span></div>
-        <div class="tb-row"><span class="tb-label">Throughput</span><div class="tb-bank tb-t"></div><code class="tb-bits tb-t-bits">000000</code><span class="tb-dec tb-t-dec">0</span></div>
-        <div class="tb-row"><span class="tb-label">Packet Drops</span><div class="tb-bank tb-dr"></div><code class="tb-bits tb-dr-bits">000000</code><span class="tb-dec tb-dr-dec">0</span></div>
-      </div>
-
-      <!-- Fanout (ToR-left -> 4 leaves) -->
-      <svg id="torL-svg" class="tor-svg" xmlns="http://www.w3.org/2000/svg"
-           width="100%" height="80" viewBox="0 0 600 80" preserveAspectRatio="none" aria-hidden="true">
-        <path id="leafL0" class="agg-link" d="M 300,8 C 300,44 120,44 120,76"></path>
-        <path id="leafL1" class="agg-link" d="M 300,8 C 300,44 220,44 220,76"></path>
-        <path id="leafL2" class="agg-link" d="M 300,8 C 300,44 380,44 380,76"></path>
-        <path id="leafL3" class="agg-link" d="M 300,8 C 300,44 480,44 480,76"></path>
-      </svg>
-
-      <div class="leaf-row" id="torL-leaves">
-        <a class="leaf" title="Twitter"  href="#" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
-        <a class="leaf" title="GitHub"   href="#" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
-        <a class="leaf" title="LinkedIn" href="#" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
-        <a class="leaf" title="Scholar"  href="#" target="_blank" rel="noopener"><i class="ai ai-google-scholar"></i></a>
+          <div class="leaf-row" id="torL-leaves" style="max-width:900px !important; width:95% !important;">
+            <a class="leaf" title="Email"  href="mailto:tommaso.bonato@inf.ethz.ch" target="_blank" rel="noopener"><i class="fas fa-envelope"></i></a>
+            <a class="leaf" title="GitHub"   href="https://github.com/tommasobo" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+            <a class="leaf" title="LinkedIn" href="https://www.linkedin.com/in/tommaso-bonato-ba937462/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+            <a class="leaf" title="Scholar"  href="https://scholar.google.com/citations?user=j9lY7FAAAAAJ&hl=it" target="_blank" rel="noopener"><i class="ai ai-google-scholar"></i></a>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- RIGHT ToR -->
-    <div class="tor" id="tor-right">
-      <div class="tor-title">ToR Switch 2</div>
-      <div id="torR-rack" class="tb-rack tb-switch"
-           data-bits="{{ bits }}" data-zero-red="{{ zero_red }}">
-        <div class="tb-row"><span class="tb-label">Queue Size</span><div class="tb-bank tb-q"></div><code class="tb-bits tb-q-bits">000000</code><span class="tb-dec tb-q-dec">0</span></div>
-        <div class="tb-row"><span class="tb-label">Throughput</span><div class="tb-bank tb-t"></div><code class="tb-bits tb-t-bits">000000</code><span class="tb-dec tb-t-dec">0</span></div>
-        <div class="tb-row"><span class="tb-label">Packet Drops</span><div class="tb-bank tb-dr"></div><code class="tb-bits tb-dr-bits">000000</code><span class="tb-dec tb-dr-dec">0</span></div>
-      </div>
-
-      <!-- Fanout (ToR-right -> 4 leaves) -->
-      <svg id="torR-svg" class="tor-svg" xmlns="http://www.w3.org/2000/svg"
-           width="100%" height="80" viewBox="0 0 600 80" preserveAspectRatio="none" aria-hidden="true">
-        <path id="leafR0" class="agg-link" d="M 300,8 C 300,44 120,44 120,76"></path>
-        <path id="leafR1" class="agg-link" d="M 300,8 C 300,44 220,44 220,76"></path>
-        <path id="leafR2" class="agg-link" d="M 300,8 C 300,44 380,44 380,76"></path>
-        <path id="leafR3" class="agg-link" d="M 300,8 C 300,44 480,44 480,76"></path>
-      </svg>
-
-      <div class="leaf-row" id="torR-leaves">
-        <a class="leaf" title="Twitter"  href="#" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
-        <a class="leaf" title="GitHub"   href="#" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
-        <a class="leaf" title="LinkedIn" href="#" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
-        <a class="leaf" title="Scholar"  href="#" target="_blank" rel="noopener"><i class="ai ai-google-scholar"></i></a>
+    <div class="agg-controls">
+      <div id="sim-controls" class="sim-controls controls-panel">
+        <div class="ctrl">
+          <label for="sim-rate">Send rate</label>
+          <input id="sim-rate" type="range" min="0" max="100" value="50" />
+          <span class="badge" id="sim-rate-val">50%</span>
+        </div>
+        <div class="ctrl">
+          <label for="sim-rdrop">Drop rate</label>
+          <input id="sim-rdrop" type="range" min="0" max="1" step="0.001" value="0" />
+          <span class="badge" id="sim-rdrop-val">0.000%</span>
+        </div>
       </div>
     </div>
   </div>
