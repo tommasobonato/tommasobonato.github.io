@@ -184,6 +184,9 @@
     <div class="periodical">
       {{ entry.note | strip }}
     </div>
+    {% if entry.highlightnote %}
+      <div class="highlight-note">{{ entry.highlightnote }}</div>
+    {% endif %}
 
     <!-- Links/Buttons -->
     <div class="links">

@@ -1,0 +1,16 @@
+{% assign fa_entries = site.data.first_author | default: [] %}
+{% if fa_entries == empty %}
+  <p class="text-muted" style="margin-top:6px;">Add your first-author entries in <code>_data/first_author.yml</code>.</p>
+{% else %}
+  <ul class="first-author-list">
+    {% for paper in fa_entries %}
+      <li>
+        <strong>{{ paper.title }}</strong>
+        {% if paper.venue %} ({{ paper.venue }}){% endif %}
+        {% if paper.year %} — {{ paper.year }}{% endif %}
+        {% if paper.link %} — <a href="{{ paper.link }}" target="_blank" rel="noopener">paper</a>{% endif %}
+        {% if paper.note %} — {{ paper.note }}{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}

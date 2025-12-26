@@ -1,0 +1,819 @@
+// Easter Eggs Styles - Packet Rocket
+
+// Rocket container
+.packet-rocket {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  transform-origin: center center;
+  will-change: transform;
+
+  .rocket-icon {
+    display: block;
+    font-size: 1.25rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+
+  // Contrail effect
+  .rocket-trail {
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 6px;
+    background: linear-gradient(90deg, transparent, rgba(253, 211, 77, 0.8));
+    border-radius: 3px;
+    filter: blur(2px);
+    opacity: 0.9;
+  }
+
+  &.arrived {
+    opacity: 0;
+    transition: opacity 0.15s ease-out;
+  }
+}
+
+// Pulse effect on Publications link
+.packet-pulse {
+  animation: packet-pulse-anim 0.3s ease-out;
+}
+
+@keyframes packet-pulse-anim {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  50% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.8));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+}
+
+// Reduced motion tooltip
+.packet-tooltip {
+  position: fixed;
+  z-index: 9999;
+  padding: 6px 12px;
+  background: linear-gradient(180deg, #1f2937, #111827);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #e5e7eb;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+// Make hover-name (your name on about page) hoverable with cursor hint
+#hover-name {
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--global-theme-color, #60a5fa);
+  }
+}
+
+// ========================================
+// LEO Mesh Routing Easter Egg
+// ========================================
+
+.leo-mesh-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #1f2937, #111827);
+  color: #e5e7eb;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  line-height: 1;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background: linear-gradient(180deg, #374151, #1f2937);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .toggle-indicator {
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.on {
+      color: #34d399;
+    }
+    &.off {
+      color: #9ca3af;
+    }
+  }
+}
+
+.leo-mesh-overlay {
+  position: fixed;
+  bottom: 75px;
+  right: 20px;
+  z-index: 1099;
+  width: 450px;
+  max-width: calc(100vw - 40px);
+  background: linear-gradient(180deg, #0f172a, #0b1220);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  color: #e5e7eb;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.95);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  overflow: hidden;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.leo-mesh-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.leo-mesh-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.leo-mesh-close {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #f87171;
+  }
+}
+
+#leo-mesh-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #030712;
+}
+
+.leo-mesh-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+}
+
+.leo-mesh-nerd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+
+  input[type="checkbox"] {
+    accent-color: #60a5fa;
+    cursor: pointer;
+  }
+}
+
+.leo-mesh-step-btn {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #374151, #1f2937);
+  color: #e5e7eb;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: linear-gradient(180deg, #4b5563, #374151);
+  }
+}
+
+.leo-mesh-handover {
+  position: absolute;
+  top: 90px;
+  right: 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fcd34d;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+// ========================================
+// Starfield Toggle Button (fixed, bottom-right)
+// ========================================
+
+.starfield-toggle-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 74px; // Next to satellite button
+  z-index: 1100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #1f2937, #111827);
+  color: #e5e7eb;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  line-height: 1;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background: linear-gradient(180deg, #374151, #1f2937);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .toggle-indicator {
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.on {
+      color: #34d399;
+    }
+    &.off {
+      color: #9ca3af;
+    }
+  }
+}
+
+// ========================================
+// LEO Mesh City Search
+// ========================================
+
+.leo-mesh-destination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+}
+
+.leo-mesh-dest-label {
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+.leo-mesh-dest-input {
+  flex: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.3);
+  color: #e5e7eb;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+
+  &:focus {
+    border-color: #60a5fa;
+  }
+
+  &::placeholder {
+    color: #6b7280;
+  }
+}
+
+.leo-mesh-dest-current {
+  color: #f472b6;
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ========================================
+// Mission Terminal Easter Egg
+// ========================================
+
+.mission-term-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 128px; // Next to stars button
+  z-index: 1100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #1f2937, #111827);
+  color: #e5e7eb;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  line-height: 1;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background: linear-gradient(180deg, #374151, #1f2937);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    .toggle-indicator {
+      color: #34d399;
+
+      &::before {
+        content: 'ON';
+      }
+    }
+  }
+
+  .term-icon {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .toggle-indicator {
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #9ca3af;
+
+    &::before {
+      content: 'OFF';
+    }
+  }
+}
+
+.mission-term-overlay {
+  position: fixed;
+  bottom: 75px;
+  right: 20px;
+  z-index: 1099;
+  width: 440px;
+  max-width: calc(100vw - 40px);
+  height: 280px;
+  background: linear-gradient(180deg, #0a0f14, #060a0e);
+  border: 1px solid rgba(100, 255, 150, 0.15);
+  border-radius: 12px;
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(100, 255, 150, 0.08),
+    0 0 20px rgba(100, 255, 150, 0.05);
+  color: #00ff88;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.95);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  // Subtle scanline effect
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.15) 2px,
+      rgba(0, 0, 0, 0.15) 4px
+    );
+    pointer-events: none;
+    z-index: 10;
+    border-radius: 12px;
+  }
+
+  &.reduced-motion {
+    &::before {
+      display: none;
+    }
+
+    .mission-term-input::after {
+      animation: none;
+      opacity: 1;
+    }
+  }
+}
+
+.mission-term-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(100, 255, 150, 0.15);
+  background: rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.mission-term-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #00ff88;
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+}
+
+.mission-term-header-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mission-term-help {
+  background: none;
+  border: 1px solid rgba(100, 255, 150, 0.3);
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  color: #00ff88;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba(100, 255, 150, 0.1);
+    border-color: rgba(100, 255, 150, 0.5);
+  }
+}
+
+.mission-term-close {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #f87171;
+  }
+}
+
+.mission-term-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #a3e4a3;
+
+  // Scrollbar styling
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(100, 255, 150, 0.3);
+    border-radius: 3px;
+  }
+}
+
+.term-line {
+  white-space: pre;
+  min-height: 1.2em;
+
+  &.term-cmd {
+    color: #00ff88;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  &.term-error {
+    color: #f87171;
+  }
+
+  &.term-welcome {
+    color: #60a5fa;
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+}
+
+.mission-term-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid rgba(100, 255, 150, 0.15);
+  background: rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.mission-term-prompt {
+  color: #00ff88;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-shadow: 0 0 6px rgba(0, 255, 136, 0.3);
+}
+
+.mission-term-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e5e7eb;
+  font-family: inherit;
+  font-size: 0.8rem;
+  caret-color: #00ff88;
+
+  &::placeholder {
+    color: #4b5563;
+  }
+}
+
+// Blinking cursor animation (via caret)
+@keyframes term-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+// Reduced motion: disable scanlines and cursor blink handled in .reduced-motion class
+
+// ========================================
+// Birba Gallery Easter Egg
+// ========================================
+
+.birba-gallery-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 182px; // Next to terminal button
+  z-index: 1100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #1f2937, #111827);
+  color: #e5e7eb;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  line-height: 1;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background: linear-gradient(180deg, #374151, #1f2937);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    .toggle-indicator {
+      color: #34d399;
+
+      &::before {
+        content: 'ON';
+      }
+    }
+  }
+
+  .birba-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .toggle-indicator {
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #9ca3af;
+
+    &::before {
+      content: 'OFF';
+    }
+  }
+}
+
+.birba-gallery-overlay {
+  position: fixed;
+  bottom: 75px;
+  right: 20px;
+  z-index: 1099;
+  width: 380px;
+  max-width: calc(100vw - 40px);
+  background: linear-gradient(180deg, #0f172a, #0b1220);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  color: #e5e7eb;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.95);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  overflow: hidden;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  &.reduced-motion {
+    transition: none;
+    
+    .birba-image {
+      transition: none;
+    }
+  }
+}
+
+.birba-gallery-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.birba-gallery-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.birba-gallery-close {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #f87171;
+  }
+}
+
+.birba-gallery-age {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+}
+
+.birba-age-value {
+  color: #fcd34d;
+  font-weight: 600;
+}
+
+.birba-gallery-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  gap: 8px;
+  min-height: 220px;
+}
+
+.birba-image-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  max-height: 240px;
+}
+
+.birba-image {
+  max-width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: opacity 0.15s ease;
+}
+
+.birba-nav {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #374151, #1f2937);
+  color: #e5e7eb;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, transform 0.1s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: linear-gradient(180deg, #4b5563, #374151);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.birba-gallery-counter {
+  text-align: center;
+  padding: 8px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.birba-no-images {
+  color: #6b7280;
+  font-style: italic;
+  padding: 40px 20px;
+  text-align: center;
+}

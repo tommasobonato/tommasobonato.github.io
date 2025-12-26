@@ -2,56 +2,43 @@
   const $  = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-  /* ===== Rocket & Latency (unchanged) ===== */
-  function initRocket(){ const bar=$('#tb-rocketbar'); if(!bar) return;
-    const track=$('.tb-track',bar), rocket=$('.tb-rocket',bar);
-    const update=()=>{ const doc=document.documentElement;
-      const st=doc.scrollTop||window.pageYOffset||0, max=Math.max(1,doc.scrollHeight-doc.clientHeight);
-      const p=Math.max(0,Math.min(1,st/max));
-      track.style.transform=`scaleX(${p})`;
-      rocket.style.transform=`translateX(calc(${(p*100).toFixed(3)}% - 8px))`;
-      bar.style.opacity=p>0?1:0; };
-    update(); addEventListener('scroll',()=>requestAnimationFrame(update),{passive:true});
-    addEventListener('resize',()=>requestAnimationFrame(update));
-  }
+  /* ===== Latency widget ===== */
   function initLatency(){ const lat=$('#tb-latency'); if(!lat) return; let loadMs=0;
-    try{ const nav=performance.getEntriesByType('navigation')[0]; if(nav&&nav.loadEventEnd) loadMs=Math.round(nav.loadEventEnd);}catch(_){}
+    try{ const nav=performance.getEntriesByType('navigation')[0]; if(nav&&nav.loadEventEnd) loadMs=Math.round(nav.loadEventEnd);}catch(_){ }
     if(!loadMs) loadMs=Math.round(performance.now());
-    const DC_EW=.10, ZH_FRA=8.0, LEO=40.0, fmt=v=>v>=100?Math.round(v):(v>=10?v.toFixed(1):v.toFixed(2));
+    const DC_EW=.10, ZRH_FRA=8.0, LEO=40.0, fmt=v=>v>=100?Math.round(v):(v>=10?v.toFixed(1):v.toFixed(2));
+    lat.classList.add('latency-card');
     lat.innerHTML=`<button class="tb-close" aria-label="Close" title="Close">×</button>
       <div class="tb-line"><strong>${loadMs} ms</strong> page load</div>
       <div class="tb-line">≈ <b>${fmt(loadMs/DC_EW)}</b>× DC east–west RTT</div>
-      <div class="tb-line">≈ <b>${fmt(loadMs/ZH_FRA)}</b>× ZH–FRA RTT</div>
+      <div class="tb-line">≈ <b>${fmt(loadMs/ZRH_FRA)}</b>× ZRH–FRA RTT</div>
       <div class="tb-line">≈ <b>${fmt(loadMs/LEO)}</b>× LEO hop</div>`;
+    lat.style.left='18px'; lat.style.bottom='18px'; lat.style.position='fixed';
     requestAnimationFrame(()=>lat.classList.add('show'));
-    const secs=parseInt(lat.dataset.seconds||'10',10);
-    const timer=setTimeout(()=>lat.remove(),Math.max(0,secs)*1000);
-    $('.tb-close',lat).addEventListener('click',()=>{clearTimeout(timer); lat.remove();});
+    const close=()=>{ lat.remove(); };
+    $('.tb-close',lat).addEventListener('click',close);
+    setTimeout(()=>close(),20000);
   }
 
-  /* ===== Deterministic fabric =====
-     - 4 leaves per ToR, each leaf = 100 Mb/s
-     - ToR uplink cap = 200 Mb/s
-     - Agg cap        = 400 Mb/s
-     - Slider = % of EACH leaf’s 100 Mb/s
-     - LOCAL_FRACTION: fraction staying within the same ToR
-     - QUEUE_SLOW: visible growth (low-pass queue)
-     - Backpressure (checkbox): throttles ingress to a ToR as its queue nears full
-  ================================== */
+      /* ===== Deterministic fabric =====
+        - 4 leaves feeding one ToR, each leaf = 100 Mb/s
+        - ToR uplink cap = 200 Mb/s
+        - Slider = % of EACH leaf’s 100 Mb/s
+        - LOCAL_FRACTION: fraction staying within the same ToR
+        - QUEUE_SLOW: visible growth (low-pass queue)
+      ================================== */
   const LEAVES_PER_TOR = 4;
-  const LEAF_CAP_MB    = 100;
+    const LEAF_CAP_MB    = 80;        // lower so 50% rate is sub-cap
   const LOCAL_FRACTION = 0.10;
   const QUEUE_SLOW     = 0.02;       // smaller => slower visible change
-
-  const BP = { enabled:false, start:0.70, end:1.00 }; // start throttling @70% → 0 at 100%
+  let simEnabled       = true;        // hide/show toggle
 
   const SIM = {
     sendRate: 0.50,                  // 0..1
     pktBits:  8000,                  // ~1 KB
     capTorMb: 200,                   // ToR uplink
-    capAggMb: 400,                   // Agg
     maxQ:     400,                   // packets
-    randDrop: 0.00001                // default 0.001% as probability
+    randDrop: 0                      // default 0% probability
   };
   const mbpsToPps = (mbps) => (mbps*1e6) / SIM.pktBits;
 
@@ -64,17 +51,10 @@
   };}
 
   const SW = {
-    agg:  makeSwitch(SIM.capAggMb),
     torL: makeSwitch(SIM.capTorMb),
-    torR: makeSwitch(SIM.capTorMb),
   };
 
   const clamp = (x,min,max)=>Math.max(min,Math.min(max,x));
-  const bpFactor = (qPct)=>{ if(!BP.enabled) return 1;
-    if(qPct<=BP.start) return 1;
-    if(qPct>=BP.end)   return 0;
-    return 1 - (qPct - BP.start)/(BP.end - BP.start); // linear
-  };
 
   // One step with random drops, slowed queue dynamics, integer drop counts
   function stepSwitch(sw, inPps, dt){
@@ -135,32 +115,19 @@
     $('.tb-dr-dec',rack).textContent = String(sw.drops);       // int
   }
   function refreshTelemetry(){
-    const aggRack  = $('#agg-rack');
-    const torLRack = $('#torL-rack');
-    const torRRack = $('#torR-rack');
-    if (aggRack)  updateRack(aggRack,  SW.agg,  SIM.capAggMb);
-    if (torLRack) updateRack(torLRack, SW.torL, SIM.capTorMb);
-    if (torRRack) updateRack(torRRack, SW.torR, SIM.capTorMb);
+    const torRack = $('#torL-rack');
+    if (torRack) updateRack(torRack, SW.torL, SIM.capTorMb);
   }
 
   /* ===== Controls ===== */
   function initControls(){
     const rate = $('#sim-rate'), rateVal = $('#sim-rate-val');
-    const qmax = $('#sim-qmax'), qmaxVal = $('#sim-qmax-val');
     const rdp  = $('#sim-rdrop'), rdpVal = $('#sim-rdrop-val');
-    const bp   = $('#sim-bp');
 
     if (rate){
       rate.addEventListener('input', e=>{
         SIM.sendRate = (+e.target.value)/100;
         rateVal.textContent = `${Math.round(SIM.sendRate*100)}%`;
-      });
-    }
-    if (qmax){
-      qmax.addEventListener('input', e=>{
-        SIM.maxQ = parseInt(e.target.value,10);
-        SW.agg.maxQ = SW.torL.maxQ = SW.torR.maxQ = SIM.maxQ;
-        qmaxVal.textContent = String(SIM.maxQ);
       });
     }
     if (rdp){
@@ -169,33 +136,24 @@
         SIM.randDrop = pct/100;                    // % -> probability
         rdpVal.textContent = `${pct.toFixed(3)}%`;
       });
-      SIM.randDrop = parseFloat(rdp.value)/100;    // init
-    }
-    if (bp){
-      BP.enabled = bp.checked || false;
-      bp.addEventListener('change', e=>{ BP.enabled = !!e.target.checked; });
+      rdp.value = '0';
+      SIM.randDrop = 0;
+      rdpVal.textContent = '0.000%';
     }
   }
 
   /* ===== Geometry (curves) – unchanged ===== */
   const curves = {};
+  let particles = [];
   function sizeWrapperToBio(){ const wrap=$('#agg-wrapper'); if(!wrap) return;
-    const article=wrap.closest('article'); const pic=article?article.querySelector('.profile.float-right, .profile.float-left, .profile'):null;
-    wrap.style.width='100%'; wrap.style.marginLeft=''; wrap.style.marginRight='';
-    if(article && pic){ const ar=article.getBoundingClientRect(), pr=pic.getBoundingClientRect();
-      const textWidth=Math.round(pr.left-ar.left-16); if(textWidth>200){ wrap.style.width=textWidth+'px'; wrap.style.marginLeft='0'; wrap.style.marginRight='auto'; } } }
+    const wide = window.innerWidth >= 768;
+    wrap.style.width='100%';
+    wrap.style.maxWidth='800px';
+    wrap.style.marginLeft = wide ? '0' : 'auto';
+    wrap.style.marginRight='auto';
+    wrap.style.alignItems = wide ? 'flex-start' : 'center'; }
   const setPath=(id,d)=>{ const el=$(id.startsWith('#')?id:'#'+id); if(el) el.setAttribute('d',d); };
   const saveCurve=(k,p0,p1,p2,p3)=>{ curves[k]={p0,p1,p2,p3}; };
-  function redrawAggTop(){ const wrap=$('#agg-wrapper'), svg=$('#agg-svg'), leftRack=$('#torL-rack'), rightRack=$('#torR-rack');
-    if(!wrap||!svg||!(leftRack&&rightRack)) return;
-    const wr=wrap.getBoundingClientRect(), lr=leftRack.getBoundingClientRect(), rr=rightRack.getBoundingClientRect(), svgr=svg.getBoundingClientRect();
-    const W=wr.width, H=svgr.height, sx=W/2, sy=8, lx=(lr.left+lr.width/2)-wr.left, rx=(rr.left+rr.width/2)-wr.left, by=H-4, midY=(sy+by)/2;
-    const dL=`M ${sx},${sy} C ${sx},${midY} ${lx},${midY} ${lx},${by}`;
-    const dR=`M ${sx},${sy} C ${sx},${midY} ${rx},${midY} ${rx},${by}`;
-    svg.setAttribute('viewBox',`0 0 ${Math.max(1,W)} ${Math.max(1,H)}`);
-    setPath('agg-left',dL); setPath('agg-right',dR);
-    saveCurve('agg-left',{x:sx,y:sy},{x:sx,y:midY},{x:lx,y:midY},{x:lx,y:by});
-    saveCurve('agg-right',{x:sx,y:sy},{x:sx,y:midY},{x:rx,y:midY},{x:rx,y:by}); }
   function redrawTor(torRackId, svgId, pathPrefix){
     const svg=$('#'+svgId); const rack=$('#'+torRackId); if(!svg||!rack) return;
     const svgr=svg.getBoundingClientRect(); const W=svgr.width, H=svgr.height;
@@ -207,43 +165,41 @@
       const d=`M ${sx},${sy} C ${sx},${midY} ${ex},${midY} ${ex},${by}`;
       setPath(pathPrefix+i,d);
       saveCurve(pathPrefix+i,{x:sx,y:sy},{x:sx,y:midY},{x:ex,y:midY},{x:ex,y:by}); }); }
-  function redrawAll(){ redrawAggTop(); redrawTor('torL-rack','torL-svg','leafL'); redrawTor('torR-rack','torR-svg','leafR'); }
+  function redrawAll(){ redrawTor('torL-rack','torL-svg','leafL'); }
 
   /* ===== Packet engine (visual only; spawn ~ sendRate) ===== */
   function cubic(p0,p1,p2,p3,t){ const u=1-t,tt=t*t,uu=u*u,uuu=uu*u,ttt=tt*t;
     return { x:uuu*p0.x+3*uu*t*p1.x+3*u*tt*p2.x+ttt*p3.x, y:uuu*p0.y+3*uu*t*p1.y+3*u*tt*p2.y+ttt*p3.y }; }
+  function clearParticles(){ particles.forEach(p=>p.el?.remove()); particles.length=0; }
+
   function packetEngine(){
-    const svgTop=$('#agg-svg'), svgL=$('#torL-svg'), svgR=$('#torR-svg'); if(!svgTop||!svgL||!svgR) return;
-    const MAX_PKTS=180; const particles=[];
+    const svgL=$('#torL-svg'); if(!svgL) return;
+    const MAX_PKTS=90;
     function spawn(key, svg, reverse){
-      if(!curves[key] || particles.length>=MAX_PKTS || SIM.sendRate<=0) return;
+      if(!simEnabled || !curves[key] || particles.length>=MAX_PKTS || SIM.sendRate<=0) return;
       const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
       c.setAttribute('class','pkt'); c.setAttribute('r','4'); svg.appendChild(c);
       particles.push({ el:c, key, start:performance.now(), dur:(3000+Math.random()*2000), dir: reverse?-1:1, svg });
     }
     const paths = [
-      ['agg-left',svgTop,false], ['agg-left',svgTop,true],
-      ['agg-right',svgTop,false],['agg-right',svgTop,true],
       ['leafL0',svgL,false],['leafL0',svgL,true],
       ['leafL1',svgL,false],['leafL1',svgL,true],
       ['leafL2',svgL,false],['leafL2',svgL,true],
       ['leafL3',svgL,false],['leafL3',svgL,true],
-      ['leafR0',svgR,false],['leafR0',svgR,true],
-      ['leafR1',svgR,false],['leafR1',svgR,true],
-      ['leafR2',svgR,false],['leafR2',svgR,true],
-      ['leafR3',svgR,false],['leafR3',svgR,true],
     ];
+    const timers = [];
     function scheduleLoop(key, svg, rev){
-      const min=120, max=1100;
-      const interval = (max - (max - min)*SIM.sendRate) + 120*Math.random();
-      if (SIM.sendRate > 0) spawn(key, svg, rev);
-      setTimeout(()=>scheduleLoop(key, svg, rev), interval);
+      const min=220, max=1200;
+      const interval = (max - (max - min)*SIM.sendRate) + 180*Math.random();
+      if (SIM.sendRate > 0 && simEnabled) spawn(key, svg, rev);
+      const t = setTimeout(()=>scheduleLoop(key, svg, rev), interval);
+      timers.push(t);
     }
     paths.forEach(p=>scheduleLoop(...p));
     const evalC=(c,t)=>cubic(c.p0,c.p1,c.p2,c.p3,t);
     function tick(now){
       for(let i=particles.length-1;i>=0;i--){
-        const p=particles[i], c=curves[p.key]; if(!c){ p.el.remove(); particles.splice(i,1); continue; }
+        const p=particles[i], c=curves[p.key]; if(!simEnabled || !c){ p.el.remove(); particles.splice(i,1); continue; }
         const t=Math.min(1,Math.max(0,(now-p.start)/p.dur)), tt=p.dir===-1?1-t:t;
         const pos=evalC(c,tt); p.el.setAttribute('cx',pos.x.toFixed(2)); p.el.setAttribute('cy',pos.y.toFixed(2));
         if(t>=1){ p.el.remove(); particles.splice(i,1); }
@@ -251,7 +207,8 @@
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
-    addEventListener('resize',()=>{ particles.forEach(p=>p.el.remove()); particles.length=0; },{passive:true});
+    addEventListener('resize',()=>{ clearParticles(); },{passive:true});
+    return timers;
   }
 
   /* ===== Simulation loop ===== */
@@ -260,25 +217,16 @@
     function step(){
       const now = performance.now(), dt = Math.max(0.001, (now - last)/1000); last = now;
 
+      if (!simEnabled) { requestAnimationFrame(step); return; }
+
       // Per-leaf steady send (Mb/s)
       const leafMb = LEAF_CAP_MB * SIM.sendRate;
-      const toCoreMb = LEAVES_PER_TOR * leafMb * (1 - LOCAL_FRACTION); // per ToR
+      const ingressMb = LEAVES_PER_TOR * leafMb;
 
-      // Backpressure factors based on current queue occupancy
-      const fL = bpFactor(SW.torL.maxQ ? SW.torL.q / SW.torL.maxQ : 0);
-      const fR = bpFactor(SW.torR.maxQ ? SW.torR.q / SW.torR.maxQ : 0);
+      const inPps = mbpsToPps(ingressMb);
 
-      const inLpps = mbpsToPps(toCoreMb * fL);
-      const inRpps = mbpsToPps(toCoreMb * fR);
-
-      // ToRs process ingress
-      const servedL = stepSwitch(SW.torL, inLpps, dt);
-      const servedR = stepSwitch(SW.torR, inRpps, dt);
-      const outLpps  = servedL / dt;
-      const outRpps  = servedR / dt;
-
-      // Agg receives from both ToRs
-      stepSwitch(SW.agg, outLpps + outRpps, dt);
+      // ToR processes ingress
+      stepSwitch(SW.torL, inPps, dt);
 
       refreshTelemetry();
       requestAnimationFrame(step);
@@ -286,9 +234,37 @@
     requestAnimationFrame(step);
   }
 
+  /* ===== Toggle visibility ===== */
+  function initVisibilityToggle(){
+    const btn = $('#sim-visibility');
+    const wrapper = $('#agg-wrapper');
+    const spacer = $('#agg-spacer');
+    const body = $('#agg-body');
+    const controls = $('.controls-panel');
+    if(!btn || !wrapper) return;
+    let particleLoops = [];
+    const setState=(on)=>{
+      simEnabled = on;
+      wrapper.classList.toggle('agg-hidden', !on);
+      if(spacer) spacer.style.marginBottom = on ? '2rem' : '4rem';
+      btn.textContent = on ? 'Easter Egg On' : 'Easter Egg Off';
+      if (!on) {
+        clearParticles();
+        particleLoops.forEach(clearTimeout);
+        particleLoops = [];
+      } else {
+        // restart packet engine when turning on
+        clearParticles();
+        redrawAll();
+      }
+    };
+    btn.addEventListener('click',()=>{ setState(!simEnabled); });
+    setState(false);
+  }
+
   /* ===== Init ===== */
   document.addEventListener('DOMContentLoaded', () => {
-    initRocket(); initLatency(); initControls();
+    initLatency(); initControls(); initVisibilityToggle();
     sizeWrapperToBio(); redrawAll();
     setTimeout(()=>{ redrawAll(); packetEngine(); startSimulation(); }, 150);
   });
