@@ -353,7 +353,14 @@
       }
     };
     btn.addEventListener("click", () => {
+      const wasOff = !simEnabled;
       setState(!simEnabled);
+      // Scroll to fat tree when turning on
+      if (wasOff && wrapper) {
+        setTimeout(() => {
+          wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 50);
+      }
     });
     setState(false);
   }
