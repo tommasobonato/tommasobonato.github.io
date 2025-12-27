@@ -4,10 +4,13 @@
     {%- assign valid_images = "" | split: "" -%}
     {%- for file in birba_images -%}
       {%- assign ext = file.extname | downcase -%}
+      {%- assign basename = file.basename -%}
       {%- unless file.path contains 'Zone.Identifier' -%}
-        {%- if ext == '.jpg' or ext == '.jpeg' or ext == '.png' or ext == '.gif' or ext == '.webp' -%}
-          {%- assign valid_images = valid_images | push: file -%}
-        {%- endif -%}
+        {%- unless basename contains '-480' or basename contains '-800' or basename contains '-1400' -%}
+          {%- if ext == '.jpg' or ext == '.jpeg' or ext == '.png' or ext == '.gif' or ext == '.webp' -%}
+            {%- assign valid_images = valid_images | push: file -%}
+          {%- endif -%}
+        {%- endunless -%}
       {%- endunless -%}
     {%- endfor -%}
     {%- for file in valid_images -%}
