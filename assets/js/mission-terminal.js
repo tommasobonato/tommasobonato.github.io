@@ -118,6 +118,19 @@
         "  Status: DOCKED 🚀",
       ];
     },
+
+    // Hidden command - not in help
+    "whois gf": () => {
+      return [
+        "",
+        "  ╔════════════════════════════════════╗",
+        "  ║                                    ║",
+        "  ║         The Amazing Huan           ║",
+        "  ║                                    ║",
+        "  ╚════════════════════════════════════╝",
+        "",
+      ];
+    },
   };
 
   // Type output with effect (or instant if reduced motion)
