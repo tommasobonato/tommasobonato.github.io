@@ -433,10 +433,19 @@ body:not(.space-on) .starfield-nav a::after {
 .latency-card .tb-line {
   margin: 2px 0;
 }
-/* Hide latency card on small screens to avoid overlap with easter egg buttons */
+/* Smaller latency card on small screens */
 @media (max-width: 600px) {
   .latency-card {
-    display: none !important;
+    width: 140px;
+    font-size: 0.7rem;
+    padding: 6px 8px;
+    left: 10px;
+    bottom: 10px;
+  }
+  .latency-card .tb-close {
+    font-size: 0.75rem;
+    top: 2px;
+    right: 4px;
   }
 }
 
