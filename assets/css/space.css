@@ -1,7 +1,10 @@
 /* Starfield overlay */
 #starfield {
   position: fixed;
-  inset: 0;
+  top: -30px;
+  left: -30px;
+  right: -30px;
+  bottom: -30px;
   pointer-events: none; /* don't block clicks */
   opacity: 0;
   transition: opacity 0.35s ease;
@@ -74,12 +77,15 @@ body.space-on #starfield {
   }
 }
 #starfield {
+  animation: none;
+}
+body.space-on #starfield {
   animation:
     drift 90s linear infinite,
     twinkle 3s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  #starfield {
+  body.space-on #starfield {
     animation: none;
   }
 }

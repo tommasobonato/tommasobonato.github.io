@@ -1,5 +1,13 @@
 // No <script> tags here
 (function () {
+  // Create starfield element
+  function createStarfieldElement() {
+    if (document.getElementById("starfield")) return;
+    const starfield = document.createElement("div");
+    starfield.id = "starfield";
+    document.body.appendChild(starfield);
+  }
+
   // Global toggle used by fixed button
   window.toggleStarfield = function () {
     document.body.classList.toggle("space-on");
@@ -42,8 +50,54 @@
 
   // Init button on DOMContentLoaded
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", createStarfieldButton);
+    document.addEventListener("DOMContentLoaded", () => {
+      createStarfieldElement();
+      createStarfieldButton();
+      initParallax();
+    });
   } else {
+    createStarfieldElement();
     createStarfieldButton();
+    initParallax();
+  }
+
+  // Parallax effect for 3D depth
+  function initParallax() {
+    const starfield = document.getElementById("starfield");
+    if (!starfield) return;
+
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    document.addEventListener(
+      "mousemove",
+      (e) => {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        targetX = (e.clientX - centerX) / centerX;
+        targetY = (e.clientY - centerY) / centerY;
+      },
+      { passive: true }
+    );
+
+    function animate() {
+      // Smooth interpolation
+      currentX += (targetX - currentX) * 0.05;
+      currentY += (targetY - currentY) * 0.05;
+
+      // Apply parallax transform (subtle shift)
+      const moveX = currentX * 15;
+      const moveY = currentY * 10;
+      starfield.style.transform = `translate(${moveX}px, ${moveY}px)`;
+
+      requestAnimationFrame(animate);
+    }
+
+    // Only run parallax if motion is allowed
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      animate();
+    }
   }
 })();
