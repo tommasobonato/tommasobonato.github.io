@@ -31,7 +31,7 @@
     "San Francisco": { angle: -Math.PI * 0.55, lat: 37.77, lon: -122.42 },
     "São Paulo": { angle: -Math.PI * 0.65, lat: -23.55, lon: -46.63 },
     Mumbai: { angle: Math.PI * 0.25, lat: 19.08, lon: 72.88 },
-    Beijing: { angle: Math.PI * 0.5, lat: 39.9, lon: 116.41 },
+    Beijing: { angle: Math.PI * 0.4, lat: 39.9, lon: 116.41 },
     Paris: { angle: -Math.PI * 0.12, lat: 48.86, lon: 2.35 },
     Berlin: { angle: -Math.PI * 0.08, lat: 52.52, lon: 13.41 },
     Moscow: { angle: Math.PI * 0.1, lat: 55.76, lon: 37.62 },
@@ -101,7 +101,7 @@
     } catch (e) {
       console.log("Geo detection failed, using default");
     }
-    return "New York";
+    return "Beijing";
   }
 
   function findClosestCity(lat, lon) {
@@ -177,7 +177,7 @@
   function getGroundStationPos(gs) {
     const cx = CANVAS_W / 2;
     const cy = CANVAS_H / 2;
-    const rimRadius = ORBIT_RADII[NUM_PLANES - 1] + 20;
+    const rimRadius = ORBIT_RADII[NUM_PLANES - 1] + 10;
     return {
       x: cx + Math.cos(gs.angle) * rimRadius,
       y: cy + Math.sin(gs.angle) * rimRadius,
@@ -414,7 +414,9 @@
       ctx.font = "10px system-ui, sans-serif";
       ctx.fillStyle = "#e5e7eb";
       ctx.textAlign = "center";
-      ctx.fillText(gs.name, pos.x, pos.y + 18);
+      // Position label above if station is in bottom half
+      const labelOffset = pos.y > CANVAS_H / 2 ? -12 : 18;
+      ctx.fillText(gs.name, pos.x, pos.y + labelOffset);
     }
 
     // Nerd mode stats
@@ -578,7 +580,11 @@
 
     // Detect user location if not already set
     if (destCurrentLabel.textContent === "Loading...") {
-      const detectedCity = await detectUserCity();
+      let detectedCity = await detectUserCity();
+      // If same as origin (Zurich), use Beijing instead
+      if (detectedCity === "Zurich") {
+        detectedCity = "Beijing";
+      }
       setDestinationCity(detectedCity);
     }
 
