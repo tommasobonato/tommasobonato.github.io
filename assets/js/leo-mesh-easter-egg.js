@@ -477,7 +477,7 @@
     toggleBtn = document.createElement("button");
     toggleBtn.id = "leo-mesh-toggle";
     toggleBtn.className = "leo-mesh-toggle";
-    toggleBtn.innerHTML = '🛰️<span class="toggle-indicator off">OFF</span>';
+    toggleBtn.innerHTML = '<span class="easter-icon">🛰️</span><span class="toggle-indicator off">OFF</span>';
     toggleBtn.title = "LEO Mesh Routing";
     toggleBtn.addEventListener("click", toggleOverlay);
     document.body.appendChild(toggleBtn);
@@ -569,11 +569,13 @@
     // Close other overlays first (mutually exclusive, except stars)
     if (window.closeMissionTerminal) window.closeMissionTerminal();
     if (window.closeBirbaGallery) window.closeBirbaGallery();
+    if (window.closePacketTrails) window.closePacketTrails();
+    if (window.closeFatTree) window.closeFatTree();
 
     isOpen = true;
     overlay.classList.add("open");
     toggleBtn.classList.add("active");
-    toggleBtn.innerHTML = '🛰️<span class="toggle-indicator on">ON</span>';
+    toggleBtn.innerHTML = '<span class="easter-icon">🛰️</span><span class="toggle-indicator on">ON</span>';
     initSatellites();
     previousPath = [];
     currentPath = [];
@@ -600,16 +602,22 @@
     isOpen = false;
     overlay.classList.remove("open");
     toggleBtn.classList.remove("active");
-    toggleBtn.innerHTML = '🛰️<span class="toggle-indicator off">OFF</span>';
+    toggleBtn.innerHTML = '<span class="easter-icon">🛰️</span><span class="toggle-indicator off">OFF</span>';
     stopAnimation();
   }
 
   // Expose close function globally for other easter eggs
   window.closeLeoMesh = closeOverlay;
 
+  // Mark easter eggs as ready (prevents FOUC)
+  function markEgReady() {
+    document.documentElement.classList.add("eg-ready");
+  }
+
   // === Init ===
   function init() {
     createUI();
+    markEgReady();
   }
 
   if (document.readyState === "loading") {

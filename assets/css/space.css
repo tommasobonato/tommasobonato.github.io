@@ -1,4 +1,305 @@
-/* Starfield overlay */
+/* ===== ANTI-FOUC: Hide space elements until JS initializes ===== */
+/* Elements are hidden by default; JS adds .space-ready to html to reveal them */
+html:not(.space-ready) #starfield,
+html:not(.space-ready) #space-nebula,
+html:not(.space-ready) #space-galaxy,
+html:not(.space-ready) .space-planet,
+html:not(.space-ready) .space-planet-badge,
+html:not(.space-ready) .space-datacenter,
+html:not(.space-ready) .starfield-toggle-btn {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* ===== GALAXY LAYER (deepest background) ===== */
+#space-galaxy {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  z-index: 9996;
+  width: 55vw;
+  height: 55vw;
+  max-width: 700px;
+  max-height: 700px;
+  min-width: 300px;
+  min-height: 300px;
+  top: 10%;
+  left: 55%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  transform: rotate(15deg);
+}
+body.space-on #space-galaxy {
+  opacity: 0.12;
+}
+
+/* Tablet: reduce galaxy */
+@media (max-width: 1024px) {
+  #space-galaxy {
+    width: 45vw;
+    height: 45vw;
+    top: 15%;
+    left: 50%;
+  }
+  body.space-on #space-galaxy {
+    opacity: 0.09;
+  }
+}
+
+/* Mobile: very faint or hide */
+@media (max-width: 768px) {
+  #space-galaxy {
+    width: 40vw;
+    height: 40vw;
+    min-width: 200px;
+    min-height: 200px;
+    top: 5%;
+    left: 60%;
+  }
+  body.space-on #space-galaxy {
+    opacity: 0.06;
+  }
+}
+
+/* Very small screens: hide galaxy */
+@media (max-width: 480px) {
+  #space-galaxy {
+    display: none;
+  }
+}
+
+/* ===== NEBULA LAYER (behind stars) ===== */
+#space-nebula {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 9997;
+  background:
+    /* Purple/blue nebula cloud - top right */
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(100, 80, 180, 0.11) 0%, transparent 70%),
+    /* Teal/cyan nebula - bottom left */ radial-gradient(ellipse 50% 60% at 10% 80%, rgba(60, 140, 160, 0.09) 0%, transparent 65%),
+    /* Pink/magenta accent - center left */ radial-gradient(ellipse 40% 35% at 20% 40%, rgba(160, 80, 120, 0.07) 0%, transparent 60%),
+    /* Deep blue - bottom right */ radial-gradient(ellipse 55% 45% at 75% 70%, rgba(40, 60, 140, 0.09) 0%, transparent 65%),
+    /* Subtle warm glow - top left */ radial-gradient(ellipse 35% 40% at 5% 10%, rgba(140, 100, 80, 0.055) 0%, transparent 55%);
+  mix-blend-mode: screen;
+}
+body.space-on #space-nebula {
+  opacity: 1;
+}
+
+/* Mobile: reduce nebula intensity */
+@media (max-width: 768px) {
+  #space-nebula {
+    background: radial-gradient(ellipse 70% 50% at 80% 20%, rgba(100, 80, 180, 0.085) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 15% 75%, rgba(60, 140, 160, 0.065) 0%, transparent 55%);
+  }
+}
+
+/* ===== PLANET LAYERS ===== */
+.space-planet {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 9998;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+body.space-on .space-planet {
+  opacity: 1;
+}
+
+/* Saturn Left - positioned to peek from left edge */
+.space-planet-left {
+  width: 180px;
+  height: 110px;
+  left: -60px;
+  top: 18vh;
+  opacity: 0;
+  transform: rotate(-15deg);
+}
+body.space-on .space-planet-left {
+  opacity: 0.14;
+}
+
+/* Saturn Right - positioned to peek from right edge, lower */
+/* Now using blue planet (square aspect ratio) */
+.space-planet-right {
+  width: 100px;
+  height: 100px;
+  right: -35px;
+  top: 55vh;
+  opacity: 0;
+  transform: rotate(8deg);
+}
+body.space-on .space-planet-right {
+  opacity: 0.13;
+}
+
+/* Tablet: reduce planet size and opacity */
+@media (max-width: 1024px) {
+  .space-planet-left {
+    width: 140px;
+    height: 85px;
+    left: -55px;
+    top: 15vh;
+  }
+  body.space-on .space-planet-left {
+    opacity: 0.1;
+  }
+  .space-planet-right {
+    width: 80px;
+    height: 80px;
+    right: -30px;
+  }
+  body.space-on .space-planet-right {
+    opacity: 0.09;
+  }
+}
+
+/* Mobile: hide planets to avoid clutter */
+@media (max-width: 768px) {
+  .space-planet {
+    display: none;
+  }
+}
+
+/* ===== SATURN BADGE (visible on all screens) ===== */
+.space-planet-badge {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 1; /* Below content */
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: clamp(64px, 8vw, 120px);
+  height: clamp(40px, 5vw, 75px);
+  top: max(80px, 10vh); /* Below navbar */
+  right: max(8px, calc((100vw - min(100vw - 32px, 1200px)) / 2 - 60px));
+  transform: rotate(12deg);
+}
+body.space-on .space-planet-badge {
+  opacity: 0.09;
+}
+
+/* Tablet/Desktop: slightly larger and more visible */
+@media (min-width: 769px) {
+  .space-planet-badge {
+    width: 100px;
+    height: 62px;
+    top: 12vh;
+    right: calc((100vw - min(100vw - 48px, 1140px)) / 2 - 50px);
+  }
+  body.space-on .space-planet-badge {
+    opacity: 0.11;
+  }
+}
+
+/* Large screens: push further out */
+@media (min-width: 1400px) {
+  .space-planet-badge {
+    right: calc((100vw - 1140px) / 2 - 80px);
+  }
+}
+
+/* No animation for badge */
+@media (prefers-reduced-motion: reduce) {
+  .space-planet-badge {
+    transition: none;
+  }
+}
+
+/* ===== DATACENTER RACK (desktop only, JS-controlled drift) ===== */
+.space-datacenter {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 1; /* Behind content but above background */
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 60px;
+  height: 90px;
+  left: 0;
+  top: 0;
+  display: none; /* Hidden by default */
+  will-change: transform;
+}
+body.space-on .space-datacenter {
+  opacity: 0.22; /* Increased for better visibility */
+}
+
+/* Only show datacenter on desktop */
+@media (min-width: 1024px) {
+  .space-datacenter {
+    display: block;
+  }
+}
+
+/* Larger screens: slightly bigger, slightly more visible */
+@media (min-width: 1400px) {
+  .space-datacenter {
+    width: 70px;
+    height: 105px;
+  }
+  body.space-on .space-datacenter {
+    opacity: 0.28;
+  }
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .space-datacenter {
+    transform: translate(20px, 100px) rotate(-12deg) !important;
+  }
+}
+
+/* ===== RACK TOOLTIP ===== */
+.rack-tooltip {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10001;
+  background: rgba(20, 20, 40, 0.95);
+  color: #e0e8ff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: "Fira Code", "Consolas", monospace;
+  white-space: nowrap;
+  box-shadow:
+    0 2px 12px rgba(0, 100, 255, 0.3),
+    0 0 20px rgba(100, 150, 255, 0.15);
+  border: 1px solid rgba(100, 150, 255, 0.3);
+  transform: translateX(-50%) translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+.rack-tooltip.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.rack-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(20, 20, 40, 0.95);
+}
+
+/* ===== STARFIELD (existing, unchanged logic) ===== */
 #starfield {
   position: fixed;
   top: -30px;
@@ -86,6 +387,44 @@ body.space-on #starfield {
 }
 @media (prefers-reduced-motion: reduce) {
   body.space-on #starfield {
+    animation: none;
+  }
+  /* Disable any planet drift animation under reduced motion */
+  body.space-on .space-planet {
+    animation: none;
+  }
+}
+
+/* ===== GENTLE PLANET DRIFT (optional subtle motion) ===== */
+@keyframes planet-drift-left {
+  0%,
+  100% {
+    transform: rotate(-15deg) translate(0, 0);
+  }
+  50% {
+    transform: rotate(-15deg) translate(3px, 5px);
+  }
+}
+@keyframes planet-drift-right {
+  0%,
+  100% {
+    transform: rotate(8deg) translate(0, 0);
+  }
+  50% {
+    transform: rotate(8deg) translate(-3px, 5px);
+  }
+}
+
+body.space-on .space-planet-left {
+  animation: planet-drift-left 25s ease-in-out infinite;
+}
+body.space-on .space-planet-right {
+  animation: planet-drift-right 30s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.space-on .space-planet-left,
+  body.space-on .space-planet-right {
     animation: none;
   }
 }
