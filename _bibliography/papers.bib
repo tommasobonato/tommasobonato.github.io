@@ -1,6 +1,54 @@
 ---
 ---
 
+@article{bonato2025smartt,
+  abbr        = {arXiv},
+  type        = {article},
+  author      = {Tommaso Bonato and Abdul Kabbani and Daniele De Sensi and Rong Pan and Yanfang Le and Costin Raiciu and Mark Handley and Timo Schneider and Nils Blach and Ahmad Ghalayini and Daniel Alves and Michael Papamichael and Adrian Caulfield and Torsten Hoefler},
+  title       = {SMaRTT: Sender-based Marked Rapidly-adapting Trimmed & Timed Transport},
+  year        = {2025},
+  tags        = {networking;congestion control;transport},
+  arxiv       = {https://arxiv.org/abs/2501.XXXXX},
+  note        = {Preprint},
+  selected={false}
+}
+
+@article{hu2025demystifying,
+  abbr        = {HOTI'25},
+  type        = {article},
+  author      = {Zhiyi Hu and Siyuan Shen and Tommaso Bonato and Sylvain Jeaugey and Cedell Alexander and Eric Spada and James Dinan and Jeff Hammond and Torsten Hoefler},
+  title       = {Demystifying NCCL: An In-depth Analysis of GPU Communication Protocols and Algorithms},
+  year        = {2025},
+  month       = {08},
+  tags        = {ai;networking;collective;nccl},
+  url         = {hu-demystifying-nccl.pdf},
+  arxiv       = {https://arxiv.org/abs/2507.04786},
+  doi         = {10.48550/arXiv.2507.04786},
+  slides      = {hu-demystifying-nccl-slides.pdf},
+  abstract    = {The NVIDIA Collective Communication Library (NCCL) is a critical software layer enabling high-performance collectives on large-scale GPU clusters. Despite being open source with a documented API, its internal design remains largely opaque. The orchestration of communication channels, selection of protocols, and handling of memory movement across devices and nodes are not well understood, making it difficult to analyze performance or identify bottlenecks. This paper presents a comprehensive analysis of NCCL, focusing on its communication protocol variants (Simple, LL, and LL128), mechanisms governing intra-node and inter-node data movement, and ring- and tree-based collective communication algorithms. The insights obtained from this study serve as the foundation for ATLAHS, an application-trace-driven network simulation toolchain capable of accurately reproducing NCCL communication patterns in large-scale AI training workloads. By demystifying NCCL's internal architecture, this work provides guidance for system researchers and performance engineers working to optimize or simulate collective communication at scale.},
+  publisher   = {IEEE Press},
+  booktitle   = {Proceedings of the 32nd Annual Symposium on High-Performance Interconnects (HOTI'25)},
+  location    = {Virtual Event},
+  selected={false}
+}
+
+@inproceedings{desensi2025bine,
+  abbr        = {SC'25},
+  type        = {inproceedings},
+  author      = {Daniele De Sensi and Saverio Pasqualoni and Lorenzo Piarulli and Tommaso Bonato and Seydou Ba and Matteo Turisini and Jens Domke and Torsten Hoefler},
+  title       = {Bine Trees: Enhancing Collective Operations by Optimizing Communication Locality},
+  year        = {2025},
+  month       = {11},
+  tags        = {ai;networking;collective;nccl},
+  url         = {2025_bine.pdf},
+  arxiv       = {https://arxiv.org/abs/2508.17311},
+  doi         = {10.48550/arXiv.2508.17311},
+  abstract    = {Communication locality plays a key role in the performance of collective operations on large HPC systems, especially on oversubscribed networks where groups of nodes are fully connected internally but sparsely linked through global connections. We present Bine (binomial negabinary) trees, a family of collective algorithms that improve communication locality. Bine trees maintain the generality of binomial trees and butterflies while cutting global-link traffic by up to 33%. We implement eight Bine-based collectives and evaluate them on four large-scale supercomputers with Dragonfly, Dragonfly+, oversubscribed fat-tree, and torus topologies, achieving up to 5x speedups and consistent reductions in global-link traffic across different vector sizes and node counts.},
+  booktitle   = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC'25)},
+  location    = {St. Louis, MO, USA},
+  selected={false}
+}
+
 @inproceedings{shen2025atlahs,
   abbr        = {SC'25},
   type        = {inproceedings},
@@ -14,7 +62,7 @@
   arxiv       = {https://arxiv.org/abs/2505.08936},
   doi         = {10.48550/arXiv.2505.08936},
   booktitle   = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC'25)},
-  selected    = {true}
+  selected={true}
 }
 
 @inproceedings{bonato2025uno,
@@ -29,7 +77,7 @@
   arxiv       = {https://arxiv.org/abs/2510.15802},
   doi         = {10.1145/3712285.3759884},
   booktitle   = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC'25)},
-  selected    = {true}
+  selected={true}
 }
 
 @article{bonato2026flowcut,
@@ -44,7 +92,7 @@
   arxiv       = {https://arxiv.org/abs/2506.21406},
   doi         = {10.48550/arXiv.2506.21406},
   journal     = {IEEE/ACM Transactions on Networking},
-  selected    = {true}
+  selected={true}
 }
 
 @inproceedings{bonato2026reps,
@@ -59,7 +107,7 @@
   arxiv       = {https://arxiv.org/abs/2407.21625},
   doi         = {10.1145/3767295.3769320},
   booktitle   = {Proceedings of the European Conference on Computer Systems (EuroSys'26)},
-  selected    = {true}
+  selected={true}
 }
 
 @inproceedings{hoefler2022hammingmesh,
@@ -75,7 +123,7 @@
   doi         = {https://doi.org/10.48550/arXiv.2209.01346},
   booktitle   = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC'22)},
   highlightnote = {SC22 Reproducibility Advancement Award and invited as CACM Research Highlight},
-  selected    = {true}
+  selected={true}
 }
 
 @inproceedings{desensi2024swing,
@@ -94,5 +142,5 @@
   pages       = {1445-1462},
   publisher   = {USENIX Association},
   address     = {Boston, MA},
-  selected    = {true}
+  selected={true}
 }

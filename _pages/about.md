@@ -24,6 +24,8 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
+<!-- This code was mostly vibe coded. I suck at HTML/CSS -->
+
 <div id="bio-switch" class="switch-face">
   <p>
     I’m a fourth-year PhD student at the

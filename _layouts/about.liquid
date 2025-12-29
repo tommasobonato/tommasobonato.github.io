@@ -35,16 +35,11 @@ layout: default
         {% if page.profile.more_info %}
           <div class="more-info">{{ page.profile.more_info }}</div>
         {% endif %}
-        <div class="sim-visibility under-profile">
-          <button id="sim-visibility" type="button" class="pill-btn">Hide network</button>
-        </div>
       </div>
     {% endif %}
 
     <div class="clearfix">{{ content }}</div>
     {% include swithces.html %}
-
-    <div id="agg-spacer" style="margin-bottom: 4rem;"></div>
 
     <!-- Latest posts -->
     {% if page.latest_posts and page.latest_posts.enabled %}
@@ -56,7 +51,7 @@ layout: default
 
     <!-- Selected papers -->
     {% if page.selected_papers %}
-      <h2>
+      <h2 style="margin-top: 3rem;">
         <a href="{{ '/publications/' | relative_url }}" style="color: inherit">Selected Publications</a>
       </h2>
       <p style="margin-top: -0.5rem; margin-bottom: 1rem; color: var(--global-text-color-light, #6c757d); font-size: 0.95rem;">

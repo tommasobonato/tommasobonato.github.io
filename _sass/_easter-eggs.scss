@@ -1,5 +1,28 @@
 // Easter Eggs Styles - Packet Rocket
 
+// ========================================
+// ANTI-FOUC: Hide easter egg UI until JS initializes
+// Elements are hidden by default; JS adds .eg-ready to html to reveal them
+// ========================================
+html:not(.eg-ready) {
+  .leo-mesh-toggle-btn,
+  .leo-mesh-overlay,
+  .mission-terminal-btn,
+  .mission-terminal-overlay,
+  .birba-gallery-btn,
+  .birba-gallery-overlay,
+  .pkt-trails-toggle,
+  .pkt-trails-overlay,
+  .fat-tree-toggle,
+  .fat-tree-overlay,
+  #sim-visibility,
+  .agg-hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
 // Rocket container
 .packet-rocket {
   position: fixed;
@@ -168,6 +191,9 @@
     transform 0.2s ease,
     visibility 0.2s;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
 
   &.open {
     opacity: 1;
@@ -207,9 +233,12 @@
 
 #leo-mesh-canvas {
   display: block;
-  width: 100%;
+  width: 420px;
+  max-width: 100%;
   height: auto;
   background: #030712;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .leo-mesh-controls {
@@ -654,7 +683,7 @@
 .birba-gallery-btn {
   position: fixed;
   bottom: 20px;
-  right: 182px; // Next to terminal button
+  right: 236px; // After packet trails button
   z-index: 1100;
   width: 44px;
   height: 44px;
@@ -865,4 +894,461 @@
   font-style: italic;
   padding: 40px 20px;
   text-align: center;
+}
+
+// ========================================
+// Fat Tree Network Easter Egg
+// ========================================
+
+.fat-tree-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 290px; // After birba button
+  z-index: 1100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #1f2937, #111827);
+  color: #e5e7eb;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  line-height: 1;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 6px 20px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background: linear-gradient(180deg, #374151, #1f2937);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .toggle-indicator {
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.on {
+      color: #34d399;
+    }
+    &.off {
+      color: #9ca3af;
+    }
+  }
+}
+
+.fat-tree-overlay {
+  position: fixed;
+  bottom: 75px;
+  right: 20px;
+  z-index: 1099;
+  width: 520px;
+  max-width: calc(100vw - 40px);
+  background: linear-gradient(180deg, #0f172a, #0b1220);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  color: #e5e7eb;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.95);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fat-tree-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.fat-tree-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.fat-tree-close {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #f87171;
+  }
+}
+
+.fat-tree-content {
+  padding: 8px;
+  max-height: 340px;
+  overflow-y: auto;
+
+  // Override styles for the embedded network widget
+  .agg-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .tor-title {
+    color: #e5e7eb !important;
+    font-size: 0.85rem !important;
+  }
+
+  .tb-label {
+    color: #9ca3af !important;
+    font-size: 0.75rem !important;
+  }
+
+  .tb-bits {
+    color: #60a5fa !important;
+    font-size: 0.7rem !important;
+  }
+
+  .tb-dec {
+    color: #34d399 !important;
+    font-size: 0.7rem !important;
+  }
+
+  .leaf {
+    color: #e5e7eb !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15) !important;
+    }
+  }
+
+  .sim-controls {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    margin-top: 8px !important;
+  }
+
+  .ctrl label {
+    color: #9ca3af !important;
+    font-size: 0.75rem !important;
+  }
+
+  .badge {
+    background: rgba(59, 130, 246, 0.3) !important;
+    color: #93c5fd !important;
+  }
+}
+
+// ========================================
+// Packet Trails Easter Egg
+// ========================================
+
+.pkt-trails-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 182px; // After terminal button
+  z-index: 1100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #1f2937, #111827);
+  color: #e5e7eb;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  line-height: 1;
+  // Ensure entire button area is clickable
+  * {
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 6px 20px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background: linear-gradient(180deg, #374151, #1f2937);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .toggle-indicator {
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.on {
+      color: #34d399;
+    }
+    &.off {
+      color: #9ca3af;
+    }
+  }
+}
+
+.pkt-trails-overlay {
+  position: fixed;
+  bottom: 75px;
+  right: 20px;
+  z-index: 1099;
+  width: 450px;
+  max-width: calc(100vw - 40px);
+  background: linear-gradient(180deg, #0f172a, #0b1220);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  color: #e5e7eb;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.95);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.pkt-trails-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.pkt-trails-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.pkt-trails-close {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #f87171;
+  }
+}
+
+#pkt-trails-canvas {
+  display: block;
+  width: 440px;
+  max-width: 100%;
+  height: auto;
+  background: #030712;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.pkt-trails-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+}
+
+.pkt-trails-label {
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.pkt-trails-mode-btn {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #374151, #1f2937);
+  color: #e5e7eb;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: linear-gradient(180deg, #4b5563, #374151);
+  }
+
+  &.active {
+    background: linear-gradient(180deg, #2563eb, #1d4ed8);
+    border-color: #3b82f6;
+  }
+}
+
+// ========================================
+// Mobile Responsive Easter Egg Buttons
+// ========================================
+
+// On smaller screens, stack buttons in 2 rows to prevent overlap
+@media (max-width: 768px) {
+  .leo-mesh-toggle,
+  .starfield-toggle-btn,
+  .mission-term-btn,
+  .pkt-trails-toggle,
+  .birba-gallery-btn,
+  .fat-tree-toggle {
+    width: 38px;
+    height: 38px;
+    font-size: 0.95rem;
+
+    .toggle-indicator {
+      font-size: 0.4rem;
+    }
+  }
+
+  // First row (bottom): Leo, Stars, Terminal
+  .leo-mesh-toggle {
+    right: 12px;
+    bottom: 12px;
+  }
+  .starfield-toggle-btn {
+    right: 58px;
+    bottom: 12px;
+  }
+  .mission-term-btn {
+    right: 104px;
+    bottom: 12px;
+  }
+
+  // Second row (above): Trails, Birba, Fat Tree
+  .pkt-trails-toggle {
+    right: 12px;
+    bottom: 58px;
+  }
+  .birba-gallery-btn {
+    right: 58px;
+    bottom: 58px;
+  }
+  .fat-tree-toggle {
+    right: 104px;
+    bottom: 58px;
+  }
+
+  // Overlays adjust for mobile
+  .leo-mesh-overlay,
+  .mission-term-overlay,
+  .birba-gallery-overlay,
+  .pkt-trails-overlay {
+    bottom: 105px;
+    right: 12px;
+    max-width: calc(100vw - 24px);
+  }
+}
+
+// Very small screens: even more compact
+@media (max-width: 480px) {
+  .leo-mesh-toggle,
+  .starfield-toggle-btn,
+  .mission-term-btn,
+  .pkt-trails-toggle,
+  .birba-gallery-btn,
+  .fat-tree-toggle {
+    width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
+
+    .toggle-indicator {
+      display: none; // Hide ON/OFF labels on very small screens
+    }
+  }
+
+  // First row
+  .leo-mesh-toggle {
+    right: 8px;
+    bottom: 8px;
+  }
+  .starfield-toggle-btn {
+    right: 48px;
+    bottom: 8px;
+  }
+  .mission-term-btn {
+    right: 88px;
+    bottom: 8px;
+  }
+
+  // Second row
+  .pkt-trails-toggle {
+    right: 8px;
+    bottom: 48px;
+  }
+  .birba-gallery-btn {
+    right: 48px;
+    bottom: 48px;
+  }
+  .fat-tree-toggle {
+    right: 88px;
+    bottom: 48px;
+  }
 }

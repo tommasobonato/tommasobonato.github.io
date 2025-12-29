@@ -330,42 +330,176 @@
 
   /* ===== Toggle visibility ===== */
   function initVisibilityToggle() {
-    const btn = $("#sim-visibility");
-    const wrapper = $("#agg-wrapper");
+    let wrapper = $("#agg-wrapper");
     const spacer = $("#agg-spacer");
-    const body = $("#agg-body");
-    const controls = $(".controls-panel");
-    if (!btn || !wrapper) return;
+    const hasOriginalWrapper = !!wrapper;
+
+    // Always create the toggle button on all pages
+    const btn = document.createElement("button");
+    btn.id = "fat-tree-toggle";
+    btn.className = "fat-tree-toggle";
+    btn.title = "Toggle Fat Tree Network";
+    btn.innerHTML = '<span class="easter-icon">🌲</span><span class="toggle-indicator off">OFF</span>';
+    document.body.appendChild(btn);
+
+    // Create overlay container
+    const overlay = document.createElement("div");
+    overlay.className = "fat-tree-overlay";
+
+    if (hasOriginalWrapper) {
+      overlay.innerHTML = `
+        <div class="fat-tree-header">
+          <span class="fat-tree-title">🌲 Fat Tree Network Simulation</span>
+          <button class="fat-tree-close" aria-label="Close">×</button>
+        </div>
+        <div class="fat-tree-content"></div>
+      `;
+      document.body.appendChild(overlay);
+
+      // Move the wrapper content into the overlay
+      const content = overlay.querySelector(".fat-tree-content");
+      content.appendChild(wrapper);
+
+      // Remove the spacer since we don't need it anymore
+      if (spacer) spacer.remove();
+    } else {
+      // On non-home pages, create full interactive simulation
+      overlay.innerHTML = `
+        <div class="fat-tree-header">
+          <span class="fat-tree-title">🌲 Fat Tree Network Simulation</span>
+          <button class="fat-tree-close" aria-label="Close">×</button>
+        </div>
+        <div class="fat-tree-content">
+          <div id="agg-wrapper" class="agg-wrapper" style="max-width: none !important; width: 100% !important">
+            <div class="agg-row">
+              <div id="agg-body" class="agg-body" style="width: 100% !important">
+                <div id="tb-switches" class="tb-switches under-bio" style="max-width: none !important; width: 100% !important">
+                  <div class="tor" id="tor-left" style="width: 100% !important">
+                    <div class="tor-title-row" style="display: flex; align-items: center; justify-content: center; gap: 8px">
+                      <span class="tor-title">ToR Switch</span>
+                      <span class="tor-info-icon" data-tooltip="This is a simplified fat-tree network simulation. Adjust the send rate to create congestion, or add a drop rate to simulate packet loss.">ℹ️</span>
+                    </div>
+                    <div id="torL-rack" class="tb-rack tb-switch" data-bits="6" data-zero-red="false">
+                      <div class="tb-row">
+                        <span class="tb-label">Queue Size</span>
+                        <div class="tb-bank tb-q"></div>
+                        <code class="tb-bits tb-q-bits">000000</code><span class="tb-dec tb-q-dec">0</span>
+                      </div>
+                      <div class="tb-row">
+                        <span class="tb-label">Throughput</span>
+                        <div class="tb-bank tb-t"></div>
+                        <code class="tb-bits tb-t-bits">000000</code><span class="tb-dec tb-t-dec">0</span>
+                      </div>
+                      <div class="tb-row">
+                        <span class="tb-label">Packet Drops</span>
+                        <div class="tb-bank tb-dr"></div>
+                        <code class="tb-bits tb-dr-bits">000000</code><span class="tb-dec tb-dr-dec">0</span>
+                      </div>
+                    </div>
+                    <svg id="torL-svg" class="tor-svg" xmlns="http://www.w3.org/2000/svg" 
+                         style="width: 100% !important; height: 140px !important; max-width: none !important" 
+                         height="140" viewBox="0 0 1200 140" preserveAspectRatio="none" aria-hidden="true">
+                      <path id="leafL0" class="agg-link" d="M 600,10 C 600,80 20,80 20,130"></path>
+                      <path id="leafL1" class="agg-link" d="M 600,10 C 600,80 420,80 420,130"></path>
+                      <path id="leafL2" class="agg-link" d="M 600,10 C 600,80 780,80 780,130"></path>
+                      <path id="leafL3" class="agg-link" d="M 600,10 C 600,80 1180,80 1180,130"></path>
+                    </svg>
+                    <div class="leaf-row" id="torL-leaves" style="max-width: 900px !important; width: 95% !important">
+                      <a class="leaf" title="Email" href="mailto:tommaso.bonato@inf.ethz.ch" target="_blank" rel="noopener"><i class="fas fa-envelope"></i></a>
+                      <a class="leaf" title="GitHub" href="https://github.com/tommasobo" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+                      <a class="leaf" title="LinkedIn" href="https://www.linkedin.com/in/tommaso-bonato-ba937462/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+                      <a class="leaf" title="Scholar" href="https://scholar.google.com/citations?user=j9lY7FAAAAAJ&hl=it" target="_blank" rel="noopener"><i class="ai ai-google-scholar"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="agg-controls">
+                <div id="sim-controls" class="sim-controls controls-panel">
+                  <div class="ctrl">
+                    <label for="sim-rate">Send rate</label>
+                    <input id="sim-rate" type="range" min="0" max="100" value="50" />
+                    <span class="badge" id="sim-rate-val">50%</span>
+                  </div>
+                  <div class="ctrl">
+                    <label for="sim-rdrop">Drop rate</label>
+                    <input id="sim-rdrop" type="range" min="0" max="1" step="0.001" value="0" />
+                    <span class="badge" id="sim-rdrop-val">0.000%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      // Update wrapper reference to the newly created one
+      wrapper = overlay.querySelector("#agg-wrapper");
+    }
+
+    // Close button
+    overlay.querySelector(".fat-tree-close").addEventListener("click", () => {
+      setState(false);
+    });
+
     let particleLoops = [];
+    let isOpen = false;
+    let simulationInitialized = false;
+
     const setState = (on) => {
+      // Close other overlays first when opening (mutually exclusive, except stars)
+      if (on) {
+        if (window.closeLeoMesh) window.closeLeoMesh();
+        if (window.closeMissionTerminal) window.closeMissionTerminal();
+        if (window.closeBirbaGallery) window.closeBirbaGallery();
+        if (window.closePacketTrails) window.closePacketTrails();
+      }
+
+      isOpen = on;
       simEnabled = on;
-      wrapper.classList.toggle("agg-hidden", !on);
-      if (spacer) spacer.style.marginBottom = on ? "2rem" : "4rem";
-      btn.textContent = on ? "Easter Egg On" : "Easter Egg Off";
+      overlay.classList.toggle("open", on);
+      if (wrapper) wrapper.classList.toggle("agg-hidden", !on);
+      btn.classList.toggle("active", on);
+      btn.innerHTML = on
+        ? '<span class="easter-icon">🌲</span><span class="toggle-indicator on">ON</span>'
+        : '<span class="easter-icon">🌲</span><span class="toggle-indicator off">OFF</span>';
       if (!on) {
         clearParticles();
         particleLoops.forEach(clearTimeout);
         particleLoops = [];
       } else {
+        // Initialize simulation on first open (for non-home pages)
+        if (!hasOriginalWrapper && !simulationInitialized) {
+          simulationInitialized = true;
+          // Re-init controls for the new elements
+          initControls();
+        }
         // restart packet engine when turning on
         clearParticles();
-        redrawAll();
-      }
-    };
-    btn.addEventListener("click", () => {
-      const wasOff = !simEnabled;
-      setState(!simEnabled);
-      // Scroll to fat tree when turning on
-      if (wasOff && wrapper) {
         setTimeout(() => {
-          wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
+          redrawAll();
+          // Re-run packet engine for the new SVG paths
+          packetEngine();
         }, 50);
       }
+    };
+
+    // Expose close function globally for other easter eggs
+    window.closeFatTree = () => setState(false);
+
+    btn.addEventListener("click", () => {
+      setState(!isOpen);
     });
+
+    // Start hidden
     setState(false);
   }
 
   /* ===== Init ===== */
+  function markTorReady() {
+    document.documentElement.classList.add("tor-ready");
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initLatency();
     initControls();
@@ -376,6 +510,7 @@
       redrawAll();
       packetEngine();
       startSimulation();
+      markTorReady(); // Reveal ToR elements after everything is set up
     }, 150);
   });
   addEventListener(
@@ -383,6 +518,7 @@
     () => {
       sizeWrapperToBio();
       redrawAll();
+      markTorReady(); // Ensure revealed on full load
     },
     { once: true }
   );

@@ -245,6 +245,8 @@
     // Close other overlays first (mutually exclusive, except stars)
     if (window.closeLeoMesh) window.closeLeoMesh();
     if (window.closeBirbaGallery) window.closeBirbaGallery();
+    if (window.closePacketTrails) window.closePacketTrails();
+    if (window.closeFatTree) window.closeFatTree();
 
     state.isOpen = true;
     overlay.classList.add("open");

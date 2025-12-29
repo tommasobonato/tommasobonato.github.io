@@ -1,157 +1,156 @@
 {
   "basics": {
-    "name": "Albert Einstein",
-    "label": "Scientist",
+    "name": "Tommaso Bonato",
+    "label": "PhD Student & Research Engineer",
     "image": "",
-    "email": "albert@einstein.de",
-    "phone": "(912) 123-4567",
-    "url": "https://alshedivat.github.io/al-folio/",
-    "summary": "A German-born theoretical physicist, widely ranked among the greatest and most influential scientists of all time",
+    "email": "tommaso.bonato@inf.ethz.ch",
+    "url": "https://tommasobonato.com",
+    "summary": "Fourth-year PhD student at ETH Zürich (SPCL) under Prof. Torsten Hoefler, researching high-performance network topologies, traffic load balancing, congestion control for large-scale AI/HPC systems. Also a part-time Research Engineer at Microsoft, shaping next-generation datacenter fabrics and representing Microsoft in the Ultra Ethernet Transport Working Group.",
     "location": {
-      "address": "2712 Broadway St",
-      "postalCode": "CA 94115",
-      "city": "San Francisco",
-      "countryCode": "US",
-      "region": "California"
+      "city": "Zürich",
+      "countryCode": "CH",
+      "region": "Switzerland"
     },
     "profiles": [
       {
-        "network": "Twitter",
-        "username": "AlbertEinstein",
-        "url": "https://twitter.com/AlbertEinstein"
+        "network": "GitHub",
+        "username": "tommasobo",
+        "url": "https://github.com/tommasobo"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "tommaso-bonato",
+        "url": "https://www.linkedin.com/in/tommaso-bonato-ba937462/"
+      },
+      {
+        "network": "Google Scholar",
+        "username": "Tommaso Bonato",
+        "url": "https://scholar.google.com/citations?user=j9lY7FAAAAAJ&hl=it"
       }
     ]
   },
   "work": [
     {
-      "name": "Institute for Advanced Study, Princeton University",
-      "position": "Professor of Theoretical Physics",
-      "url": "https://example.com",
-      "startDate": "1933-01-01",
-      "endDate": "1955-01-01",
-      "summary": "Teaching at Palmer Physical Laboratory (now 302 Frist Campus Center). While not a professor at Princeton, I associated with the physics professors and continued to give lectures on campus.",
-      "highlights": ["Relativity"]
-    }
-  ],
-  "volunteer": [
+      "name": "Microsoft (via Experis)",
+      "position": "Research Engineer (Part-Time)",
+      "url": "https://www.microsoft.com/",
+      "startDate": "2022-08-01",
+      "summary": "Design and prototype network transport protocols for Azure's AI and HPC infrastructure as part of the Network Architecture team. Microsoft representative for Ultra Ethernet (UE) Transport Working Group, helping shape congestion control and load balancing standards. Developed proofs of concept for inter-datacenter congestion control, co-design of networking and AI workloads, and packet/flow-level load-balancing schemes. Improved and extended Microsoft's C++ htsim-based simulator.",
+      "highlights": ["Ultra Ethernet Transport WG", "Congestion control & load balancing", "htsim network simulator"]
+    },
     {
-      "organization": "People's Climate March",
-      "location": "Zurich, Switzerland",
-      "position": "Lead Organizer",
-      "url": "https://example.com",
-      "startDate": "2014-04-01",
-      "endDate": "2015-07-01",
-      "summary": "Lead organizer for the New York City branch of the People's Climate March, the largest climate march in history.",
-      "highlights": ["Awarded 'Climate Hero' award by Greenpeace for my efforts organizing the march.", "Men of the year 2014 by Time magazine"]
+      "name": "ETH Zürich - SPCL",
+      "position": "PhD Researcher",
+      "url": "https://spcl.inf.ethz.ch/",
+      "startDate": "2023-01-01",
+      "summary": "Research on high-performance network topologies, traffic load balancing, congestion control for large-scale AI/HPC systems under Prof. Torsten Hoefler. Focus on datacenter networking, collective communication, and network simulation.",
+      "highlights": ["Network topologies", "Load balancing algorithms", "Network simulation (HTSIM)", "Ultra Ethernet Consortium"]
+    },
+    {
+      "name": "Amazon",
+      "position": "Software Engineer Intern",
+      "url": "https://www.amazon.com/",
+      "startDate": "2019-02-01",
+      "endDate": "2019-07-01",
+      "summary": "EU Transportation team: built cap recommendation systems to mitigate short-term transportation capacity shortages (est. 5M USD yearly savings). Developed LSTM model in Keras for daily recommendations using AWS services. Created automated alerts for capacity misconfigurations that caught multiple high-priority issues for Prime Day.",
+      "highlights": ["LSTM recommendations", "AWS services", "5M USD impact"]
+    },
+    {
+      "name": "Imola Informatica",
+      "position": "Software Engineer Intern",
+      "url": "https://www.imolainformatica.it/",
+      "startDate": "2018-06-01",
+      "endDate": "2018-08-01",
+      "summary": "Developed full-stack system using Java and JavaScript to automate retrieving and displaying information from Red Hat OpenShift with interactive graph visualization.",
+      "highlights": ["Full-stack development", "OpenShift integration"]
+    },
+    {
+      "name": "European Space Agency (ESA)",
+      "position": "Software Engineer Intern",
+      "url": "https://www.esa.int/",
+      "startDate": "2017-07-01",
+      "endDate": "2017-10-01",
+      "summary": "Developed models and tools for analyzing data from the NASA/ESA/CSA James Webb Space Telescope (launched Dec 2021). Integrated C++ libraries from Sandia National Laboratories into Fortran codebase, achieving 4× speedup.",
+      "highlights": ["James Webb Space Telescope", "4× performance improvement"]
     }
   ],
   "education": [
     {
-      "institution": "University of Zurich, Zurich, Switzerland",
-      "location": "Zurich, Switzerland",
-      "url": "https://www.uzh.ch/",
-      "area": "Software Development",
+      "institution": "ETH Zürich",
+      "location": "Zürich, Switzerland",
+      "url": "https://ethz.ch/",
+      "area": "Computer Science",
       "studyType": "PhD",
-      "startDate": "1905-01-01",
-      "endDate": "1905-01-01",
-      "score": "10",
-      "courses": ["Theory of Relativity"]
+      "startDate": "2023-01-01",
+      "endDate": "2027-01-01",
+      "courses": ["High-performance network topologies", "Traffic load balancing", "Congestion control", "AI/HPC systems"]
+    },
+    {
+      "institution": "ETH Zürich",
+      "location": "Zürich, Switzerland",
+      "url": "https://ethz.ch/",
+      "area": "Computer Science",
+      "studyType": "MSc",
+      "startDate": "2018-09-01",
+      "endDate": "2021-11-01",
+      "score": "5.31/6.00",
+      "courses": ["Final thesis: Analysis of Adaptive Routing in Slingshot Interconnect (with Hewlett-Packard)"]
+    },
+    {
+      "institution": "University of Bologna",
+      "location": "Bologna, Italy",
+      "url": "https://www.unibo.it/",
+      "area": "Computer Science",
+      "studyType": "BSc",
+      "startDate": "2014-09-01",
+      "endDate": "2018-03-01",
+      "score": "110/110 with honors (GPA: 29.1/30)",
+      "courses": ["Final thesis: Time series predictions with RNNs", "Exchange year at UC Santa Cruz (2016-2017)"]
     }
   ],
   "awards": [
     {
-      "title": "Nobel Prize in Physics",
-      "date": "1921-11-01",
-      "awarder": "Royal Swedish Academy of Sciences",
-      "url": "https://www.nobelprize.org/prizes/physics/1921/einstein/biographical/",
-      "summary": "The Nobel Prizes are five separate prizes that, according to Alfred Nobel's will of 1895, are awarded to 'those who, during the preceding year, have conferred the greatest benefit to humankind.'"
-    }
-  ],
-  "certificates": [
-    {
-      "name": "Machine Learning",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-location-dot"
+      "title": "SC'25 Best Student Paper Finalist",
+      "date": "2025-11-01",
+      "awarder": "ACM/IEEE SC Conference",
+      "summary": "For the paper 'ATLAHS: An Application-centric Network Simulator Toolchain for AI, HPC, and Distributed Storage'"
     },
     {
-      "name": "Quantum Computing",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-tag"
+      "title": "SC'22 Reproducibility Advancement Award",
+      "date": "2022-11-01",
+      "awarder": "ACM/IEEE SC Conference",
+      "summary": "For the paper 'HammingMesh: A Network Topology for Large-Scale Deep Learning'"
     },
     {
-      "name": "Quantum Information",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-envelope"
-    },
-    {
-      "name": "Quantum Cryptography",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-hashtag"
-    },
-    {
-      "name": "Quantum Communication",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-calendar"
-    },
-    {
-      "name": "Quantum Teleportation",
-      "date": "2018-01-01",
-      "issuer": "Stanford University",
-      "url": "https://example.com",
-      "icon": "fa-solid fa-clipboard-check"
-    }
-  ],
-  "publications": [
-    {
-      "name": "Zur Elektrody/namik bewegter Körper",
-      "publisher": "Annalen der Physik",
-      "releaseDate": "1905-06-30",
-      "url": "https://en.wikisource.org/wiki/Translation:On_the_Electrodynamics_of_Moving_Bodies",
-      "summary": "It concerned an interpretation of the Michelson–Morley experiment and the properties of light and time. Special relativity incorporates the principle that the speed of light is the same for all inertial observers regardless of the state of motion of the source."
-    },
-    {
-      "name": "Über einen die Erzeugung und Verwandlung des Lichtes betreffenden heuristischen Gesichtspunkt",
-      "publisher": "Annalen der Physik",
-      "releaseDate": "1905-03-18",
-      "url": "https://de.wikisource.org/wiki/Über_einen_die_Erzeugung_und_Verwandlung_des_Lichtes_betreffenden_heuristischen_Gesichtspunkt",
-      "summary": "In the second paper, he applied the quantum theory to light to explain the photoelectric effect. In particular, he used the idea of light quanta (photons) to explain experimental results, but stressed the importance of the experimental results. The importance of his work on the photoelectric effect earned him the Nobel Prize in Physics in 1921."
-    },
-    {
-      "name": "Die Grundlage der allgemeinen Relativitätstheorie",
-      "publisher": "Annalen der Physik",
-      "releaseDate": "1916-03-20",
-      "url": "https://de.wikisource.org/wiki/Die_Grundlage_der_allgemeinen_Relativitätstheorie",
-      "summary": "The publication of the theory of general relativity made him internationally famous. He was professor of physics at the universities of Zurich (1909–1911) and Prague (1911–1912), before he returned to ETH Zurich (1912–1914)."
+      "title": "CACM Research Highlight Invitation",
+      "date": "2023-01-01",
+      "awarder": "Communications of the ACM",
+      "summary": "HammingMesh paper invited as CACM Research Highlight"
     }
   ],
   "skills": [
     {
-      "name": "Physics",
-      "level": "Master",
-      "icon": "fa-solid fa-hashtag",
-      "keywords": [
-        "Quantum Mechanics",
-        "Quantum Computing",
-        "Quantum Information",
-        "Quantum Cryptography",
-        "Quantum Communication",
-        "Quantum Teleportation"
-      ]
+      "name": "Programming",
+      "level": "Proficient",
+      "icon": "fa-solid fa-code",
+      "keywords": ["C/C++", "Python"]
+    },
+    {
+      "name": "Technologies",
+      "level": "Familiar",
+      "icon": "fa-solid fa-tools",
+      "keywords": ["MPI", "NCCL", "RDMA", "Bash", "Git", "Docker", "Linux"]
+    },
+    {
+      "name": "Domains",
+      "level": "Expert",
+      "icon": "fa-solid fa-network-wired",
+      "keywords": ["Datacenter networking", "Congestion control", "Load balancing", "HPC/AI systems", "Network simulators (htsim, NS-3, SST)"]
     }
   ],
   "languages": [
     {
-      "language": "German",
+      "language": "Italian",
       "fluency": "Native speaker",
       "icon": ""
     },
@@ -159,42 +158,23 @@
       "language": "English",
       "fluency": "Fluent",
       "icon": ""
+    },
+    {
+      "language": "German",
+      "fluency": "Basic",
+      "icon": ""
     }
   ],
   "interests": [
     {
-      "name": "Physics",
-      "icon": "fa-solid fa-tag",
-      "keywords": [
-        "Quantum Mechanics",
-        "Quantum Computing",
-        "Quantum Information",
-        "Quantum Cryptography",
-        "Quantum Communication",
-        "Quantum Teleportation"
-      ]
-    }
-  ],
-  "references": [
-    {
-      "name": "Professor John Doe",
-      "icon": "fa-solid fa-laptop",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
+      "name": "Research",
+      "icon": "fa-solid fa-flask",
+      "keywords": ["Datacenter Networking", "Transport Protocols", "Network Topologies", "AI Infrastructure"]
     },
     {
-      "name": "Professor John Doe",
-      "icon": "fa-solid fa-thumbtack",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
-    }
-  ],
-  "projects": [
-    {
-      "name": "Quantum Computing",
-      "summary": "Quantum computing is the use of quantum-mechanical phenomena such as superposition and entanglement to perform computation. Computers that perform quantum computations are known as quantum computers.",
-      "highlights": ["Quantum Teleportation", "Quantum Cryptography"],
-      "startDate": "2018-01-01",
-      "endDate": "2018-01-01",
-      "url": "https://example.com"
+      "name": "Hobbies",
+      "icon": "fa-solid fa-heart",
+      "keywords": ["Space Exploration", "Sci-Fi Movies", "Skiing", "Pizza Making", "Theme Parks"]
     }
   ]
 }

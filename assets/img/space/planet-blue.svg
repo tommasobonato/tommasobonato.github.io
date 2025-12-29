@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Neptune/Uranus-style blue planet - no rings -->
+  <defs>
+    <!-- Main body gradient (deep blue to teal) -->
+    <linearGradient id="blueBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7ec8e8"/>
+      <stop offset="30%" stop-color="#5ba3c9"/>
+      <stop offset="60%" stop-color="#3d8ab5"/>
+      <stop offset="100%" stop-color="#2a6a8f"/>
+    </linearGradient>
+    <!-- Shadow overlay -->
+    <linearGradient id="blueShadow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(15,35,55,0.5)"/>
+      <stop offset="65%" stop-color="transparent"/>
+    </linearGradient>
+    <!-- Soft highlight -->
+    <radialGradient id="blueHighlight" cx="32%" cy="28%" r="35%">
+      <stop offset="0%" stop-color="rgba(200,235,255,0.4)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <!-- Subtle atmospheric glow -->
+    <radialGradient id="blueGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="85%" stop-color="transparent"/>
+      <stop offset="100%" stop-color="rgba(100,180,220,0.15)"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Atmospheric glow (outer) -->
+  <circle cx="50" cy="50" r="48" fill="url(#blueGlow)"/>
+  
+  <!-- Planet body -->
+  <circle cx="50" cy="50" r="42" fill="url(#blueBody)"/>
+  
+  <!-- Atmospheric bands (subtle) -->
+  <ellipse cx="50" cy="38" rx="40" ry="4" fill="rgba(140,200,230,0.15)"/>
+  <ellipse cx="50" cy="48" rx="41" ry="5" fill="rgba(80,150,190,0.12)"/>
+  <ellipse cx="50" cy="58" rx="40" ry="4" fill="rgba(100,170,210,0.1)"/>
+  <ellipse cx="50" cy="66" rx="38" ry="3" fill="rgba(70,140,180,0.12)"/>
+  
+  <!-- Shadow overlay -->
+  <circle cx="50" cy="50" r="42" fill="url(#blueShadow)"/>
+  
+  <!-- Highlight -->
+  <circle cx="50" cy="50" r="42" fill="url(#blueHighlight)"/>
+</svg>

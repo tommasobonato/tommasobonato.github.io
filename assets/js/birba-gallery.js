@@ -87,6 +87,8 @@
     // Close other overlays first (mutually exclusive, except stars)
     if (window.closeLeoMesh) window.closeLeoMesh();
     if (window.closeMissionTerminal) window.closeMissionTerminal();
+    if (window.closePacketTrails) window.closePacketTrails();
+    if (window.closeFatTree) window.closeFatTree();
 
     state.isOpen = true;
     overlay.classList.add("open");
