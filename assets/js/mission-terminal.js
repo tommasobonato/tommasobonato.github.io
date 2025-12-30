@@ -25,9 +25,9 @@
   // Commands
   const commands = {
     help: () => [
-      "┌─────────────────────────────────────┐",
-      "│     Mission Terminal v1.0          │",
-      "├─────────────────────────────────────┤",
+      "┌────────────────────────────────────┐",
+      "│       Mission Terminal v1.0        │",
+      "├────────────────────────────────────┤",
       "│ Available commands:                │",
       "│                                    │",
       "│  traceroute mars  - Route to Mars  │",
@@ -35,7 +35,7 @@
       "│  handshake        - TCP docking    │",
       "│  clear            - Clear screen   │",
       "│  help             - This message   │",
-      "└─────────────────────────────────────┘",
+      "└────────────────────────────────────┘",
     ],
 
     clear: () => {
