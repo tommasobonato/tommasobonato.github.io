@@ -1,14 +1,46 @@
 ---
 ---
 
+@article{iff2026waferscale,
+  abbr        = {arXiv},
+  type        = {article},
+  author      = {Patrick Iff and Tommaso Bonato and Maciej Besta and Luca Benini and Torsten Hoefler},
+  title       = {Network Design for Wafer-Scale Systems with Wafer-on-Wafer Hybrid Bonding},
+  year        = {2026},
+  month       = {03},
+  tags        = {networking;hardware;deep learning},
+  arxiv       = {https://arxiv.org/abs/2603.05266},
+  doi         = {10.48550/arXiv.2603.05266},
+  abstract    = {Transformer-based large language models are increasingly constrained by data movement as communication bandwidth drops sharply beyond the chip boundary. Wafer-scale integration using wafer-on-wafer hybrid bonding alleviates this limitation by providing ultra-high bandwidth between reticles on bonded wafers. In this paper, we investigate how the physical placement of reticles on wafers influences the achievable network topology and the resulting communication performance. Starting from a 2D mesh-like baseline, we propose four reticle placements (Aligned, Interleaved, Rotated, and Contoured) that improve throughput by up to 250\%, reduce latency by up to 36\%, and decrease energy per transmitted byte by up to 38\%.},
+  note        = {Preprint},
+  selected={false}
+}
+
+@inproceedings{bonato2026spritz,
+  abbr        = {IPDPS'26},
+  type        = {inproceedings},
+  author      = {Tommaso Bonato and Ales Kubicek and Abdul Kabbani and Ahmad Ghalayini and Maciej Besta and Torsten Hoefler},
+  title       = {Spritz: Path-Aware Load Balancing in Low-Diameter Networks},
+  year        = {2026},
+  month       = {05},
+  tags        = {networking;load balancing},
+  arxiv       = {https://arxiv.org/abs/2602.19567},
+  doi         = {10.48550/arXiv.2602.19567},
+  abstract    = {Low-diameter topologies such as Dragonfly and Slim Fly are increasingly adopted in HPC and datacenter networks, yet existing load balancing techniques either rely on proprietary in-network mechanisms or fail to utilize the full path diversity of these topologies. We introduce Spritz, a flexible sender-based load balancing framework that shifts adaptive topology-aware routing to the endpoints using only standard Ethernet features. We propose two algorithms, Spritz-Scout and Spritz-Spray that, respectively, explore and adaptively cache efficient paths using ECN, packet trimming, and timeout feedback. Through simulation on Dragonfly and Slim Fly topologies with over 1000 endpoints, Spritz outperforms ECMP, UGAL-L, and prior sender-based approaches by up to 1.8x in flow completion time under AI training and datacenter workloads, while offering robust failover with performance improvements of up to 25.4x under link failures, all without additional hardware support.},
+  booktitle   = {Proceedings of the 40th IEEE International Parallel and Distributed Processing Symposium (IPDPS'26)},
+  selected={false}
+}
+
 @article{bonato2025smartt,
   abbr        = {arXiv},
   type        = {article},
-  author      = {Tommaso Bonato and Abdul Kabbani and Daniele De Sensi and Rong Pan and Yanfang Le and Costin Raiciu and Mark Handley and Timo Schneider and Nils Blach and Ahmad Ghalayini and Daniel Alves and Michael Papamichael and Adrian Caulfield and Torsten Hoefler},
+  author      = {Tommaso Bonato and Abdul Kabbani and Ahmad Ghalayini and Anup Agarwal and Daniele De Sensi and Rong Pan and Costin Raiciu and Mark Handley and Mihai Brodschi and Timo Schneider and Nils Blach and Michael Papamichael and Torsten Hoefler},
   title       = {SMaRTT: Sender-based Marked Rapidly-adapting Trimmed & Timed Transport},
   year        = {2025},
   tags        = {networking;congestion control;transport},
-  arxiv       = {https://arxiv.org/abs/2501.XXXXX},
+  arxiv       = {https://arxiv.org/abs/2404.01630},
+  doi         = {10.48550/arXiv.2404.01630},
+  abstract    = {With the rapid growth of artificial intelligence (AI) workloads in datacenters, the Ultra Ethernet Consortium (UEC) has defined a new high-performance transport layer to deliver the required performance at scale. A core component of this new standard is the Network Signal-based Congestion Control (NSCC) algorithm. This paper presents SMaRTT, the algorithm that forms the basis of the UEC NSCC specification. SMaRTT is a sender-based congestion control algorithm that systematically combines delay, Explicit Congestion Notification (ECN), and optional packet trimming into a cohesive state machine for fast, fair and precise window adjustments with seamless multipath support. At its core lies the novel QuickAdapt algorithm that accurately estimates and rapidly adapts to available capacity. Our evaluation shows that SMaRTT outperforms existing datacenter congestion control algorithms like Swift, RoCE, and MPRDMA by up to 50\% and provides superior fairness, validating the design choices made in the UEC standard.},
   note        = {Preprint},
   selected={false}
 }
@@ -23,7 +55,8 @@
   tags        = {ai;networking;collective;nccl},
   url         = {hu-demystifying-nccl.pdf},
   arxiv       = {https://arxiv.org/abs/2507.04786},
-  doi         = {10.48550/arXiv.2507.04786},
+  doi         = {10.1109/HOTI66940.2025.00024},
+  pages       = {48--59},
   slides      = {hu-demystifying-nccl-slides.pdf},
   abstract    = {The NVIDIA Collective Communication Library (NCCL) is a critical software layer enabling high-performance collectives on large-scale GPU clusters. Despite being open source with a documented API, its internal design remains largely opaque. The orchestration of communication channels, selection of protocols, and handling of memory movement across devices and nodes are not well understood, making it difficult to analyze performance or identify bottlenecks. This paper presents a comprehensive analysis of NCCL, focusing on its communication protocol variants (Simple, LL, and LL128), mechanisms governing intra-node and inter-node data movement, and ring- and tree-based collective communication algorithms. The insights obtained from this study serve as the foundation for ATLAHS, an application-trace-driven network simulation toolchain capable of accurately reproducing NCCL communication patterns in large-scale AI training workloads. By demystifying NCCL's internal architecture, this work provides guidance for system researchers and performance engineers working to optimize or simulate collective communication at scale.},
   publisher   = {IEEE Press},
@@ -42,7 +75,8 @@
   tags        = {ai;networking;collective;nccl},
   url         = {2025_bine.pdf},
   arxiv       = {https://arxiv.org/abs/2508.17311},
-  doi         = {10.48550/arXiv.2508.17311},
+  doi         = {10.1145/3712285.3759835},
+  pages       = {1901--1916},
   abstract    = {Communication locality plays a key role in the performance of collective operations on large HPC systems, especially on oversubscribed networks where groups of nodes are fully connected internally but sparsely linked through global connections. We present Bine (binomial negabinary) trees, a family of collective algorithms that improve communication locality. Bine trees maintain the generality of binomial trees and butterflies while cutting global-link traffic by up to 33%. We implement eight Bine-based collectives and evaluate them on four large-scale supercomputers with Dragonfly, Dragonfly+, oversubscribed fat-tree, and torus topologies, achieving up to 5x speedups and consistent reductions in global-link traffic across different vector sizes and node counts.},
   booktitle   = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC'25)},
   location    = {St. Louis, MO, USA},
@@ -60,7 +94,8 @@
   url         = {2025_atlahs.pdf},
   highlightnote = {Best Student Paper Finalist},
   arxiv       = {https://arxiv.org/abs/2505.08936},
-  doi         = {10.48550/arXiv.2505.08936},
+  doi         = {10.1145/3712285.3759838},
+  pages       = {349--367},
   booktitle   = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC'25)},
   selected={true}
 }
@@ -90,7 +125,8 @@
   tags        = {networking;load balancing},
   url         = {2025_flowcut.pdf},
   arxiv       = {https://arxiv.org/abs/2506.21406},
-  doi         = {10.48550/arXiv.2506.21406},
+  doi         = {10.1109/TON.2025.3636209},
+  pages       = {1974--1987},
   journal     = {IEEE/ACM Transactions on Networking},
   selected={true}
 }
@@ -120,7 +156,7 @@
   tags        = {networking;deep learning},
   url         = {HammingMesh.pdf},
   arxiv       = {https://arxiv.org/abs/2209.01346},
-  doi         = {https://doi.org/10.48550/arXiv.2209.01346},
+  doi         = {10.1109/SC41404.2022.00016},
   booktitle   = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC'22)},
   highlightnote = {SC22 Reproducibility Advancement Award and invited as CACM Research Highlight},
   selected={true}
