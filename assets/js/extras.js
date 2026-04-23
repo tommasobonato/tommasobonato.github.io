@@ -44,7 +44,7 @@
   const LEAF_CAP_MB = 80; // lower so 50% rate is sub-cap
   const LOCAL_FRACTION = 0.1;
   const QUEUE_SLOW = 0.02; // smaller => slower visible change
-  let simEnabled = true; // hide/show toggle
+  let simEnabled = false; // hide/show toggle
 
   const SIM = {
     sendRate: 0.5, // 0..1
@@ -179,6 +179,9 @@
   /* ===== Geometry (curves) – unchanged ===== */
   const curves = {};
   let particles = [];
+  let packetAnimationId = null;
+  let simulationAnimationId = null;
+  let simulationRunning = false;
   function sizeWrapperToBio() {
     const wrap = $("#agg-wrapper");
     if (!wrap) return;
@@ -234,10 +237,17 @@
     particles.forEach((p) => p.el?.remove());
     particles.length = 0;
   }
+  function stopPacketEngine() {
+    if (packetAnimationId) {
+      cancelAnimationFrame(packetAnimationId);
+      packetAnimationId = null;
+    }
+  }
 
   function packetEngine() {
     const svgL = $("#torL-svg");
-    if (!svgL) return;
+    if (!svgL || !simEnabled) return [];
+    stopPacketEngine();
     const MAX_PKTS = 90;
     function spawn(key, svg, reverse) {
       if (!simEnabled || !curves[key] || particles.length >= MAX_PKTS || SIM.sendRate <= 0) return;
@@ -259,6 +269,7 @@
     ];
     const timers = [];
     function scheduleLoop(key, svg, rev) {
+      if (!simEnabled) return;
       const min = 220,
         max = 1200;
       const interval = max - (max - min) * SIM.sendRate + 180 * Math.random();
@@ -269,6 +280,10 @@
     paths.forEach((p) => scheduleLoop(...p));
     const evalC = (c, t) => cubic(c.p0, c.p1, c.p2, c.p3, t);
     function tick(now) {
+      if (!simEnabled) {
+        packetAnimationId = null;
+        return;
+      }
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i],
           c = curves[p.key];
@@ -287,31 +302,27 @@
           particles.splice(i, 1);
         }
       }
-      requestAnimationFrame(tick);
+      packetAnimationId = requestAnimationFrame(tick);
     }
-    requestAnimationFrame(tick);
-    addEventListener(
-      "resize",
-      () => {
-        clearParticles();
-      },
-      { passive: true }
-    );
+    packetAnimationId = requestAnimationFrame(tick);
     return timers;
   }
 
   /* ===== Simulation loop ===== */
   function startSimulation() {
+    if (simulationRunning || !simEnabled) return;
+    simulationRunning = true;
     let last = performance.now();
     function step() {
+      if (!simulationRunning || !simEnabled) {
+        simulationRunning = false;
+        simulationAnimationId = null;
+        return;
+      }
+
       const now = performance.now(),
         dt = Math.max(0.001, (now - last) / 1000);
       last = now;
-
-      if (!simEnabled) {
-        requestAnimationFrame(step);
-        return;
-      }
 
       // Per-leaf steady send (Mb/s)
       const leafMb = LEAF_CAP_MB * SIM.sendRate;
@@ -323,9 +334,17 @@
       stepSwitch(SW.torL, inPps, dt);
 
       refreshTelemetry();
-      requestAnimationFrame(step);
+      simulationAnimationId = requestAnimationFrame(step);
     }
-    requestAnimationFrame(step);
+    simulationAnimationId = requestAnimationFrame(step);
+  }
+
+  function stopSimulation() {
+    simulationRunning = false;
+    if (simulationAnimationId) {
+      cancelAnimationFrame(simulationAnimationId);
+      simulationAnimationId = null;
+    }
   }
 
   /* ===== Toggle visibility ===== */
@@ -465,6 +484,8 @@
         : '<span class="easter-icon">🌲</span><span class="toggle-indicator off">OFF</span>';
       if (!on) {
         clearParticles();
+        stopPacketEngine();
+        stopSimulation();
         particleLoops.forEach(clearTimeout);
         particleLoops = [];
       } else {
@@ -479,7 +500,8 @@
         setTimeout(() => {
           redrawAll();
           // Re-run packet engine for the new SVG paths
-          packetEngine();
+          particleLoops = packetEngine();
+          startSimulation();
         }, 50);
       }
     };
@@ -508,8 +530,6 @@
     redrawAll();
     setTimeout(() => {
       redrawAll();
-      packetEngine();
-      startSimulation();
       markTorReady(); // Reveal ToR elements after everything is set up
     }, 150);
   });
@@ -527,6 +547,7 @@
     () => {
       sizeWrapperToBio();
       redrawAll();
+      clearParticles();
     },
     { passive: true }
   );

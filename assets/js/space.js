@@ -96,6 +96,7 @@
       /* localStorage not available */
     }
     updateStarfieldButton();
+    document.dispatchEvent(new CustomEvent("space:toggle", { detail: { enabled: isOn } }));
   };
 
   function updateStarfieldButton() {
@@ -182,6 +183,8 @@
     let targetY = 0;
     let currentX = 0;
     let currentY = 0;
+    let animationId = null;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     document.addEventListener(
       "mousemove",
@@ -194,7 +197,16 @@
       { passive: true }
     );
 
+    function shouldRunParallax() {
+      return !reducedMotion.matches && document.body.classList.contains("space-on") && document.visibilityState !== "hidden";
+    }
+
     function animate() {
+      if (!shouldRunParallax()) {
+        animationId = null;
+        return;
+      }
+
       // Smooth interpolation
       currentX += (targetX - currentX) * 0.05;
       currentY += (targetY - currentY) * 0.05;
@@ -216,12 +228,31 @@
         planetRight.style.transform = `rotate(8deg) translate(${-planetMoveX}px, ${planetMoveY}px)`;
       }
 
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     }
 
-    // Only run parallax if motion is allowed
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      animate();
+    function startParallax() {
+      if (animationId || !shouldRunParallax()) return;
+      animationId = requestAnimationFrame(animate);
     }
+
+    function stopParallax() {
+      if (!animationId) return;
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+
+    function syncParallax() {
+      if (shouldRunParallax()) {
+        startParallax();
+      } else {
+        stopParallax();
+      }
+    }
+
+    document.addEventListener("space:toggle", syncParallax);
+    document.addEventListener("visibilitychange", syncParallax);
+    if (reducedMotion.addEventListener) reducedMotion.addEventListener("change", syncParallax);
+    startParallax();
   }
 })();
