@@ -145,7 +145,7 @@
       hoverTimer = setTimeout(() => launchRocket(hoverName), HOVER_DELAY);
     });
 
-    siteName.addEventListener("mouseleave", () => {
+    hoverName.addEventListener("mouseleave", () => {
       if (hoverTimer) {
         clearTimeout(hoverTimer);
         hoverTimer = null;
