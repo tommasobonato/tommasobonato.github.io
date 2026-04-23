@@ -152,7 +152,14 @@
   <script src="{{ '/assets/js/tooltips-setup.js' | relative_url | bust_file_cache }}"></script>
 {% endif %}
 
+{% assign load_medium_zoom = false %}
 {% if site.enable_medium_zoom %}
+  {% if page.zoomable or page.mermaid.zoomable %}
+    {% assign load_medium_zoom = true %}
+  {% endif %}
+{% endif %}
+
+{% if load_medium_zoom %}
   <!-- Medium Zoom JS -->
   <script
     defer
@@ -195,7 +202,14 @@
   <script async src="https://badge.dimensions.ai/badge.js"></script>
 {% endif %}
 
+{% assign load_math = false %}
 {% if site.enable_math %}
+  {% if page.math or page.pseudocode %}
+    {% assign load_math = true %}
+  {% endif %}
+{% endif %}
+
+{% if load_math %}
   <!-- MathJax -->
   <script
     defer
