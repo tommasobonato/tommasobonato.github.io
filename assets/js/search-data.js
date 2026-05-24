@@ -51,6 +51,13 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/people/";
           },
+        },{id: "nav-projects",
+          title: "projects",
+          description: "Research prototypes and interactive demos.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
         },{id: "dropdown-bookshelf",
               title: "bookshelf",
               description: "",
@@ -489,6 +496,11 @@ ninja.data = [{
           description: "another project with an image 🎉",
           section: "Projects",handler: () => {
               window.location.href = "/projects/9_project/";
+            },},{id: "projects-load-balancer-visualizer",
+          title: 'Load Balancer Visualizer',
+          description: "Interactive 3D visualizer for packet-level load balancing algorithms.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/load_balancer_visualizer/";
             },},{
         id: 'social-email',
         title: 'email',
