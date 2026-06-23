@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi-plane NIC Visualizer</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #070a11;
+        --panel: #101622;
+        --panel-2: #151d2b;
+        --panel-3: #1c2636;
+        --text: #edf5ff;
+        --muted: #93a5bd;
+        --quiet: #607086;
+        --line: rgba(177, 205, 238, 0.17);
+        --line-strong: rgba(198, 220, 248, 0.34);
+        --accent: #5fd8ff;
+        --danger: #ff5b72;
+        --warn: #ffc857;
+        --good: #62e6a5;
+        --radius: 8px;
+        --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at 18% 10%, rgba(95, 216, 255, 0.17), transparent 30rem),
+          radial-gradient(circle at 86% 18%, rgba(132, 108, 255, 0.18), transparent 26rem),
+          linear-gradient(160deg, #070a11 0%, #0c111a 52%, #090d14 100%);
+        color: var(--text);
+        font-family: var(--font);
+        line-height: 1.45;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button {
+        border: 1px solid var(--line-strong);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        cursor: pointer;
+        transition:
+          background 0.16s ease,
+          border-color 0.16s ease,
+          transform 0.1s ease;
+      }
+
+      button:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.48);
+      }
+
+      button:active {
+        transform: translateY(1px);
+      }
+
+      button:focus-visible,
+      input:focus-visible {
+        outline: 3px solid rgba(95, 216, 255, 0.35);
+        outline-offset: 2px;
+      }
+
+      .page {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 30px 0 48px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(28px, 5vw, 50px);
+        font-weight: 720;
+        letter-spacing: 0;
+      }
+
+      .subtitle {
+        max-width: 760px;
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 7px 11px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .back-link:hover {
+        color: var(--text);
+        border-color: var(--line-strong);
+      }
+
+      .mobile-note {
+        display: none;
+        margin: 0 0 14px;
+        padding: 10px 12px;
+        border: 1px solid rgba(255, 200, 87, 0.35);
+        border-radius: var(--radius);
+        background: rgba(255, 200, 87, 0.1);
+        color: #ffe1a1;
+        font-size: 13px;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 18px;
+        align-items: start;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(16, 22, 34, 0.9);
+        box-shadow: 0 22px 80px rgba(0, 0, 0, 0.28);
+        overflow: hidden;
+      }
+
+      .viz-panel {
+        min-height: 620px;
+      }
+
+      .viz-toolbar,
+      .side-section {
+        padding: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .viz-toolbar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .control {
+        display: grid;
+        gap: 8px;
+      }
+
+      .control-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .control label,
+      .side-title {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .value {
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        height: 5px;
+        appearance: none;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(95, 216, 255, 0.95), rgba(132, 108, 255, 0.8));
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        width: 18px;
+        height: 18px;
+        appearance: none;
+        border: 2px solid #08101b;
+        border-radius: 50%;
+        background: #eff8ff;
+        box-shadow: 0 0 0 4px rgba(95, 216, 255, 0.18);
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #08101b;
+        border-radius: 50%;
+        background: #eff8ff;
+        box-shadow: 0 0 0 4px rgba(95, 216, 255, 0.18);
+      }
+
+      .viz-wrap {
+        padding: 14px 16px 8px;
+      }
+
+      #net {
+        min-height: 450px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius);
+        background: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px), rgba(5, 9, 16, 0.55);
+        background-size: 34px 34px;
+      }
+
+      #net svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        margin: 12px 0 0;
+      }
+
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 9px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        color: var(--muted);
+        font-size: 12px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .legend-item:hover {
+        border-color: var(--line-strong);
+        color: var(--text);
+      }
+
+      .swatch {
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+      }
+
+      .caption {
+        margin: 13px 0 16px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .metric {
+        min-height: 82px;
+        padding: 13px 14px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .metric .label {
+        margin: 0 0 8px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .metric .number {
+        margin: 0;
+        color: var(--text);
+        font-size: 24px;
+        font-weight: 730;
+      }
+
+      .metric.good .number {
+        color: var(--good);
+      }
+
+      .metric.warn .number {
+        color: var(--warn);
+      }
+
+      .metric.danger .number {
+        color: var(--danger);
+      }
+
+      .side-panel {
+        position: sticky;
+        top: 16px;
+      }
+
+      .side-section:last-child {
+        border-bottom: 0;
+      }
+
+      .side-title {
+        margin: 0 0 10px;
+      }
+
+      .toggle-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .mode-button {
+        min-height: 40px;
+        border-radius: var(--radius);
+        font-size: 13px;
+      }
+
+      .mode-button.active {
+        border-color: rgba(95, 216, 255, 0.72);
+        background: rgba(95, 216, 255, 0.15);
+        color: #c9f3ff;
+      }
+
+      .flow-button {
+        width: 100%;
+        min-height: 40px;
+        border-radius: var(--radius);
+      }
+
+      .status {
+        display: grid;
+        gap: 10px;
+      }
+
+      .status-line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 9px 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.035);
+      }
+
+      .status-line span:first-child {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .status-line span:last-child {
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 700;
+        text-align: right;
+      }
+
+      .note-list {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .note-list li + li {
+        margin-top: 8px;
+      }
+
+      .pe {
+        transition:
+          opacity 0.18s ease,
+          filter 0.18s ease;
+      }
+
+      .failed-plane {
+        opacity: 0.18;
+        filter: grayscale(0.7);
+      }
+
+      .failed-nic {
+        opacity: 0.28;
+      }
+
+      .switch {
+        stroke-width: 1.3;
+      }
+
+      .gpu {
+        fill: #172233;
+        stroke: rgba(218, 235, 255, 0.38);
+        stroke-width: 1.2;
+      }
+
+      .nic {
+        fill: #07101b;
+        stroke: rgba(218, 235, 255, 0.36);
+        stroke-width: 1;
+      }
+
+      .flow {
+        stroke-dasharray: 7 8;
+        filter: drop-shadow(0 0 8px currentColor);
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .flow {
+          animation: flow 0.95s linear infinite;
+        }
+      }
+
+      @keyframes flow {
+        to {
+          stroke-dashoffset: -30;
+        }
+      }
+
+      @media (max-width: 880px) {
+        .page {
+          width: min(100% - 20px, 680px);
+          padding-top: 16px;
+        }
+
+        .topbar,
+        .layout {
+          display: block;
+        }
+
+        .back-link {
+          margin-top: 12px;
+        }
+
+        .mobile-note {
+          display: block;
+        }
+
+        .viz-toolbar {
+          grid-template-columns: 1fr;
+        }
+
+        .side-panel {
+          position: static;
+          margin-top: 14px;
+        }
+
+        #net {
+          min-height: 310px;
+        }
+
+        .toggle-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <div class="topbar">
+        <div>
+          <h1>Multi-plane NIC Visualizer</h1>
+          <p class="subtitle">
+            Explore how independent network planes and multiple NICs per GPU change scale-out bandwidth, path diversity, and failure isolation.
+          </p>
+        </div>
+        <a class="back-link" href="/projects/">Projects</a>
+      </div>
+
+      <p class="mobile-note">This schematic works on mobile, but it is meant for desktop-sized screens.</p>
+
+      <section class="layout" aria-label="Multi-plane NIC visualization">
+        <div class="panel viz-panel">
+          <div class="viz-toolbar">
+            <div class="control">
+              <div class="control-head">
+                <label for="plane-count">Planes</label>
+                <span class="value" id="plane-value">3</span>
+              </div>
+              <input id="plane-count" type="range" min="1" max="4" step="1" value="3" />
+            </div>
+            <div class="control">
+              <div class="control-head">
+                <label for="nic-count">NICs per GPU</label>
+                <span class="value" id="nic-value">2</span>
+              </div>
+              <input id="nic-count" type="range" min="1" max="4" step="1" value="2" />
+            </div>
+          </div>
+
+          <div class="viz-wrap">
+            <div id="net" role="img" aria-label="Multi-plane scale-out topology"></div>
+            <div id="legend" class="legend" aria-label="Plane legend"></div>
+            <p id="caption" class="caption"></p>
+            <div id="stats" class="stats" aria-label="Topology metrics"></div>
+          </div>
+        </div>
+
+        <aside class="panel side-panel" aria-label="Controls and model notes">
+          <div class="side-section">
+            <p class="side-title">Failure drill</p>
+            <div class="toggle-row" id="drill-buttons">
+              <button class="mode-button active" type="button" data-drill="none">Healthy</button>
+              <button class="mode-button" type="button" data-drill="plane">Fail plane</button>
+              <button class="mode-button" type="button" data-drill="nic">Fail NIC</button>
+              <button class="mode-button" type="button" data-drill="both">Fail both</button>
+            </div>
+          </div>
+
+          <div class="side-section">
+            <p class="side-title">Traffic</p>
+            <button id="flow-toggle" class="flow-button" type="button">Show example flows</button>
+          </div>
+
+          <div class="side-section">
+            <p class="side-title">Live effect</p>
+            <div id="status" class="status"></div>
+          </div>
+
+          <div class="side-section">
+            <p class="side-title">Model</p>
+            <ul class="note-list">
+              <li>Each plane is drawn as an independent leaf-spine fabric with its own ToRs.</li>
+              <li>NICs add host bandwidth; planes add path diversity and failure isolation.</li>
+              <li>Scale-out bandwidth assumes 800G-class NICs and does not include NVLink.</li>
+              <li>The drawing is intentionally small: real fabrics have many more leaves and spines.</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+      const state = {
+        planes: 3,
+        nics: 2,
+        flows: false,
+        drill: "none",
+      };
+
+      let isolatedPlane = null;
+
+      const colors = ["#64d9ff", "#62e6a5", "#ff9f5f", "#e879f9"];
+      const fills = ["#102d43", "#123629", "#422214", "#371c40"];
+      const SVG = {
+        width: 760,
+        height: 420,
+        x0: 104,
+        fabricWidth: 610,
+        gap: 18,
+        planeTop: 50,
+        planeHeight: 190,
+        spineY: 82,
+        leafY: 185,
+        switchH: 32,
+        gpuY: 325,
+        gpuW: 168,
+        gpuH: 54,
+        nicY: 319,
+        nicH: 18,
+      };
+
+      const GPU_COUNT = 2;
+      const NIC_TBPS = 0.8;
+
+      const $ = (selector) => document.querySelector(selector);
+      const round = Math.round;
+
+      function failedPlaneIndex() {
+        return state.drill === "plane" || state.drill === "both" ? Math.max(0, state.planes - 1) : -1;
+      }
+
+      function failedNicIndex() {
+        return state.drill === "nic" || state.drill === "both" ? Math.max(0, state.nics - 1) : -1;
+      }
+
+      function activePlanes() {
+        return Math.max(0, state.planes - (failedPlaneIndex() >= 0 ? 1 : 0));
+      }
+
+      function activeNics() {
+        return Math.max(0, state.nics - (failedNicIndex() >= 0 ? 1 : 0));
+      }
+
+      function planeWidth() {
+        return (SVG.fabricWidth - (state.planes - 1) * SVG.gap) / state.planes;
+      }
+
+      function planeX(index) {
+        return SVG.x0 + index * (planeWidth() + SVG.gap);
+      }
+
+      function planeCx(index) {
+        return planeX(index) + planeWidth() / 2;
+      }
+
+      function spineWidth() {
+        return Math.min(70, planeWidth() * 0.52);
+      }
+
+      function leafWidth() {
+        return Math.min(58, planeWidth() * 0.34);
+      }
+
+      function leafCx(plane, side) {
+        return planeX(plane) + planeWidth() * (side === 0 ? 0.29 : 0.71);
+      }
+
+      function gpuCx(index) {
+        return SVG.x0 + (SVG.fabricWidth * (index + 1)) / (GPU_COUNT + 1);
+      }
+
+      function gpuX(index) {
+        return gpuCx(index) - SVG.gpuW / 2;
+      }
+
+      function nicCx(gpu, nic) {
+        return gpuX(gpu) + (SVG.gpuW * (nic + 0.5)) / state.nics;
+      }
+
+      function nicWidth() {
+        return Math.min(42, (SVG.gpuW / state.nics) * 0.78);
+      }
+
+      function nodeLabel(x, y, text, size = 11, color = "var(--muted)") {
+        return `<text x="${round(x)}" y="${round(
+          y
+        )}" text-anchor="middle" dominant-baseline="middle" font-size="${size}" fill="${color}">${text}</text>`;
+      }
+
+      function activePlaneIndexes() {
+        const failed = failedPlaneIndex();
+        return Array.from({ length: state.planes }, (_, index) => index).filter((index) => index !== failed);
+      }
+
+      function drawLink(parts, { plane, failed = false, width = 1.2, opacity = 0.56 } = {}) {
+        const color = colors[plane] ?? "#9fb7d2";
+        const className = ["pe", failed ? "failed-plane" : ""].join(" ");
+        return `<line class="${className}" data-plane="${plane}" x1="${round(parts[0])}" y1="${round(parts[1])}" x2="${round(parts[2])}" y2="${round(
+          parts[3]
+        )}" stroke="${color}" stroke-width="${width}" opacity="${opacity}" />`;
+      }
+
+      function buildSvg() {
+        const items = [];
+        const failedPlane = failedPlaneIndex();
+        const failedNic = failedNicIndex();
+
+        items.push(`<rect x="0" y="0" width="${SVG.width}" height="${SVG.height}" fill="transparent" />`);
+        items.push(nodeLabel(36, 101, "Spine", 12, "var(--muted)"));
+        items.push(nodeLabel(38, 203, "Leaf", 12, "var(--muted)"));
+        items.push(nodeLabel(38, 352, "GPU", 12, "var(--muted)"));
+
+        for (let plane = 0; plane < state.planes; plane += 1) {
+          const failed = plane === failedPlane;
+          const className = ["pe", failed ? "failed-plane" : ""].join(" ");
+          items.push(
+            `<rect class="${className}" data-plane="${plane}" x="${round(planeX(plane))}" y="${SVG.planeTop}" width="${round(
+              planeWidth()
+            )}" height="${SVG.planeHeight}" rx="12" fill="${fills[plane]}" opacity="0.18" stroke="${
+              colors[plane]
+            }" stroke-width="1.4" stroke-dasharray="6 6" />`
+          );
+          items.push(
+            `<text class="${className}" data-plane="${plane}" x="${round(
+              planeCx(plane)
+            )}" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="${colors[plane]}">Plane ${plane + 1}${
+              failed ? " failed" : ""
+            }</text>`
+          );
+        }
+
+        for (let plane = 0; plane < state.planes; plane += 1) {
+          const planeFailed = plane === failedPlane;
+          for (let side = 0; side < 2; side += 1) {
+            items.push(
+              drawLink([leafCx(plane, side), SVG.leafY, planeCx(plane), SVG.spineY + SVG.switchH], {
+                plane,
+                failed: planeFailed,
+                width: 1.5,
+                opacity: 0.65,
+              })
+            );
+          }
+        }
+
+        for (let gpu = 0; gpu < GPU_COUNT; gpu += 1) {
+          for (let nic = 0; nic < state.nics; nic += 1) {
+            for (let plane = 0; plane < state.planes; plane += 1) {
+              const failed = plane === failedPlane || nic === failedNic;
+              items.push(
+                drawLink([nicCx(gpu, nic), SVG.nicY, leafCx(plane, gpu), SVG.leafY + SVG.switchH], {
+                  plane,
+                  failed,
+                  width: nic === failedNic ? 0.9 : 1.2,
+                  opacity: failed ? 0.24 : 0.54,
+                })
+              );
+            }
+          }
+        }
+
+        for (let plane = 0; plane < state.planes; plane += 1) {
+          const failed = plane === failedPlane;
+          const className = ["switch", "pe", failed ? "failed-plane" : ""].join(" ");
+          items.push(
+            `<rect class="${className}" data-plane="${plane}" x="${round(planeCx(plane) - spineWidth() / 2)}" y="${SVG.spineY}" width="${round(
+              spineWidth()
+            )}" height="${SVG.switchH}" rx="6" fill="${fills[plane]}" stroke="${colors[plane]}" />`
+          );
+          items.push(nodeLabel(planeCx(plane), SVG.spineY + 16, "S", 12, colors[plane]));
+
+          for (let side = 0; side < 2; side += 1) {
+            items.push(
+              `<rect class="${className}" data-plane="${plane}" x="${round(leafCx(plane, side) - leafWidth() / 2)}" y="${SVG.leafY}" width="${round(
+                leafWidth()
+              )}" height="${SVG.switchH}" rx="6" fill="${fills[plane]}" stroke="${colors[plane]}" />`
+            );
+            items.push(nodeLabel(leafCx(plane, side), SVG.leafY + 16, `T${side + 1}`, 11, colors[plane]));
+          }
+        }
+
+        for (let gpu = 0; gpu < GPU_COUNT; gpu += 1) {
+          items.push(`<rect class="gpu" x="${round(gpuX(gpu))}" y="${SVG.gpuY}" width="${SVG.gpuW}" height="${SVG.gpuH}" rx="8" />`);
+          items.push(nodeLabel(gpuCx(gpu), SVG.gpuY + 38, `GPU ${gpu + 1}`, 12, "var(--text)"));
+
+          for (let nic = 0; nic < state.nics; nic += 1) {
+            const nicFailed = nic === failedNic;
+            const nicClass = ["nic", nicFailed ? "failed-nic" : ""].join(" ");
+            const x = nicCx(gpu, nic) - nicWidth() / 2;
+            items.push(`<rect class="${nicClass}" x="${round(x)}" y="${SVG.nicY}" width="${round(nicWidth())}" height="${SVG.nicH}" rx="4" />`);
+            items.push(nodeLabel(nicCx(gpu, nic), SVG.nicY + SVG.nicH / 2, `N${nic + 1}`, 9, nicFailed ? "var(--danger)" : "var(--muted)"));
+            if (nicFailed) {
+              items.push(
+                `<line x1="${round(x + 3)}" y1="${SVG.nicY + 3}" x2="${round(x + nicWidth() - 3)}" y2="${
+                  SVG.nicY + SVG.nicH - 3
+                }" stroke="var(--danger)" stroke-width="1.5" />`
+              );
+            }
+          }
+        }
+
+        if (state.flows && activePlanes() > 0 && activeNics() > 0) {
+          const planes = activePlaneIndexes().slice(0, Math.min(2, activePlanes()));
+          const nic = Math.max(0, Math.min(state.nics - 1, failedNic === 0 ? 1 : 0));
+          for (const plane of planes) {
+            const points = [
+              [nicCx(0, nic), SVG.nicY],
+              [leafCx(plane, 0), SVG.leafY + 16],
+              [planeCx(plane), SVG.spineY + 16],
+              [leafCx(plane, 1), SVG.leafY + 16],
+              [nicCx(1, nic), SVG.nicY],
+            ];
+            items.push(
+              `<polyline class="flow pe" data-plane="${plane}" points="${points
+                .map((point) => `${round(point[0])},${round(point[1])}`)
+                .join(" ")}" fill="none" stroke="${colors[plane]}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.95" />`
+            );
+          }
+        }
+
+        if (failedPlane >= 0) {
+          items.push(
+            `<text x="${round(planeCx(failedPlane))}" y="${
+              SVG.planeTop + 102
+            }" text-anchor="middle" font-size="13" font-weight="800" fill="var(--danger)">PLANE OFFLINE</text>`
+          );
+        }
+
+        return `<svg viewBox="0 0 ${SVG.width} ${SVG.height}" role="img" aria-label="${state.planes} planes and ${
+          state.nics
+        } NICs per GPU">${items.join("")}</svg>`;
+      }
+
+      function isolatePlane(plane) {
+        document.querySelectorAll("#net [data-plane]").forEach((element) => {
+          element.style.opacity = Number(element.dataset.plane) === plane ? "" : "0.08";
+        });
+        document.querySelectorAll("#legend [data-plane]").forEach((element) => {
+          element.style.opacity = Number(element.dataset.plane) === plane ? "1" : "0.42";
+        });
+      }
+
+      function clearIsolation() {
+        document.querySelectorAll("#net [data-plane]").forEach((element) => {
+          element.style.opacity = "";
+        });
+        document.querySelectorAll("#legend [data-plane]").forEach((element) => {
+          element.style.opacity = "";
+        });
+      }
+
+      function renderLegend() {
+        const failedPlane = failedPlaneIndex();
+        const nodes = [];
+        for (let plane = 0; plane < state.planes; plane += 1) {
+          nodes.push(
+            `<span class="legend-item" data-plane="${plane}"><span class="swatch" style="background:${colors[plane]}"></span>Plane ${plane + 1}${
+              plane === failedPlane ? " failed" : ""
+            }</span>`
+          );
+        }
+        nodes.push(`<span style="color:var(--quiet);font-size:12px">Tap a plane to isolate it. Colors mark independent fabrics.</span>`);
+        $("#legend").innerHTML = nodes.join("");
+
+        document.querySelectorAll("#legend [data-plane]").forEach((element) => {
+          const plane = Number(element.dataset.plane);
+          element.addEventListener("mouseenter", () => {
+            if (isolatedPlane === null) isolatePlane(plane);
+          });
+          element.addEventListener("mouseleave", () => {
+            if (isolatedPlane === null) clearIsolation();
+          });
+          element.addEventListener("click", () => {
+            isolatedPlane = isolatedPlane === plane ? null : plane;
+            if (isolatedPlane === null) clearIsolation();
+            else isolatePlane(isolatedPlane);
+          });
+        });
+      }
+
+      function renderStats() {
+        const totalUplinks = state.planes * state.nics;
+        const activeUplinks = activePlanes() * activeNics();
+        const healthyBw = state.nics * NIC_TBPS;
+        const activeBw = activeNics() * NIC_TBPS * (state.planes > 0 ? activePlanes() / state.planes : 0);
+        const retained = healthyBw > 0 ? Math.round((activeBw / healthyBw) * 100) : 0;
+        const healthClass = retained >= 100 ? "good" : retained >= 50 ? "warn" : "danger";
+
+        const cards = [
+          ["Planes", state.planes, ""],
+          ["NICs / GPU", state.nics, ""],
+          ["Uplinks / GPU", totalUplinks, ""],
+          ["Active uplinks", activeUplinks, healthClass],
+          ["Healthy BW / GPU", `${healthyBw.toFixed(1)} Tb/s`, ""],
+          ["Available BW", `${activeBw.toFixed(1)} Tb/s`, healthClass],
+        ];
+
+        $("#stats").innerHTML = cards
+          .map(([label, value, tone]) => `<div class="metric ${tone}"><p class="label">${label}</p><p class="number">${value}</p></div>`)
+          .join("");
+
+        $("#status").innerHTML = [
+          ["Retained scale-out BW", `${retained}%`],
+          ["Active planes", `${activePlanes()} / ${state.planes}`],
+          ["Active NICs / GPU", `${activeNics()} / ${state.nics}`],
+          [
+            "Fault domain",
+            state.drill === "none" ? "None" : state.drill === "plane" ? "Fabric plane" : state.drill === "nic" ? "NIC" : "Plane + NIC",
+          ],
+        ]
+          .map(([label, value]) => `<div class="status-line"><span>${label}</span><span>${value}</span></div>`)
+          .join("");
+      }
+
+      function renderCaption() {
+        const planeWord = state.planes === 1 ? "plane" : "planes";
+        const nicWord = state.nics === 1 ? "NIC" : "NICs";
+        const drill =
+          state.drill === "none"
+            ? "The fabric is healthy."
+            : state.drill === "plane"
+              ? "One independent plane is offline; surviving planes continue forwarding."
+              : state.drill === "nic"
+                ? "One NIC per GPU is offline; surviving NICs still reach every active plane."
+                : "One plane and one NIC per GPU are offline, showing combined fault isolation.";
+        const vera = state.nics === 2 ? " This matches the two-NIC Vera Rubin-style host setting in the simplified model." : "";
+
+        $("#caption").textContent =
+          `${state.planes} independent ${planeWord}; ${state.nics} ${nicWord} per GPU. NICs provide host-side bandwidth, while planes provide path diversity and fault isolation. ${drill}${vera}`;
+      }
+
+      function renderButtons() {
+        document.querySelectorAll("[data-drill]").forEach((button) => {
+          button.classList.toggle("active", button.dataset.drill === state.drill);
+        });
+        $("#flow-toggle").textContent = state.flows ? "Hide example flows" : "Show example flows";
+      }
+
+      function render() {
+        if (isolatedPlane !== null && isolatedPlane >= state.planes) {
+          isolatedPlane = null;
+        }
+        $("#plane-value").textContent = state.planes;
+        $("#nic-value").textContent = state.nics;
+        $("#net").innerHTML = buildSvg();
+        renderLegend();
+        renderStats();
+        renderCaption();
+        renderButtons();
+        if (isolatedPlane !== null) isolatePlane(isolatedPlane);
+      }
+
+      $("#plane-count").addEventListener("input", (event) => {
+        state.planes = Number(event.target.value);
+        render();
+      });
+
+      $("#nic-count").addEventListener("input", (event) => {
+        state.nics = Number(event.target.value);
+        render();
+      });
+
+      $("#flow-toggle").addEventListener("click", () => {
+        state.flows = !state.flows;
+        render();
+      });
+
+      document.querySelectorAll("[data-drill]").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.drill = button.dataset.drill;
+          render();
+        });
+      });
+
+      render();
+    </script>
+  </body>
+</html>
