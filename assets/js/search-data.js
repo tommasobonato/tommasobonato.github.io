@@ -501,6 +501,11 @@ ninja.data = [{
           description: "Interactive 3D visualizer for packet-level load balancing algorithms.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/load_balancer_visualizer/";
+            },},{id: "projects-multi-plane-nic-visualizer",
+          title: 'Multi-plane NIC Visualizer',
+          description: "Interactive schematic for scale-out fabrics with multiple NICs and independent planes.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/multiplane_nic_visualizer/";
             },},{
         id: 'social-email',
         title: 'email',
