@@ -27,10 +27,18 @@
 
   // Create starfield element
   function createStarfieldElement() {
-    if (document.getElementById("starfield")) return;
-    const starfield = document.createElement("div");
+    const starfield = document.getElementById("starfield") || document.createElement("div");
+    if (starfield.querySelector(".starfield-layer")) return;
     starfield.id = "starfield";
-    document.body.appendChild(starfield);
+    starfield.setAttribute("aria-hidden", "true");
+    for (let i = 0; i < 12; i++) {
+      const layer = document.createElement("span");
+      layer.className = "starfield-layer";
+      // Keep the original background gradients' front-to-back order.
+      layer.style.zIndex = String(12 - i);
+      starfield.appendChild(layer);
+    }
+    if (!starfield.isConnected) document.body.appendChild(starfield);
   }
 
   // Create nebula element

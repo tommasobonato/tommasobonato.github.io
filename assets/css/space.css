@@ -299,7 +299,7 @@ body.space-on .space-datacenter {
   border-top-color: rgba(20, 20, 40, 0.95);
 }
 
-/* ===== STARFIELD (existing, unchanged logic) ===== */
+/* ===== STARFIELD ===== */
 #starfield {
   position: fixed;
   top: -30px;
@@ -307,39 +307,95 @@ body.space-on .space-datacenter {
   right: -30px;
   bottom: -30px;
   pointer-events: none; /* don't block clicks */
+  overflow: hidden;
   opacity: 0;
   transition: opacity 0.35s ease;
-  background:
-    /* Bright prominent stars */
-    radial-gradient(3px 3px at 12% 22%, #fff 60%, transparent 61%) repeat,
-    radial-gradient(3px 3px at 78% 15%, #fffaf0 60%, transparent 61%) repeat,
-    radial-gradient(3.5px 3.5px at 42% 72%, #fff 60%, transparent 61%) repeat,
-    /* Rare colored stars */ radial-gradient(2.5px 2.5px at 92% 35%, rgba(255, 180, 180, 0.95) 60%, transparent 61%) repeat,
-    radial-gradient(2.5px 2.5px at 8% 58%, rgba(180, 200, 255, 0.95) 60%, transparent 61%) repeat,
-    radial-gradient(2px 2px at 65% 92%, rgba(255, 220, 180, 0.9) 60%, transparent 61%) repeat,
-    /* Medium blue-white stars */ radial-gradient(2px 2px at 25% 45%, rgba(200, 220, 255, 1) 60%, transparent 61%) repeat,
-    radial-gradient(2px 2px at 68% 82%, rgba(255, 250, 230, 1) 60%, transparent 61%) repeat,
-    radial-gradient(2px 2px at 55% 28%, rgba(220, 235, 255, 1) 60%, transparent 61%) repeat,
-    /* Small scattered stars */ radial-gradient(1.5px 1.5px at 35% 62%, rgba(255, 255, 255, 0.9) 60%, transparent 61%) repeat,
-    radial-gradient(1.5px 1.5px at 82% 38%, rgba(255, 255, 255, 0.85) 60%, transparent 61%) repeat,
-    radial-gradient(1px 1px at 18% 75%, rgba(255, 255, 255, 0.75) 60%, transparent 61%) repeat;
-  background-size:
-    600px 600px,
-    520px 520px,
-    680px 680px,
-    900px 900px,
-    850px 850px,
-    780px 780px,
-    380px 380px,
-    420px 420px,
-    350px 350px,
-    280px 280px,
-    320px 320px,
-    220px 220px;
   z-index: 9999;
 }
 body.space-on #starfield {
   opacity: 1;
+}
+
+/* Overscan each repeating tile only in its drift direction, then composite it. */
+.starfield-layer {
+  position: absolute;
+  left: min(0px, calc(-1 * var(--drift-x)));
+  right: min(0px, var(--drift-x));
+  top: min(0px, calc(-1 * var(--drift-y)));
+  bottom: min(0px, var(--drift-y));
+  background-position: max(0px, var(--drift-x)) max(0px, var(--drift-y));
+}
+.starfield-layer:nth-child(1) {
+  background-image: radial-gradient(3px 3px at 12% 22%, #fff 60%, transparent 61%);
+  background-size: 600px 600px;
+  --drift-x: 600px;
+  --drift-y: 80px;
+}
+.starfield-layer:nth-child(2) {
+  background-image: radial-gradient(3px 3px at 78% 15%, #fffaf0 60%, transparent 61%);
+  background-size: 520px 520px;
+  --drift-x: -520px;
+  --drift-y: 60px;
+}
+.starfield-layer:nth-child(3) {
+  background-image: radial-gradient(3.5px 3.5px at 42% 72%, #fff 60%, transparent 61%);
+  background-size: 680px 680px;
+  --drift-x: 680px;
+  --drift-y: -100px;
+}
+.starfield-layer:nth-child(4) {
+  background-image: radial-gradient(2.5px 2.5px at 92% 35%, rgba(255, 180, 180, 0.95) 60%, transparent 61%);
+  background-size: 900px 900px;
+  --drift-x: -900px;
+  --drift-y: 120px;
+}
+.starfield-layer:nth-child(5) {
+  background-image: radial-gradient(2.5px 2.5px at 8% 58%, rgba(180, 200, 255, 0.95) 60%, transparent 61%);
+  background-size: 850px 850px;
+  --drift-x: 850px;
+  --drift-y: -80px;
+}
+.starfield-layer:nth-child(6) {
+  background-image: radial-gradient(2px 2px at 65% 92%, rgba(255, 220, 180, 0.9) 60%, transparent 61%);
+  background-size: 780px 780px;
+  --drift-x: -780px;
+  --drift-y: 90px;
+}
+.starfield-layer:nth-child(7) {
+  background-image: radial-gradient(2px 2px at 25% 45%, rgba(200, 220, 255, 1) 60%, transparent 61%);
+  background-size: 380px 380px;
+  --drift-x: 380px;
+  --drift-y: -50px;
+}
+.starfield-layer:nth-child(8) {
+  background-image: radial-gradient(2px 2px at 68% 82%, rgba(255, 250, 230, 1) 60%, transparent 61%);
+  background-size: 420px 420px;
+  --drift-x: -420px;
+  --drift-y: 70px;
+}
+.starfield-layer:nth-child(9) {
+  background-image: radial-gradient(2px 2px at 55% 28%, rgba(220, 235, 255, 1) 60%, transparent 61%);
+  background-size: 350px 350px;
+  --drift-x: 350px;
+  --drift-y: 30px;
+}
+.starfield-layer:nth-child(10) {
+  background-image: radial-gradient(1.5px 1.5px at 35% 62%, rgba(255, 255, 255, 0.9) 60%, transparent 61%);
+  background-size: 280px 280px;
+  --drift-x: 280px;
+  --drift-y: 50px;
+}
+.starfield-layer:nth-child(11) {
+  background-image: radial-gradient(1.5px 1.5px at 82% 38%, rgba(255, 255, 255, 0.85) 60%, transparent 61%);
+  background-size: 320px 320px;
+  --drift-x: -320px;
+  --drift-y: 25px;
+}
+.starfield-layer:nth-child(12) {
+  background-image: radial-gradient(1px 1px at 18% 75%, rgba(255, 255, 255, 0.75) 60%, transparent 61%);
+  background-size: 220px 220px;
+  --drift-x: -220px;
+  --drift-y: 45px;
 }
 
 /* Twinkle effect for stars */
@@ -361,33 +417,28 @@ body.space-on #starfield {
 
 /* gentle drift (respects reduced motion) */
 @keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
   to {
-    background-position:
-      600px 80px,
-      -520px 60px,
-      680px -100px,
-      -900px 120px,
-      850px -80px,
-      -780px 90px,
-      380px -50px,
-      -420px 70px,
-      350px 30px,
-      280px 50px,
-      -320px 25px,
-      -220px 45px;
+    transform: translate3d(var(--drift-x), var(--drift-y), 0);
   }
 }
 #starfield {
   animation: none;
 }
 body.space-on #starfield {
-  animation:
-    drift 90s linear infinite,
-    twinkle 3s ease-in-out infinite;
+  animation: twinkle 3s ease-in-out infinite;
+}
+body.space-on .starfield-layer {
+  animation: drift 90s linear infinite;
+  will-change: transform;
 }
 @media (prefers-reduced-motion: reduce) {
-  body.space-on #starfield {
+  body.space-on #starfield,
+  body.space-on .starfield-layer {
     animation: none;
+    will-change: auto;
   }
   /* Disable any planet drift animation under reduced motion */
   body.space-on .space-planet {
