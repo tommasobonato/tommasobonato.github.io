@@ -4,7 +4,7 @@
     - name: Full Name
       value: Tommaso Bonato
     - name: Position
-      value: PhD Student & Student Researcher
+      value: PhD Student & NVIDIA Research Intern
     - name: Email
       value: tommaso.bonato@inf.ethz.ch
     - name: Languages
@@ -16,10 +16,11 @@
     - title: PhD in Computer Science
       institution: ETH Zürich, Switzerland
       department: Scalable Parallel Computing Laboratory (SPCL)
-      year: 2021 - Present
+      year: 2023 - Present
       location: Zürich
       description:
         - "Advisor: Prof. Torsten Hoefler"
+        - "Expected completion: March 2027"
         - Research focus on datacenter networking, congestion control, load balancing, AI/HPC workloads, collective communication, and network topologies
         - Contributing to the Ultra Ethernet Consortium (UEC) effort
     - title: MSc in Computer Science
@@ -36,17 +37,23 @@
 - title: Experience
   type: time_table
   contents:
-    - title: Student Researcher
+    - title: HPC and AI Software Network Architect Intern
+      institution: NVIDIA
+      year: Jun 2026 - Nov 2026
+      location: Zürich
+      description:
+        - Design and evaluate multi-NIC load balancing for GPU-initiated networking (GIN) in AI systems
+    - title: Research Engineer (Part-Time)
       institution: Microsoft
-      year: 2022 - Present
+      year: Aug 2022 - Mar 2026
       location: Remote
       description:
-        - Working with Abdul Kabbani on datacenter networking research
+        - Worked with Abdul Kabbani on datacenter networking research
         - Congestion control and load balancing for AI/HPC workloads
     - title: PhD Student
       institution: ETH Zürich - SPCL
       department: Department of Computer Science
-      year: 2021 - Present
+      year: 2023 - Present
       location: Zürich
       description:
         - Research on high-performance networking
@@ -92,6 +99,10 @@
 - title: Honors and Awards
   type: time_table
   contents:
+    - year: 2026
+      items:
+        - "ISC'26 Hans Meuer Award (Best Paper, PICO)"
+        - "NAIC @ SIGCOMM'26 Best Paper Award (Ampel)"
     - year: 2025
       items:
         - "SC'25 Best Student Paper Finalist (ATLAHS)"

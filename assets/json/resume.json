@@ -1,11 +1,11 @@
 {
   "basics": {
     "name": "Tommaso Bonato",
-    "label": "PhD Student & Research Engineer",
+    "label": "PhD Student & NVIDIA Research Intern",
     "image": "",
     "email": "tommaso.bonato@inf.ethz.ch",
     "url": "https://tommasobonato.github.io",
-    "summary": "Fourth-year PhD student at ETH Zürich (SPCL) under Prof. Torsten Hoefler, researching high-performance network topologies, traffic load balancing, congestion control for large-scale AI/HPC systems. Also a part-time Research Engineer at Microsoft, shaping next-generation datacenter fabrics and representing Microsoft in the Ultra Ethernet Transport Working Group.",
+    "summary": "PhD student at ETH Zürich (SPCL) under Prof. Torsten Hoefler, researching high-performance network topologies, load balancing, and congestion control for large-scale AI/HPC systems. Currently an HPC and AI Software Network Architect Intern at NVIDIA (June-November 2026), working on multi-NIC load balancing for GPU-initiated networking. Previously a part-time Research Engineer at Microsoft (August 2022-March 2026), contributing to datacenter networking and the Ultra Ethernet Transport Working Group. Expected PhD completion: March 2027.",
     "location": {
       "city": "Zürich",
       "countryCode": "CH",
@@ -31,11 +31,22 @@
   },
   "work": [
     {
+      "name": "NVIDIA",
+      "position": "HPC and AI Software Network Architect Intern",
+      "url": "https://www.nvidia.com/",
+      "startDate": "2026-06",
+      "endDate": "2026-11",
+      "location": "Zürich, Switzerland",
+      "summary": "Design and evaluate multi-NIC load balancing for GPU-initiated networking (GIN) in AI systems.",
+      "highlights": ["Multi-NIC load balancing", "GPU-initiated networking (GIN)", "AI systems"]
+    },
+    {
       "name": "Microsoft (via Experis)",
       "position": "Research Engineer (Part-Time)",
       "url": "https://www.microsoft.com/",
       "startDate": "2022-08-01",
-      "summary": "Design and prototype network transport protocols for Azure's AI and HPC infrastructure as part of the Network Architecture team. Microsoft representative for Ultra Ethernet (UE) Transport Working Group, helping shape congestion control and load balancing standards. Developed proofs of concept for inter-datacenter congestion control, co-design of networking and AI workloads, and packet/flow-level load-balancing schemes. Improved and extended Microsoft's C++ htsim-based simulator.",
+      "endDate": "2026-03",
+      "summary": "Designed and prototyped network transport protocols for Azure's AI and HPC infrastructure as part of the Network Architecture team. Represented Microsoft in the Ultra Ethernet (UE) Transport Working Group, helping shape congestion control and load balancing standards. Developed proofs of concept for inter-datacenter congestion control, co-design of networking and AI workloads, and packet/flow-level load-balancing schemes. Improved and extended Microsoft's C++ htsim-based simulator.",
       "highlights": ["Ultra Ethernet Transport WG", "Congestion control & load balancing", "htsim network simulator"]
     },
     {
@@ -82,7 +93,7 @@
       "area": "Computer Science",
       "studyType": "PhD",
       "startDate": "2023-01-01",
-      "endDate": "2027-01-01",
+      "endDate": "2027-03",
       "courses": ["High-performance network topologies", "Traffic load balancing", "Congestion control", "AI/HPC systems"]
     },
     {
@@ -109,6 +120,18 @@
     }
   ],
   "awards": [
+    {
+      "title": "NAIC @ SIGCOMM'26 Best Paper Award",
+      "date": "2026-08-17",
+      "awarder": "Workshop on Networks for AI Computing (NAIC), ACM SIGCOMM",
+      "summary": "For the paper 'Ampel: Scheduling at the Network Cut in ML Training'"
+    },
+    {
+      "title": "ISC'26 Hans Meuer Award (Best Paper)",
+      "date": "2026-06",
+      "awarder": "ISC High Performance",
+      "summary": "For the paper 'PICO: Performance Insights for Collective Operations'"
+    },
     {
       "title": "SC'25 Best Student Paper Finalist",
       "date": "2025-11-01",

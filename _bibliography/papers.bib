@@ -1,6 +1,77 @@
 ---
 ---
 
+@inproceedings{bonato2026orderedchaos,
+  abbr        = {SC'26},
+  type        = {inproceedings},
+  author      = {Tommaso Bonato and Ahmad Ghalayini and Nadeen Gebara and Benoit Pit-Claudel and Jiayong Li and Mikhail Khalilov and Luca Piccolboni and Waleed Reda and Pei-Huan Tsai and Tao Ji and Abdul Kabbani and Torsten Hoefler},
+  title       = {Ordered Chaos: Towards Adaptive Multipath Load Balancing with Precise Fast Loss Detection},
+  year        = {2026},
+  month       = {11},
+  tags        = {ai;hpc;networking;load balancing;transport},
+  arxiv       = {https://arxiv.org/abs/2610.41707},
+  doi         = {10.48550/arXiv.2610.41707},
+  pdf         = {https://arxiv.org/pdf/2610.41707},
+  abstract    = {Ordered Chaos combines adaptive multipath routing with reliable loss recovery at the endpoints. Reactive Subflow Spraying distributes traffic across ordered subflows, while Precise Fast Loss Detection uses ordering and probes to tell packet reordering apart from actual loss within one round-trip time. Simulation and DPU experiments show up to 3x better tail flow completion times, up to 99\% fewer timeout recoveries, and up to 35\% faster collective and training communication.},
+  booktitle   = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC'26)},
+  note        = {To appear},
+  selected={true}
+}
+
+@inproceedings{bonato2026provisioning,
+  abbr        = {SC'26},
+  type        = {inproceedings},
+  author      = {Tommaso Bonato and Amirreza Rastegari and Daniele De Sensi and Timo Schneider and Siyuan Shen and Ales Kubicek and Prabhat Ram and Torsten Hoefler},
+  title       = {Provisioning Networks for AI Supercomputers: A Trace-Driven Study of Performance Sensitivity at Unprecedented Scale},
+  year        = {2026},
+  month       = {11},
+  tags        = {ai;hpc;networking;performance;workloads},
+  arxiv       = {https://arxiv.org/abs/2610.41700},
+  doi         = {10.48550/arXiv.2610.41700},
+  pdf         = {https://arxiv.org/pdf/2610.41700},
+  abstract    = {We study how AI training and inference depend on network latency, bandwidth, and jitter at scales reaching 4,096 GPUs. By decomposing execution traces and solving linear programs, the analysis explores network configurations while retaining NCCL schedules and application dependencies. Comparisons with hardware measurements and existing simulators validate the method at feasible scales. The resulting performance envelopes help identify both network bottlenecks and upgrades that offer limited benefit.},
+  booktitle   = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC'26)},
+  note        = {To appear},
+  selected={true}
+}
+
+@article{khalilov2026pcm,
+  abbr        = {arXiv},
+  type        = {article},
+  author      = {Mikhail Khalilov and Timo Schneider and Tommaso Bonato and Siyuan Shen and Marcin Chrapek and Yehor Kozyr and Alberto Merino and Rip Sohan and Surendra Anubolu and Mohan Kalkunte and Ahmad Ghalayini and Abdul Kabbani and Torsten Hoefler},
+  title       = {PCM: Programmable Congestion Management for Terabit RDMA NICs},
+  journal     = {arXiv preprint arXiv:2610.13130},
+  year        = {2026},
+  month       = {10},
+  tags        = {networking;congestion control;load balancing;rdma},
+  arxiv       = {https://arxiv.org/abs/2610.13130},
+  doi         = {10.48550/arXiv.2610.13130},
+  pdf         = {https://arxiv.org/pdf/2610.13130},
+  abstract    = {PCM lets congestion-control and load-balancing policies move between RDMA platforms through a common programming interface. Event handlers consume telemetry and produce controls, while platform-specific backends implement the hardware integration. We implement eleven algorithms and evaluate them in an Ultra Ethernet simulator, UCCL, NVIDIA ConnectX-8, and Microsoft 1P. The results demonstrate portable congestion management at terabit speeds without rewriting policy logic for each device.},
+  note        = {Preprint},
+  selected={false}
+}
+
+@inproceedings{torsiello2026ampel,
+  abbr        = {NAIC'26},
+  type        = {inproceedings},
+  author      = {Valerio Torsiello and Ayush Mishra and Sushovan Das and Lukas R{\"o}llin and Tommaso Bonato and Torsten Hoefler and Laurent Vanbever},
+  title       = {Ampel: Scheduling at the Network Cut in ML Training},
+  year        = {2026},
+  month       = {08},
+  tags        = {ai;networking;load balancing;scheduling},
+  doi         = {10.1145/3789240.3828736},
+  pdf         = {https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/804300/3789240.3828736.pdf},
+  html        = {https://nsg.ee.ethz.ch/publications/2026-08-12-ampel-scheduling-at-the-network-cut-in-ml-training-20-500-11850-804300/},
+  abstract    = {Ampel schedules machine-learning training traffic around bottlenecks formed by network cuts. Packet spraying allows the system to simplify the fabric into a model of shared bandwidth constraints, which it combines with coflow scheduling. Simulated workloads show reductions in average training iteration time of up to 18\% over existing ML schedulers.},
+  booktitle   = {3rd Workshop on Networks for AI Computing (NAIC), ACM SIGCOMM 2026},
+  location    = {Denver, CO, USA},
+  highlightnote = {NAIC 2026 Best Paper Award},
+  award_name  = {Best Paper},
+  award       = {Best Paper Award at the 3rd Workshop on Networks for AI Computing (NAIC), co-located with ACM SIGCOMM 2026 ([publication](https://nsg.ee.ethz.ch/publications/2026-08-12-ampel-scheduling-at-the-network-cut-in-ml-training-20-500-11850-804300/)).},
+  selected={true}
+}
+
 @inproceedings{pasqualoni2026pico,
   abbr        = {ISC'26},
   type        = {inproceedings},
@@ -20,18 +91,19 @@
   selected={true}
 }
 
-@article{iff2026waferscale,
-  abbr        = {arXiv},
-  type        = {article},
+@inproceedings{iff2026waferscale,
+  abbr        = {DAC'26},
+  type        = {inproceedings},
   author      = {Patrick Iff and Tommaso Bonato and Maciej Besta and Luca Benini and Torsten Hoefler},
   title       = {Network Design for Wafer-Scale Systems with Wafer-on-Wafer Hybrid Bonding},
   year        = {2026},
-  month       = {03},
+  month       = {07},
   tags        = {networking;hardware;deep learning},
   arxiv       = {https://arxiv.org/abs/2603.05266},
-  doi         = {10.48550/arXiv.2603.05266},
+  doi         = {10.1145/3770743.3803957},
   abstract    = {Transformer-based large language models are increasingly constrained by data movement as communication bandwidth drops sharply beyond the chip boundary. Wafer-scale integration using wafer-on-wafer hybrid bonding alleviates this limitation by providing ultra-high bandwidth between reticles on bonded wafers. In this paper, we investigate how the physical placement of reticles on wafers influences the achievable network topology and the resulting communication performance. Starting from a 2D mesh-like baseline, we propose four reticle placements (Aligned, Interleaved, Rotated, and Contoured) that improve throughput by up to 250\%, reduce latency by up to 36\%, and decrease energy per transmitted byte by up to 38\%.},
-  note        = {Preprint},
+  booktitle   = {Proceedings of the 63rd ACM/IEEE Design Automation Conference (DAC'26)},
+  location    = {Long Beach, CA, USA},
   selected={false}
 }
 
@@ -53,7 +125,7 @@
 @article{bonato2025smartt,
   abbr        = {arXiv},
   type        = {article},
-  author      = {Tommaso Bonato and Abdul Kabbani and Ahmad Ghalayini and Anup Agarwal and Daniele De Sensi and Rong Pan and Costin Raiciu and Mark Handley and Mihai Brodschi and Timo Schneider and Nils Blach and Michael Papamichael and Torsten Hoefler},
+  author      = {Tommaso Bonato and Abdul Kabbani and Ahmad Ghalayini and Anup Agarwal and Daniele De Sensi and Rong Pan and Costin Raiciu and Mark Handley and Mihai Brodschi and Timo Schneider and Nils Blach and Daniel Santos Ferreira Alves and Torsten Hoefler},
   title       = {SMaRTT: Sender-based Marked Rapidly-adapting Trimmed & Timed Transport},
   year        = {2025},
   tags        = {networking;congestion control;transport},
@@ -163,6 +235,21 @@
   doi         = {10.1145/3767295.3769320},
   booktitle   = {Proceedings of the European Conference on Computer Systems (EuroSys'26)},
   selected={true}
+}
+
+@article{hoefler2024hammingmesh,
+  abbr        = {CACM},
+  type        = {article},
+  author      = {Torsten Hoefler and Tommaso Bonato and Daniele De Sensi and Salvatore Di Girolamo and Shigang Li and Marco Heddes and Deepak Goel and Miguel Castro and Steve Scott},
+  title       = {HammingMesh: A Network Topology for Large-Scale Deep Learning},
+  year        = {2024},
+  month       = {11},
+  tags        = {networking;deep learning;topologies},
+  doi         = {10.1145/3623490},
+  abstract    = {HammingMesh addresses the data-movement requirements of distributed deep-learning training through a network topology designed for high bandwidth, low cost, and flexible job placement. The design accommodates two dimensions of training parallelism with isolated bandwidth for individual jobs, while retaining substantial global bandwidth for more general communication patterns.},
+  journal     = {Communications of the ACM},
+  publisher   = {Association for Computing Machinery},
+  selected={false}
 }
 
 @inproceedings{hoefler2022hammingmesh,

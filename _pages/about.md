@@ -28,7 +28,7 @@ latest_posts:
 
 <div id="bio-switch" class="switch-face">
   <p>
-    I’m a fourth-year PhD student at the
+    I’m a PhD student at the
     <a href="https://spcl.inf.ethz.ch/" target="_blank" rel="noopener">Scalable Parallel Computing Laboratory (SPCL)</a>
     in the
     <a href="https://inf.ethz.ch/" target="_blank" rel="noopener">Department of Computer Science</a>
@@ -36,11 +36,14 @@ latest_posts:
     <a href="https://ethz.ch/en.html" target="_blank" rel="noopener">ETH Zürich</a>,
     advised by
     <a href="https://inf.ethz.ch/people/person-detail.thoefler.html" target="_blank" rel="noopener">Prof. Torsten Hoefler</a>.
-    I’m also a student researcher at
-    <a href="https://www.microsoft.com/" target="_blank" rel="noopener">Microsoft</a>,
-    where I’ve been working with
+    I’m currently an HPC and AI Software Network Architect Intern at
+    <a href="https://www.nvidia.com/" target="_blank" rel="noopener">NVIDIA</a>
+    (June–November 2026), working on multi-NIC load balancing for GPU-initiated networking in AI systems.
+    Previously, I worked as a part-time Research Engineer at
+    <a href="https://www.microsoft.com/" target="_blank" rel="noopener">Microsoft</a>
+    (August 2022–March 2026), collaborating with
     <a href="https://scholar.google.com/citations?hl=en&user=tgtareEAAAAJ" target="_blank" rel="noopener">Abdul Kabbani</a>
-    for over three years.
+    on datacenter networking.
   </p>
 
   <p>
