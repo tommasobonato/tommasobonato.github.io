@@ -98,6 +98,15 @@ jobs:
         run: |
           npm install -g purgecss
           purgecss -c purgecss.config.js
+      - name: Verify starfield rendering
+        run: |
+          result=$(google-chrome --headless --no-sandbox --disable-dev-shm-usage \
+            --virtual-time-budget=3000 --dump-dom \
+            "file://${GITHUB_WORKSPACE}/_tests/starfield.html")
+          if [[ "$result" != *'data-starfield-test="pass"'* ]]; then
+            printf '%s\n' "$result"
+            exit 1
+          fi
       - name: Deploy 🚀
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4

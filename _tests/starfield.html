@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Starfield Rendering Check</title>
+    <link rel="stylesheet" href="../_site/assets/css/space.css" />
+  </head>
+  <body>
+    <div id="starfield" aria-hidden="true"></div>
+    <script src="../_site/assets/js/space.js"></script>
+    <script>
+      window.addEventListener("load", () => {
+        try {
+          const check = (condition, message) => {
+            if (!condition) throw new Error(message);
+          };
+          const layers = [...document.querySelectorAll(".starfield-layer")];
+          check(document.body.classList.contains("space-on"), "Stars must be enabled by default");
+          check(layers.length === 12, "Expected twelve star layers");
+          for (const layer of layers) {
+            const bounds = layer.getBoundingClientRect();
+            check(bounds.width >= innerWidth && bounds.height >= innerHeight, "Star layer collapsed after CSS minification");
+            check(getComputedStyle(layer).backgroundImage !== "none", "Star gradient was removed during CSS purging");
+          }
+          const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+          check(
+            layers.every((layer) => layer.getAnimations().length > 0 === !reducedMotion),
+            "Star drift does not match motion preference"
+          );
+          window.toggleStarfield();
+          check(!document.body.classList.contains("space-on"), "Stars did not switch off");
+          check(
+            layers.every((layer) => layer.getAnimations().length === 0),
+            "Disabled stars are still animating"
+          );
+          window.toggleStarfield();
+          check(document.body.classList.contains("space-on"), "Stars did not switch back on");
+          document.body.dataset.starfieldTest = "pass";
+        } catch (error) {
+          document.body.dataset.starfieldTest = "fail";
+          document.body.dataset.starfieldError = error.message;
+        }
+      });
+    </script>
+  </body>
+</html>
