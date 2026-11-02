@@ -70,6 +70,13 @@
       description:
         - Technical internship
 
+- title: Teaching
+  type: time_table
+  contents:
+    - title: Teaching Assistant - Wireless Networking and Mobile Computing
+      institution: ETH Zürich
+      year: Fall 2026
+
 - title: Research Interests
   type: nested_list
   contents:

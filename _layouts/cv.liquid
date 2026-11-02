@@ -10,7 +10,7 @@ layout: default
           {% if page.cv_pdf contains '://' %}
             href="{{ page.cv_pdf }}"
           {% else %}
-            href="{{ page.cv_pdf | prepend: 'assets/pdf/' | relative_url }}"
+            href="{{ page.cv_pdf | prepend: 'assets/pdf/' | relative_url | bust_file_cache }}"
           {% endif %}
           target="_blank"
           rel="noopener noreferrer"

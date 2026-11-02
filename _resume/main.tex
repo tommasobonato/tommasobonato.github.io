@@ -1,0 +1,115 @@
+%% The MIT License (MIT)
+%%
+%% Copyright (c) 2015 Daniil Belyakov
+%%
+%% Permission is hereby granted, free of charge, to any person obtaining a copy
+%% of this software and associated documentation files (the "Software"), to deal
+%% in the Software without restriction, including without limitation the rights
+%% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%% copies of the Software, and to permit persons to whom the Software is
+%% furnished to do so, subject to the following conditions:
+%%
+%% The above copyright notice and this permission notice shall be included in all
+%% copies or substantial portions of the Software.
+%%
+%% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+%% SOFTWARE.
+
+\documentclass{mcdowellcv}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{resume-variant}
+\hypersetup{
+    pdftitle={Tommaso Bonato - Resume},
+    pdfauthor={Tommaso Bonato}
+}
+\urlstyle{same}
+
+\name{Tommaso Bonato}
+\contacts{\href{mailto:tommasobonato95@gmail.com}{\nolinkurl{tommasobonato95@gmail.com}}
+    \enspace\textbar\enspace
+    \href{https://tommasobonato.github.io/}{tommasobonato.github.io}}
+
+\begin{document}
+\makeheader
+
+\begin{cvsection}{EDUCATION}
+    \begin{cvsubsection}{Ph.D. in Computer Science}{ETH Zürich}{Jan 2023 -- Mar 2027 (expected)}
+        \begin{itemize}
+            \item Part of the Scalable Parallel Computing Lab (SPCL), advised by Prof. Torsten Hoefler.
+            \item Research: AI workloads, collective communication, congestion control, and load balancing for AI/HPC.
+            \item Publications in venues including SC, NSDI, SIGCOMM, EuroSys, and \textit{Communications of the ACM}.
+            \item Supervised and mentored several bachelor's and master's students, guiding research design and execution.
+            \item Teaching Assistant: Wireless Networking and Mobile Computing, Fall 2026.
+        \end{itemize}
+    \end{cvsubsection}
+
+    \begin{cvsubsection}{M.S. in Computer Science}{ETH Zürich}{Sep 2018 -- Nov 2021}
+        \begin{itemize}
+            \item GPA: 5.31/6.00. Thesis on adaptive routing in the Slingshot interconnect, with Hewlett-Packard.
+        \end{itemize}
+    \end{cvsubsection}
+
+    \begin{cvsubsection}{B.S. in Computer Science}{University of Bologna}{Sep 2014 -- Mar 2018}
+        \begin{itemize}
+            \item Graduated with honors, 110/110; GPA: 29.1/30.
+            \item Scholarship-funded exchange at the University of California, Santa Cruz (2016--2017).
+        \end{itemize}
+    \end{cvsubsection}
+\end{cvsection}
+
+\begin{cvsection}{WORK EXPERIENCE}
+    \begin{cvsubsection}{HPC and AI Software Network Architect Intern}{NVIDIA}{Jun 2026 -- Nov 2026}
+        \begin{itemize}
+            \item Design and evaluate multi-NIC load balancing for GPU-initiated networking (GIN) in AI systems.
+            \item Contributed to the \highlight{production release} of a multi-NIC load-balancing feature for NVIDIA Vera Rubin.
+        \end{itemize}
+    \end{cvsubsection}
+
+    \begin{cvsubsection}{Research Engineer (Part-Time)}{Microsoft (via Experis)}{Aug 2022 -- Mar 2026}
+        \begin{itemize}
+            \item Designed transport protocols for Azure's AI/LLM and HPC infrastructure in the Network Architecture team.
+            \item Represented Microsoft in the Ultra Ethernet (UE) Transport Working Group, contributing to congestion control and load balancing.
+            \item Developed proofs of concept for inter-datacenter congestion control and reliability, networking/AI co-design, and packet- and flow-level load balancing.
+            \item Extended Microsoft's C++ htsim simulator for \highlight{workload-driven evaluation} of AI/HPC networking.
+        \end{itemize}
+    \end{cvsubsection}
+
+    \begin{cvsubsection}{Software Engineer Intern}{Amazon}{Feb 2019 -- Jul 2019}
+        \begin{itemize}
+            \item Built an LSTM-based transportation capacity recommendation system using Keras and AWS, contributing to estimated annual savings of \highlight{USD 5 million}.
+            \item Built alerts that caught high-priority transportation capacity misconfigurations for Prime Day and holidays.
+        \end{itemize}
+    \end{cvsubsection}
+
+    \begin{cvsubsection}{Software Engineer Intern}{European Space Agency}{Jul 2017 -- Oct 2017}
+        \begin{itemize}
+            \item Developed data analysis tools for the James Webb Space Telescope; integrated Sandia National Laboratories' C++ libraries into Fortran code, achieving a \highlight{4\texttimes{} speedup}.
+        \end{itemize}
+    \end{cvsubsection}
+\end{cvsection}
+
+\begin{cvsection}{SELECTED PUBLICATIONS}
+    \begin{itemize}[itemsep=4pt]
+        \item \href{https://doi.org/10.1145/3767295.3769320}{\textbf{REPS: Recycled Entropy Packet Spraying for Adaptive Load Balancing and Failure Mitigation.}}
+            \textit{EuroSys 2026; first author.} Reference load-balancing design for \highlight{Ultra Ethernet (UE)} and inspiration for \highlight{Multipath Reliable Connection (MRC)}.
+        \item \href{https://doi.org/10.1145/3712285.3759838}{\textbf{ATLAHS: An Application-centric Network Simulator Toolchain for AI, HPC, and Distributed Storage.}}
+            \textit{SC 2025; co-first author.} \award{Best Student Paper Finalist.}
+        \item \href{https://doi.org/10.1145/3712285.3759884}{\textbf{Uno: A One-Stop Solution for Inter- and Intra-Data Center Congestion Control and Reliable Connectivity.}}
+            \textit{SC 2025; co-first author.}
+        \item \href{https://arxiv.org/abs/2508.16809}{\textbf{PICO: Performance Insights for Collective Operations.}}
+            \textit{ISC 2026.} \award{Hans Meuer Award (Best Paper).} MPI/NCCL benchmarking and tuning for LLM training.
+    \end{itemize}
+\end{cvsection}
+
+\begin{cvsection}{TECHNICAL SKILLS}
+    \begin{itemize}
+        \item \textbf{Proficient:} C/C++, Python. \textbf{Familiar:} Java, MPI, NCCL, RDMA, Bash, Git, Docker, Linux.
+        \item \textbf{Expertise:} LLM training/inference workloads, GPU communication. \textbf{Simulation:} htsim, ns-3, SST.
+    \end{itemize}
+\end{cvsection}
+\end{document}

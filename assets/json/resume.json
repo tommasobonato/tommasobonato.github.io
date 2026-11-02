@@ -55,7 +55,13 @@
       "url": "https://spcl.inf.ethz.ch/",
       "startDate": "2023-01-01",
       "summary": "Research on high-performance network topologies, traffic load balancing, congestion control for large-scale AI/HPC systems under Prof. Torsten Hoefler. Focus on datacenter networking, collective communication, and network simulation.",
-      "highlights": ["Network topologies", "Load balancing algorithms", "Network simulation (HTSIM)", "Ultra Ethernet Consortium"]
+      "highlights": [
+        "Network topologies",
+        "Load balancing algorithms",
+        "Network simulation (HTSIM)",
+        "Ultra Ethernet Consortium",
+        "Teaching Assistant: Wireless Networking and Mobile Computing, Fall 2026"
+      ]
     },
     {
       "name": "Amazon",

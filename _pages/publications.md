@@ -5,6 +5,7 @@ title: Publications
 description:
 nav: true
 nav_order: 2
+last_modified_at: "2026-11-02"
 ---
 
 <!-- _pages/publications.md -->

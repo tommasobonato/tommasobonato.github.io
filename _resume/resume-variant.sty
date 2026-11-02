@@ -1,0 +1,64 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{resume-variant}[2026/11/02 Serif resume with minimal color and organization marks]
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\newif\ifcvlogos
+\cvlogostrue
+\DeclareOption{nologos}{\cvlogosfalse}
+\ProcessOptions\relax
+
+\definecolor{cvaccent}{HTML}{225B61}
+\newcommand{\highlight}[1]{\textbf{#1}}
+
+% Zero-height logo boxes preserve heading and line spacing.
+\newcommand{\organizationlogo}[1]{%
+    \makebox[29pt][c]{%
+        \ifcvlogos
+            \raisebox{\dimexpr 0.45ex-.5\height\relax}[0pt][0pt]{%
+                \ifstrequal{#1}{bologna}{%
+                    \includegraphics[width=14pt,height=14pt,keepaspectratio,
+                        trim=153bp 119bp 162bp 9bp,clip]{assets/logos/bologna}%
+                }{%
+                    \ifstrequal{#1}{eth}{%
+                        \includegraphics[width=14pt,height=6pt,keepaspectratio]{assets/logos/eth}%
+                    }{%
+                        \includegraphics[width=25pt,height=10pt,keepaspectratio]{assets/logos/#1}}}}%
+        \fi}%
+}
+\newcommand{\organizationmark}[1]{%
+    \ifstrequal{#1}{ETH Zürich}{\organizationlogo{eth}}{}%
+    \ifstrequal{#1}{University of Bologna}{\organizationlogo{bologna}}{}%
+    \ifstrequal{#1}{NVIDIA}{\organizationlogo{nvidia}}{}%
+    \ifstrequal{#1}{Microsoft (via Experis)}{\organizationlogo{microsoft}}{}%
+    \ifstrequal{#1}{Amazon}{\organizationlogo{amazon}}{}%
+    \ifstrequal{#1}{European Space Agency}{\organizationlogo{esa}}{}%
+}
+
+\renewcommand{\makeheader}{%
+    \begingroup
+    \centering
+    {\fontsize{20pt}{23pt}\selectfont\bfseries \@name\par}
+    \vspace{3pt}
+    \@contacts\par
+    \endgroup
+    \vspace{3pt}
+}
+
+\renewenvironment{cvsection}[1]{%
+    \par\addvspace{9pt}
+    {\color{cvaccent}\bfseries #1\par}
+    \nobreak\vspace{2pt}
+    {\color{cvaccent}\hrule height 0.45pt}
+    \nobreak\vspace{3pt}
+}{\par}
+
+\renewenvironment{cvsubsection}[4][1]{%
+    \par\addvspace{6pt}
+    \ifblank{#2#3#4}{}{%
+        \organizationmark{#3}{\bfseries #3\enspace\textbar\enspace #2}%
+        \hfill\mbox{#4}\par\nobreak
+    }%
+}{\par}
+
+\setlist[itemize]{leftmargin=1.2em,label=\textbullet,
+    itemsep=1.5pt,parsep=0pt,topsep=3pt,partopsep=0pt}
